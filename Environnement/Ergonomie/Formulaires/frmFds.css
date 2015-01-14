@@ -1,0 +1,84 @@
+.erase {
+    background-image:url(Images/erase.png) !important;
+}
+.mail_envoyer {
+    background-image:url(Images/mail_envoyer.png) !important;
+}
+.account_add {
+    background-image:url(Images/account_add.png) !important;
+}
+.icon_contact {
+    background-image:url(Images/icon_contact.png) !important;
+}
+.group_add {
+    background-image:url(Images/group_add.png) !important;
+}
+.mailing_card {
+    background-image:url(Images/mailing_card.png) !important;
+}
+.inscription {
+    background-image:url(Images/inscription.png) !important;
+}
+.maison {
+    background-image:url(Images/maison.png) !important;
+}
+.portrait {
+    background-image:url(Images/portrait.png) !important;
+}
+.import_IMG {
+    background-image:url(Images/import_IMG.png) !important;
+}
+.photo {
+    background-image:url(Images/photo.png) !important;
+}
+.precedent {
+    background-image:url(Images/precedent.gif) !important;
+}
+.suivant {
+    background-image:url(Images/suivant.gif) !important;
+}
+
+.connexion {
+    background-image:url(Images/connexion.png) !important;
+}
+
+.stop {
+    background-image:url(Images/stop.gif) !important;
+}
+
+.dupliquer {
+    background-image:url(Images/dupliquer.gif) !important;
+}
+
+.cancel {
+    background-image:url(Images/cancel.png) !important;
+}
+.checked {
+    background-image:url(Images/checked.gif) !important;
+}
+#titre_formulaire {
+    font: bold 15px tahoma, arial, helvetica, sans-serif;
+    color: #cc0000;
+    text-decoration: underline;
+    padding: 10px;
+    text-align: center;
+}
+
+.left_arrow {
+    background-image:url(Images/leftarrow.png) !important;
+    height: 54px !important;
+    width: 52px !important;
+}
+.right_arrow {
+    background-image:  url(Images/rightarrow.png) !important;
+    height: 54px !important;
+    width: 52px !important;
+}
+
+#texte_explication {
+    color: #777;
+    font-size: 10px;
+    font-weight: bold;
+    padding: 10px;
+    text-align: center;
+}

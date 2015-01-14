@@ -1,0 +1,209 @@
+/* Couleur de sélection */
+.olHandlerBoxSelectFeature {
+    border: 2px solid yellow !important;
+}
+
+
+/* Masquage des conditions d'utilisation Google Map */
+
+.olLayerGoogleCopyright {
+    visibility: hidden;
+}
+.olLayerGooglePoweredBy {
+    visibility: hidden;
+}
+
+
+/* Barre d'outils */
+
+.olControlToolbar {
+    position: absolute;
+    right:5px;
+    margin-top:3px;
+}
+
+.olControlToolbar div{
+    float: right;
+    margin-left: 5px;
+    width: 24px;
+    height: 24px;
+    text-align: center;
+    background-image: url("Images/toolbar.gif");
+    background-repeat: no-repeat;
+    cursor: pointer
+}
+
+.olControlToolbar .olControlSeparatorLeft {
+    margin-left: 15px;
+}
+.olControlToolbar .olControlSeparatorRight {
+    margin-right: 10px;
+}
+.olControlToolbar .olControlNavigationItemInactive {
+    background-position: -103px -0px;
+}
+.olControlToolbar .olControlNavigationItemActive {
+    background-position: -103px -23px;
+}
+.olControlToolbar .olControlZoomBoxItemInactive	{
+    background-position: -153px 0px;
+}
+.olControlToolbar .olControlZoomBoxItemActive {
+    background-position: -153px -23px;
+}
+.olControlToolbar .olControlMeasureItemInactive {
+    background-position: -228px 0px;
+}
+.olControlToolbar .olControlMeasureItemActive {
+    background-position: -228px -23px;
+}
+.olControlToolbar .olControlDrawPointItemInactive {
+    background-position: -77px -0px;
+}
+.olControlToolbar .olControlDrawPointItemActive {
+    background-position: -77px -23px;
+}
+.olControlToolbar .olControlDrawPathItemInactive {
+    background-position: -51px 0px;
+}
+.olControlToolbar .olControlDrawPathItemActive {
+    background-position: -51px -23px;
+}
+.olControlToolbar .olControlDrawAreaItemInactive{
+    background-position: -26px 0px;
+}
+.olControlToolbar .olControlDrawAreaItemActive {
+    background-position: -26px -23px;
+}
+.olControlToolbar .olControlModifyVertexesItemInactive {
+    background-position: -128px 0px;
+}
+.olControlToolbar .olControlModifyVertexesItemActive {
+    background-position: -128px -23px;
+}
+.olControlToolbar .olControlDragItemInactive {
+    background-position: -1px 0px;
+}
+.olControlToolbar .olControlDragItemActive {
+    background-position: -1px -23px;
+}
+.olControlToolbar .olControlDeleteItemInactive {
+    background-position: -203px 0px;
+}
+.olControlToolbar .olControlDeleteItemActive {
+    background-position: -203px -23px;
+}
+.olControlToolbar .olControlSaveItemInactive {
+background-position: -178px 0px;
+}
+.olControlToolbar .olControlSaveItemActive {
+background-position: -178px -23px;
+}
+.olControlToolbar .olControlSelectItemInactive {
+    background-position: -253px 0px;
+}
+.olControlToolbar .olControlSelectItemActive {
+    background-position: -253px -23px;
+}
+.olControlToolbar .olControlTextItemInactive {
+    background-position: -278px 0px;
+    font-size: 15px;
+    font-weight:bold; color:#777;
+}
+.olControlToolbar .olControlTextItemActive {
+    background-position: -278px -23px;
+    font-size: 15px;
+    font-weight:bold; color:#444;
+}
+
+/*boutons supplémentaires*/
+
+.olControlToolbar .olControlSaveExtentItemInactive {
+    background-image: url(Images/save_extent.gif);
+}
+.olControlToolbar .olControlZoomExtentItemInactive {
+    background-image: url(Images/zoom_extent.gif);
+}
+.olControlToolbar .olControlEraseItemActive {
+    background-image: url(Images/erase_on.png);
+}
+.olControlToolbar .olControlEraseItemInactive {
+    background-image: url(Images/erase_off.png);
+}
+.olControlToolbar .olControlDrawPtItemActive {
+    background-image: url(Images/draw_point_on.png);
+}
+.olControlToolbar .olControlDrawPtItemInactive {
+    background-image: url(Images/draw_point_off.png);
+}
+.olControlToolbar .olControlDrawLineItemActive {
+    background-image: url(Images/draw_polyline_on.png);
+}
+.olControlToolbar .olControlDrawLineItemInactive {
+    background-image: url(Images/draw_polyline_off.png);
+}
+.olControlToolbar .olControlDrawPolygonItemActive {
+    background-image: url(Images/draw_polygon_on.png);
+}
+.olControlToolbar .olControlDrawPolygonItemInactive {
+    background-image: url(Images/draw_polygon_off.png);
+}
+.olControlToolbar .olControlSelectFeatureItemActive {
+    background-image: url(Images/select_on.png);
+}
+.olControlToolbar .olControlSelectFeatureItemInactive {
+    background-image: url(Images/select_off.png);
+}
+.olControlToolbar .olControlMultiSelectFeatureItemActive {
+    background-image: url(Images/multi_select_on.png);
+}
+.olControlToolbar .olControlMultiSelectFeatureItemInactive {
+    background-image: url(Images/multi_select_off.png);
+}
+.olControlToolbar .olControlUnzoomItemActive {
+    background-image: url(Images/unzoom_on.png);
+}
+.olControlToolbar .olControlUnzoomItemInactive {
+    background-image: url(Images/unzoom_off.png);
+}
+.olControlToolbar .olControlZoomSelectionItemInactive {
+    background-image: url(Images/zoom_selection.png);
+}
+.olControlToolbar .olControlZoomCenterItemInactive {
+    background-image: url(Images/zoom_center.png);
+}
+
+/* Outils de mesures */
+.olControlToolbar .olControlMeasureLengthItemActive {
+    background-image: url(Images/measure_length_on.png);
+}
+.olControlToolbar .olControlMeasureLengthItemInactive {
+    background-image: url(Images/measure_length_off.png);
+}
+.olControlToolbar .olControlMeasureAreaItemActive {
+    background-image: url(Images/measure_area_on.png);
+}
+.olControlToolbar .olControlMeasureAreaItemInactive {
+    background-image: url(Images/measure_area_off.png);
+}
+
+/*intégration de l'historique de navigation*/
+
+.olControlNavigationHistory {
+    background-image: url(Images/navigation_history.png) !important; /*obligatoire pour l'affichage*/
+    background-repeat: no-repeat;
+    width: 24px;
+    height: 24px;
+}
+.olControlNavigationHistoryPreviousItemActive {
+    background-position: 0px 0px;
+}
+.olControlNavigationHistoryPreviousItemInactive {
+    background-position: 0px -24px;
+}
+.olControlNavigationHistoryNextItemActive {
+    background-position: -24px 0px;
+}
+.olControlNavigationHistoryNextItemInactive {
+    background-position: -24px -24px;
+}

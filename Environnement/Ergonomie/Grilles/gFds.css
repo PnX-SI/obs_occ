@@ -1,0 +1,90 @@
+.cancel_find {
+ background-image:url(Images/cancel_find.png);
+}
+.go_form {
+ background-image:url(Images/go_form.png);
+}
+.downloadData {
+ background-image:url(Images/downloadData.png);
+}
+.study {
+ background-image:url(Images/study.png);
+}
+.workflow {
+ background-image:url(Images/workflow.gif);
+}
+.deconnection {
+ background-image:url(Images/deconnection.gif);
+}
+.bonus{
+ background-image:url(Images/bonus.png);
+}
+.user_comment {
+ background-image:url(Images/user_comment.png);
+}
+.measure {
+ background-image:url(Images/measure.png);
+}
+.zoom_xy {
+  background-image:url(Images/zoom_xy.png);
+}
+.return {
+  background-image:url(Images/return.gif);
+}
+.add {
+  background-image:url(Images/add.gif);
+}
+.delete {
+    background-image:url(Images/delete.gif);
+}
+.cog_edit {
+    background-image:url(Images/cog_edit.png);
+}
+
+.icon_excel {
+    background-image:url(Images/icon_excel.gif);
+}
+.import_GPX {
+  background-image:url(Images/import_GPX.png);
+}
+.propertiesImport {
+  background-image:url(Images/propertiesImport.jpg);
+}
+
+.filter_selected {
+    background-image:url(Images/filter_selected.jpg);
+}
+.filter_selected_orange {
+	background-color: orange !important;
+    background-image:url(Images/filter_selected.jpg);
+}
+
+.save_selected {
+    background-image:url(Images/save_selected.jpg);
+}
+.apply_selected {
+    background-image:url(Images/apply_selected.jpg);
+}
+
+.x-grid3-row-alt {
+    background-color: #DFE8F6;
+}
+.x-grid3-row-selected {
+    background: yellow !important;
+}
+
+.switch {
+  background-image:url(Images/switch.png);
+}
+
+.icon_arrows {
+  background-image:url(Images/icon_arrows.gif);
+}
+
+.extent {
+  background-image:url(Images/extent.png);
+}
+.extent_orange {
+  background-color: orange !important;
+  background-image:url(Images/extent.png);
+}
