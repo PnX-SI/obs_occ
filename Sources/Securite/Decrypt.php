@@ -1,8 +1,8 @@
 <?php
     $dir = dirname(__FILE__);
     require_once $dir . '../../Configuration/ConfigUtilisee.php';
-    set_include_path($dir . '../' . LIB . '/PEAR/');
-    require_once $dir . '../' . LIB . '/PEAR/Crypt/RSA.php';
+    set_include_path($dir . '/' . LIB . '/PEAR/');
+    require_once $dir . '/' . LIB . '/PEAR/Crypt/RSA.php';
     
     //Décryptage RSA classique (pour les variables de session)
     function decrypteRSA($appli, $val) {
