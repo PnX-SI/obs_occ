@@ -10,21 +10,18 @@
     }
 
     // Configuration dynamique de PHP pour le développement
-    
+    /*
     ini_set('display_errors','On'); // Development Value: On - Production Value: Off
     ini_set('display_startup_errors','On'); // Development Value: On - Production Value: Off
     ini_set('error_reporting','E_ALL & ~E_DEPRECATED'); // Development Value: E_ALL & ~E_DEPRECATED - Production Value: E_ALL & ~E_NOTICE & ~E_STRICT & ~E_DEPRECATED
     ini_set('track_errors','On'); // Development Value: On - Production Value: Off
-    
+    */
     
     // Configuration dynamique de PHP pour ma mise en production
-    
-    /*
     ini_set('display_errors','On'); // Development Value: On - Production Value: Off
     ini_set('display_startup_errors','On'); // Development Value: On - Production Value: Off
     ini_set('error_reporting','E_ALL & ~E_NOTICE & ~E_STRICT & ~E_DEPRECATED'); // Development Value: E_ALL & ~E_DEPRECATED - Production Value: E_ALL & ~E_DEPRECATED & ~E_STRICT
     ini_set('track_errors','On'); // Development Value: On - Production Value: Off
-    */
     
     define('LIB', '../../Librairies');
     define('ENV', '../../Environnement');
