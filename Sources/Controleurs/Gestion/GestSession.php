@@ -46,7 +46,10 @@
             $id = Personne::authentifie(pg_escape_string($_POST['email']), md5($mot_de_passe));// besoin de "pg_escape_string" car valeur maîtrisée par l'utilisateur
             if ($id) {
                 $personne = new Personne();
-                $personne->charge($id);                
+                $personne->charge($id);    
+                
+                $role_connexion = (defined('BASENAME') ? BASENAME : DBNAME); 
+                
                 // Cryptage RSA classique des variables de session
                 if (CRYPTAGE) {
                     $_SESSION[APPLI]['numerisateur']['code'] = $rsa_obj->encrypt($personne->id_personne, $public_key);
@@ -56,8 +59,8 @@
                     $_SESSION[APPLI]['numerisateur']['idSociete'] = $rsa_obj->encrypt($_POST['id_structure'], $public_key);
                     $_SESSION[APPLI]['numerisateur']['nomSociete'] = $rsa_obj->encrypt($_POST['nom_structure'], $public_key);
                     $_SESSION[APPLI]['Connexion']['LOGIN'] = $rsa_obj->encrypt($personne->email, $public_key);
-                    $_SESSION[APPLI]['Connexion']['USER'] = $rsa_obj->encrypt(DBNAME . '_' . $personne->role, $public_key);
-                    $_SESSION[APPLI]['Connexion']['PASSWORD'] = $rsa_obj->encrypt(DBNAME . '_' . $personne->role, $public_key);
+                    $_SESSION[APPLI]['Connexion']['USER'] = $rsa_obj->encrypt($role_connexion . '_' . $personne->role, $public_key);
+                    $_SESSION[APPLI]['Connexion']['PASSWORD'] = $rsa_obj->encrypt($role_connexion . '_' . $personne->role, $public_key);
                 }
                 else {
                     $_SESSION[APPLI]['numerisateur']['code'] = $personne->id_personne;
@@ -67,8 +70,8 @@
                     $_SESSION[APPLI]['numerisateur']['idSociete'] = $_POST['id_structure'];
                     $_SESSION[APPLI]['numerisateur']['nomSociete'] = $_POST['nom_structure'];
                     $_SESSION[APPLI]['Connexion']['LOGIN'] = $personne->email;
-                    $_SESSION[APPLI]['Connexion']['USER'] = DBNAME . '_' . $personne->role;
-                    $_SESSION[APPLI]['Connexion']['PASSWORD'] = DBNAME . '_' . $personne->role;
+                    $_SESSION[APPLI]['Connexion']['USER'] = $role_connexion . '_' . $personne->role;
+                    $_SESSION[APPLI]['Connexion']['PASSWORD'] = $role_connexion . '_' . $personne->role;
                 }
                 $data = 'Bienvenue ' . $personne->prenom . ' !!!';
                 die('{success: true, data: "' . $data . '"}');
