@@ -514,7 +514,8 @@ function basculeEcran(sens) {
                 handler: function() {document.location.href = 'vSaisiePersonnes.php';},
                 text: 'Observateurs',
                 iconCls: 'portrait',
-                tooltip: 'Gérer les observateurs'
+                tooltip: 'Gérer les observateurs',
+                hidden: (typeof CST_hideManageUser === "undefined") ? false : CST_hideManageUser
             }, '-', {
                 handler: function() {document.location.href = 'vSaisieStructures.php';},
                 text: 'Structures',
