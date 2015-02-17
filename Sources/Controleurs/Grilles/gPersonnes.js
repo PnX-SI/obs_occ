@@ -150,12 +150,14 @@ function afficheEcran() {
                 text: 'Ajouter',
                 tooltip: 'Ajouter une nouvelle personne',
                 handler: ajouter,
-                iconCls: 'add'
+                iconCls: 'add',
+                hidden: ((typeof CST_activeGestionUtilisateur === "undefined") ) ? false : !CST_activeGestionUtilisateur 
             }, '-', {
                 text: 'Modifier',
                 tooltip: "Modifier la personne sélectionnée",
                 handler: modifier,
-                iconCls: 'cog_edit'
+                iconCls: 'cog_edit',
+                hidden: ((typeof CST_activeGestionUtilisateur === "undefined") ) ? false : !CST_activeGestionUtilisateur 
             }, /*'-', {
                 text: 'Supprimer',
                 tooltip: "Supprimer la personne sélectionnée",

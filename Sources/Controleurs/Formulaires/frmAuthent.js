@@ -119,7 +119,7 @@ function afficheFormulaire() {
                     text: 'Renvoyer mot de passe',
                     handler: reinitialiserMdp,
                     iconCls: 'mailing_card',
-                    hidden: (typeof CST_hideManageUser === "undefined") ? false : CST_hideManageUser
+                    hidden: ((typeof CST_activeGestionUtilisateur === "undefined") ) ? false : !CST_activeGestionUtilisateur 
                 }, '-', {
                     text: 'Se connecter',
                     handler: soumettre,
@@ -148,8 +148,8 @@ function afficheFormulaire() {
 
 // vérification de l'accès au bouton de création de compte
 function detecterAdmin() {
-    if ((typeof CST_hideManageUser !== "undefined") && (CST_hideManageUser === true)) {
-      return false;
+    if ((typeof CST_activeGestionUtilisateur  !== "undefined") && (CST_activeGestionUtilisateur  === false)) {
+      return true;
     }
     var MotDePasse =  Ext.getCmp('mot_de_passe').getValue();
     if (CST_Cryptage) {

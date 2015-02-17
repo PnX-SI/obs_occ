@@ -2,6 +2,10 @@
 var formulaire, fenetreFormulaire, comboTitre, comboRole, comboCreateur, comboSpecialite;
 
 Ext.onReady(function() {
+    if ((typeof CST_activeGestionUtilisateur  !== "undefined") && (CST_activeGestionUtilisateur  === false)) {
+      Ext.Msg.alert('Status', 'Gestion des utilisateurs désactivés redirection en cours...');
+      window.location = "vSaisieObs.php";
+    }
     //Combo d'auto-complétion "titre"
     comboTitre = new Ext.form.ComboBox({
         store: new Ext.data.JsonStore({
