@@ -253,17 +253,21 @@ function afficheEcran() {
 
 //Ajout
 function ajouter() {
+  if ((typeof CST_activeGestionUtilisateur !== "undefined") &&  CST_activeGestionUtilisateur == true ) {
     ajoute();
+  }
 }
 
 //Modification
 function modifier() {
+  if ((typeof CST_activeGestionUtilisateur !== "undefined") &&  CST_activeGestionUtilisateur == true ) {
     if (grille.selModel.getCount() == 1) {
         modifie();
     }
     else {
         Ext.MessageBox.alert('Attention', 'Vous devez sélectionner une personne et une seule').setIcon(Ext.MessageBox.WARNING);
     }
+  }
 }
 
 //Suppression
