@@ -2,7 +2,7 @@
     require_once '../../Modeles/Classes/ClassEnvoiMailAccuseReception.php';
     require_once '../../Modeles/Classes/ClassEnvoiMailDemande.php';
     require_once '../../Configuration/ConfigUtilisee.php';
-    require_once '../../' . CONFIG . '/Serveur.php';
+    require_once '../../' . $configInstance . '/Serveur.php';
     
     $envoiMailDemande = new EnvoiMailDemande($_POST['titre'], $_POST['prenom'], 
         $_POST['nom'], $_POST['email'], $_POST['structure'], $_POST['programme'],

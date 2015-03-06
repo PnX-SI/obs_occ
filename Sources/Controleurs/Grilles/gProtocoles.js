@@ -13,7 +13,7 @@ Ext.onReady(function() {
         ]
     });
     donneesGrille = new Ext.data.GroupingStore({
-        proxy: new Ext.data.HttpProxy({url: '../Modeles/Json/jProtocoles.php'}),
+        proxy: new Ext.data.HttpProxy({url: '../Modeles/Json/jProtocoles.php?appli=' + GetParam('appli')}),
         reader: lecteurDonnees,
         remoteSort: true,
         remoteGroup: true,
@@ -85,7 +85,7 @@ Ext.onReady(function() {
         view: new Ext.grid.GroupingView({
             groupTextTpl: '{text} ({[values.rs.length]} {[values.rs.length > 1 ? "lignes" : "ligne"]})'
         }),
-        id: CST_appli + '_grilleProtocoles', // unique pour conserver la configuration de la grille
+        id: GetParam('appli') + '_grilleProtocoles', // unique pour conserver la configuration de la grille
         header: false,
         ds: donneesGrille,
         cm: configCols,
@@ -109,24 +109,24 @@ Ext.onReady(function() {
                 iconCls: 'deconnection',
                 tooltip: "Se déconnecter de l'application"
             }, '-', {
-                handler: function() {document.location.href = 'vSaisiePersonnes.php';},
+                handler: function() {document.location.href = 'vSaisiePersonnes.php?appli=' + GetParam('appli');},
                 text: 'Observateurs',
                 iconCls: 'portrait',
                 tooltip: 'Gérer les observateurs'
             }, {
-                handler: function() {document.location.href = 'vSaisieStructures.php';},
+                handler: function() {document.location.href = 'vSaisieStructures.php?appli=' + GetParam('appli');},
                 text: 'Structures',
                 iconCls: 'maison',
                 tooltip: 'Gérer les structures'
             }, '-', {
-                handler: function() {document.location.href = 'vSaisieEtudes.php';},
+                handler: function() {document.location.href = 'vSaisieEtudes.php?appli=' + GetParam('appli');},
                 text: 'Etudes',
                 iconCls: 'study',
                 tooltip: 'Gérer les études'
             }, '-', {
                 text: 'Retour obs.',
                 tooltip: 'Retourner aux observations occasionnelles',
-                handler: function() {document.location.href = 'vSaisieObs.php';},
+                handler: function() {document.location.href = 'vSaisieObs.php?appli=' + GetParam('appli');},
                 iconCls: 'return'
             }
         ]
@@ -143,11 +143,11 @@ Ext.onReady(function() {
         maximized: true,
         layout: 'border',
         title: 'Gestion des protocoles',
-        close: function() {document.location.href = 'vSaisieObs.php';},
+        close: function() {document.location.href = 'vSaisieObs.php?appli=' + GetParam('appli');},
         items: grillePanel
         });
     //Chargement des données selon cookies
-    if (Ext.util.Cookies.get('ys-grilleProtocoles') == null) {
+    if (Ext.util.Cookies.get('ys-0-' + GetParam('appli') + '_grilleProtocoles') == null) {
         donneesGrille.load();
     }
     //Affichage de la fenêtre au chargement de la page
@@ -200,7 +200,7 @@ function supprime(btn) {
         var nbSuppr = grille.selModel.getCount();
         if (nbSuppr == 1) {
             Ext.Ajax.request({
-                url: '../Controleurs/Gestion/GestProtocoles.php',
+                url: '../Controleurs/Gestion/GestProtocoles.php?appli=' + GetParam('appli'),
                 params: {
                     action: 'Supprimer',
                     id_protocole: grille.selModel.getSelected().data['id_protocole']
@@ -238,7 +238,7 @@ function supprime(btn) {
                 listId += ', ' + selection[i].data['id_protocole'];
             }
             Ext.Ajax.request({
-                url: '../Controleurs/Gestion/GestProtocoles.php',
+                url: '../Controleurs/Gestion/GestProtocoles.php?appli=' + GetParam('appli'),
                 params: {
                     action: 'SupprimerListeId',
                     listId: listId

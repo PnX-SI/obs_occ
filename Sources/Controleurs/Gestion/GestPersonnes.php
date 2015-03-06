@@ -56,6 +56,9 @@
         if (isset($_POST['createur'])) {
             $personne->createur = $_POST['createur'];
         }
+        if (isset($_POST['id_structure'])) {
+            $personne->id_structure = $_POST['id_structure'];
+        }
         date_default_timezone_set('Europe/Paris');
         $personne->date_maj = date('Y-m-d');
 

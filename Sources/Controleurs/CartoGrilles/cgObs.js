@@ -244,7 +244,7 @@ function basculeEcran(sens) {
         layer: coucheEditable,
         proxy: new GeoExt.data.ProtocolProxy({
             protocol: new OpenLayers.Protocol.HTTP({
-                url: '../Modeles/GeoJson/gjObs.php',
+                url: '../Modeles/GeoJson/gjObs.php?appli=' + GetParam('appli'),
                 format: new OpenLayers.Format.GeoJSON({
                     internalProjection: carte.getProjectionObject(),
                     externalProjection: new OpenLayers.Projection('EPSG:4326')
@@ -479,7 +479,7 @@ function basculeEcran(sens) {
         view: new Ext.ux.BufferedGroupingView({
             groupTextTpl: '{text} ({[values.rs.length]} {[values.rs.length > 1 ? "lignes" : "ligne"]})'
         }),
-        id: CST_appli + '_grilleObs', // unique pour conserver la configuration de la grille
+        id: GetParam('appli') + '_grilleObs', // unique pour conserver la configuration de la grille
         header: false,
         ds: donneesGrille,
         cm: configCols,
@@ -511,24 +511,23 @@ function basculeEcran(sens) {
                 iconCls: 'deconnection',
                 tooltip: "Se déconnecter de l'application"
             }, '-', {
-                handler: function() {document.location.href = 'vSaisiePersonnes.php';},
+                handler: function() {document.location.href = 'vSaisiePersonnes.php?appli=' + GetParam('appli');},
                 text: 'Observateurs',
                 iconCls: 'portrait',
-                tooltip: 'Gérer les observateurs',
-                //hidden: (typeof CST_activeGestionUtilisateur  === "undefined") ? false : !CST_activeGestionUtilisateur
+                tooltip: 'Gérer les observateurs'
             }, '-', {
-                handler: function() {document.location.href = 'vSaisieStructures.php';},
+                handler: function() {document.location.href = 'vSaisieStructures.php?appli=' + GetParam('appli');},
                 text: 'Structures',
                 iconCls: 'maison',
                 tooltip: 'Gérer les structures'
             }, separateurBarrePaginat, {
-                handler: function() {document.location.href = 'vSaisieEtudes.php';},
+                handler: function() {document.location.href = 'vSaisieEtudes.php?appli=' + GetParam('appli');},
                 text: 'Etudes',
                 iconCls: 'study',
                 tooltip: 'Gérer les études',
                 hidden: (droit != 'admin')
             }, separateurBarrePaginat, {
-                handler: function() {document.location.href = 'vSaisieProtocoles.php';},
+                handler: function() {document.location.href = 'vSaisieProtocoles.php?appli=' + GetParam('appli');},
                 text: 'Protocoles',
                 iconCls: 'workflow',
                 tooltip: 'Gérer les protocoles',
@@ -548,7 +547,7 @@ function basculeEcran(sens) {
     });
     // Panel de la carte
     var cartePanel = new GeoExt.MapPanel({
-        id: CST_appli + '_cartePanelObs', // unique pour conserver la configuration de la carte
+        id: GetParam('appli') + '_cartePanelObs', // unique pour conserver la configuration de la carte
         map: carte,
         region: sens,
         split: true,
@@ -580,7 +579,7 @@ function basculeEcran(sens) {
         items: [cartePanel, grillePanel]
     });
     //Chargement des données selon cookies
-    if (Ext.util.Cookies.get('ys-grilleObs') == null) {
+   if (Ext.util.Cookies.get('ys-0-' + GetParam('appli') + '_grilleObs') == null) {
         donneesGrille.load();
     }
 }
@@ -606,7 +605,7 @@ function redessiner(feature) {
         new OpenLayers.Projection('EPSG:4326'));
     // récupération de la commune auprès du référentiel
     Ext.Ajax.request({
-        url: '../Modeles/Json/jCommune.php',
+        url: '../Modeles/Json/jCommune.php?appli=' + GetParam('appli'),
         params: {
             centroid: geom.getCentroid(),
             EPSG: projectionPostGIS.getCode().replace('EPSG:', '')
@@ -636,7 +635,7 @@ function redessiner(feature) {
             }
             if (geom.CLASS_NAME == 'OpenLayers.Geometry.Point') {
                 Ext.Ajax.request({
-                    url: '../Controleurs/Gestion/GestObs.php',
+                    url: '../Controleurs/Gestion/GestObs.php?appli=' + GetParam('appli'),
                     params: {
                         action: 'Redessiner',
                         id_obs: feature.attributes['id_obs'],
@@ -676,7 +675,7 @@ function redessiner(feature) {
             }
             else {
                 Ext.Ajax.request({
-                    url: '../Controleurs/Gestion/GestObs.php',
+                    url: '../Controleurs/Gestion/GestObs.php?appli=' + GetParam('appli'),
                     params: {
                         action: 'Redessiner',
                         id_obs: feature.attributes['id_obs'],
@@ -748,7 +747,7 @@ function supprime(btn) {
         var nbSuppr = grille.selModel.getCount();
         if (nbSuppr == 1) {
             Ext.Ajax.request({
-                url: '../Controleurs/Gestion/GestObs.php',
+                url: '../Controleurs/Gestion/GestObs.php?appli=' + GetParam('appli'),
                 params: {
                     action: 'Supprimer',
                     id_obs: grille.selModel.getSelected().data['id_obs']
@@ -786,7 +785,7 @@ function supprime(btn) {
                 listId += ', ' + selection[i].data['id_obs'];
             }
             Ext.Ajax.request({
-                url: '../Controleurs/Gestion/GestObs.php',
+                url: '../Controleurs/Gestion/GestObs.php?appli=' + GetParam('appli'),
                 params: {
                     action: 'SupprimerListeId',
                     listId: listId

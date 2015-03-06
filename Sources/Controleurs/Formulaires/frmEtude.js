@@ -116,7 +116,7 @@ function termineAffichage() {
 
 //Fonction appelée sur le click du bouton "Enregistrer"
 function soumettre() {
-    templateValidation('../Controleurs/Gestion/GestEtudes.php', Ext.getCmp('statusbar'),
+    templateValidation('../Controleurs/Gestion/GestEtudes.php?appli=' + GetParam('appli'), Ext.getCmp('statusbar'),
         formulaire, termineAffichage);
 }
 

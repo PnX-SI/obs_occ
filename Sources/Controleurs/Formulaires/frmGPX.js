@@ -62,12 +62,12 @@ Ext.onReady(function() {
 
 //Fonction appelée après un chargement réussi
 function termineAffichageGPX(data) {
-    document.location.href = 'vSelectGPX.php?GPX=' + data + '&modeSimplifie=' + modeSimplifie;
+    document.location.href = 'vSelectGPX.php?appli=' + GetParam('appli') + '&GPX=' + data + '&modeSimplifie=' + modeSimplifie;
 }
 
 //Fonction appelée sur le click du bouton "Charger"
 function soumettreGPX() {
-    templateValidation('../Modeles/Json/jFichierGPX.php', Ext.getCmp('statusbarGPX'),
+    templateValidation('../Modeles/Json/jFichierGPX.php?appli=' + GetParam('appli'), Ext.getCmp('statusbarGPX'),
         formulaireGPX, termineAffichageGPX);
 }
 

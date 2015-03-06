@@ -1,4 +1,4 @@
 <?php
     //phpinfo();
-    header('Location: Vues/vAuthent.php');
+    header('Location: Vues/index.html');
 ?>

@@ -1,7 +1,7 @@
 <?php
     require_once '../../Configuration/ConfigUtilisee.php';
     set_include_path('../' . LIB . '/PEAR/');
-    require_once '../../' . CONFIG . '/Serveur.php';
+    require_once '../../' . $configInstance . '/Serveur.php';
     require_once '../' . LIB . '/PEAR/Mail/Mail.php';
 
     class EnvoiMail {

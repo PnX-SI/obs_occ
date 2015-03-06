@@ -4,7 +4,7 @@
     }
     require_once '../../Configuration/ConfigUtilisee.php';
     require_once '../' . ENV . '/Outils/ClassEnreg.php';
-    require_once '../../' . CONFIG . '/PostGreSQL.php';
+    require_once '../../' . $configInstance . '/PostGreSQL.php';
     require_once 'ClassCnxPgObsOcc.php';
     require_once '../../Securite/Decrypt.php';
     
@@ -17,9 +17,9 @@
         static private $mot_de_passe = 'mot_de_passe';
 
         function __construct() {
-            parent::__construct(HOST, PORT, DBNAME, decrypteRSA(APPLI, $_SESSION[APPLI]['Connexion']['USER']),
-                decrypteRSA(APPLI, $_SESSION[APPLI]['Connexion']['PASSWORD']), self::$tablePersonne,
-                self::$chIdPersonne, null, decrypteRSA(APPLI, $_SESSION[APPLI]['Connexion']['LOGIN']));
+            parent::__construct(HOST, PORT, DBNAME, decrypteRSA($_GET['appli'], $_SESSION[$_GET['appli']]['Connexion']['USER']),
+                decrypteRSA($_GET['appli'], $_SESSION[$_GET['appli']]['Connexion']['PASSWORD']), self::$tablePersonne,
+                self::$chIdPersonne, null, decrypteRSA($_GET['appli'], $_SESSION[$_GET['appli']]['Connexion']['LOGIN']));
         }
 
         static function authentifie($email, $mot_de_passe) {
@@ -37,9 +37,9 @@
         }
 
         static function supprimeId($listId) {
-            parent::supprimeId(HOST, PORT, DBNAME, decrypteRSA(APPLI, $_SESSION[APPLI]['Connexion']['USER']),
-                decrypteRSA(APPLI, $_SESSION[APPLI]['Connexion']['PASSWORD']), self::$tablePersonne,
-                self::$chIdPersonne, $listId, decrypteRSA(APPLI, $_SESSION[APPLI]['Connexion']['LOGIN']));
+            parent::supprimeId(HOST, PORT, DBNAME, decrypteRSA($_GET['appli'], $_SESSION[$_GET['appli']]['Connexion']['USER']),
+                decrypteRSA($_GET['appli'], $_SESSION[$_GET['appli']]['Connexion']['PASSWORD']), self::$tablePersonne,
+                self::$chIdPersonne, $listId, decrypteRSA($_GET['appli'], $_SESSION[$_GET['appli']]['Connexion']['LOGIN']));
         }
 
         // retourne -1 si compte inexistant, 0 si email existant et 1 si detection d'homonymie

@@ -1,6 +1,6 @@
 <?php
     require_once 'ClassEnvoiMail.php';
-    require_once '../../Configuration/ConfigUtilisee.php';    require_once '../../' . CONFIG . '/Serveur.php';
+    require_once '../../Configuration/ConfigUtilisee.php';    require_once '../../' . $configInstance . '/Serveur.php';
 
     class EnvoiMailAccuseReception extends EnvoiMail {
         function __construct($titre, $prenom, $nom, $email) {

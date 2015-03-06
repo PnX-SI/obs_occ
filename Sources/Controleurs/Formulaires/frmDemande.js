@@ -5,7 +5,7 @@ Ext.onReady(function() {
     //Combo d'auto-complétion "Titre"
     comboTitre = new Ext.form.ComboBox({
         store: new Ext.data.JsonStore({
-            url: '../Modeles/Json/jListEnum.php?typeEnum=md.enum_titre',
+            url: '../Modeles/Json/jListEnum.php?appli=' + GetParam('appli') + '&typeEnum=md.enum_titre',
             fields: ['val']
         }),
         id: 'titre',
@@ -104,7 +104,7 @@ function afficheFormulaire() {
                 }, '-', {
                 text: 'Retourner auth.',
                 tooltip: "Retourner à l'authentification",
-                handler: function() {document.location.href = 'vAuthent.php';},
+                handler: function() {document.location.href = 'vAuthent.php?appli=' + GetParam('appli');},
                 iconCls: 'return'
             }, '-', {
                     text: "Envoyer demande",
@@ -149,7 +149,7 @@ function soumettre() {
             Ext.getCmp('statusbar').showBusy('Connexion en cours...'); // affichage du message de chargement
             // vérification des paramètres de connexion dans la base
             Ext.Ajax.request({
-                url: '../Controleurs/Gestion/GestDemandes.php',
+                url: '../Controleurs/Gestion/GestDemandes.php?appli=' + GetParam('appli'),
                 params: {
                     titre: Ext.getCmp('titre').getValue(),
                     nom: Ext.getCmp('nom').getValue(),

@@ -6,16 +6,16 @@ Ext.onReady(function() {
         id: 'creat',
         triggerAction: 'all',
         store: new Ext.data.JsonStore({
-            url: "../Modeles/Json/jListVal.php?table=MD.PERSONNE&chId=id_personne&chVal=(nom || ' ' || prenom)",
-            fields: ['id', 'val']
+            url: '../Modeles/Json/jCodesPersonnes.php?appli=' + GetParam('appli') + '&role=cpt',
+            fields: ['code', 'libelle']
         }),
         emptyText: 'Sélectionnez',
         mode: 'local',
-        displayField: 'val',
-        valueField: 'id',
-        fieldLabel: 'Numérisateur de la structure',
+        displayField: 'libelle',
+        valueField: 'code',
+        fieldLabel: 'Créateur de la structure',
         allowBlank: false,
-        blankText: "Veuillez sélectionner le numérisateur de la structure !",
+        blankText: "Veuillez sélectionner le créateur de la structure !",
         forceSelection: true
     });
     //Panel contenant le formulaire avec titre, contrôles de saisie et boutons action
@@ -185,7 +185,7 @@ Ext.onReady(function() {
     //Initialisation des listes et des variables quasi-stables dans le temps
     comboCreateur.store.load();
     Ext.Ajax.request({
-            url: '../Modeles/Json/jVarSession.php',
+            url: '../Modeles/Json/jVarSession.php?appli=' + GetParam('appli'),
             params: {
                 varSession: 'infosNumerisateur'
             },
@@ -253,7 +253,7 @@ function soumettre() {
     if (Ext.getCmp('creat').getRawValue() != createur) {
         Ext.getCmp('createur').setValue(createur); // traitement spécifique du contrôle caché
     }
-    templateValidation('../Controleurs/Gestion/GestStructures.php', Ext.getCmp('statusbar'),
+    templateValidation('../Controleurs/Gestion/GestStructures.php?appli=' + GetParam('appli'), Ext.getCmp('statusbar'),
         formulaire, termineAffichage);
 }
 

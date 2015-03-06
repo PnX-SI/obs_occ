@@ -128,7 +128,7 @@ function termineAffichagePhoto(data) {
 
 //Fonction appelée sur le click du bouton "Charger"
 function soumettrePhoto() {
-    templateValidation('../Modeles/Json/jFichierPhoto.php', Ext.getCmp('statusbarPhoto'),
+    templateValidation('../Modeles/Json/jFichierPhoto.php?appli=' + GetParam('appli'), Ext.getCmp('statusbarPhoto'),
         formulairePhoto, termineAffichagePhoto);
 }
 

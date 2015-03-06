@@ -10,7 +10,7 @@ Ext.onReady(function() {
                     comboTitre.store.load({
                         callback: function() {
                             Ext.Ajax.request({
-                                url: '../Modeles/Json/jVarSession.php',
+                                url: '../Modeles/Json/jVarSession.php?appli=' + GetParam('appli'),
                                 params: {
                                     varSession: 'infosNumerisateur'
                                 },
@@ -85,11 +85,13 @@ function afficheEcran() {
             {name: 'email'},
             {name: 'role'},
             {name: 'createur'},
-            {name: 'creat'}
+            {name: 'creat'},
+            {name: 'id_structure'},
+            {name: 'nom_structure'}
         ]
     });
     donneesGrille = new Ext.data.GroupingStore({
-        proxy: new Ext.data.HttpProxy({url: '../Modeles/Json/jPersonnes.php'}),
+        proxy: new Ext.data.HttpProxy({url: '../Modeles/Json/jPersonnes.php?appli=' + GetParam('appli')}),
         reader: lecteurDonnees,
         remoteSort: true,
         remoteGroup: true,
@@ -116,7 +118,9 @@ function afficheEcran() {
             {type: 'list', dataIndex: 'role', options: tableauValeurs(comboRole.store)},
             {type: 'list', dataIndex: 'specialite', options: tableauValeurs(comboSpecialite.store)},
             {type: 'numeric', dataIndex: 'createur', menuItemCfgs : {emptyText: ''}},
-            {type: 'string', dataIndex: 'creat', emptyText: 'Ex. : Val1||Val2||Val3'}
+            {type: 'string', dataIndex: 'creat', emptyText: 'Ex. : Val1||Val2||Val3'},
+            {type: 'numeric', dataIndex: 'id_structure', menuItemCfgs : {emptyText: ''}},
+            {type: 'string', dataIndex: 'nom_structure', emptyText: 'Ex. : Val1||Val2||Val3'}
         ]
     });
     //Configuration type de chaque colonne
@@ -138,8 +142,9 @@ function afficheEcran() {
             {dataIndex: 'pays', header: 'Pays'},
             {dataIndex: 'remarque', header: 'Remarque', hidden: true},
             {dataIndex: 'date_maj', header: 'Modifiée', renderer: Ext.util.Format.dateRenderer('d/m/Y'), hidden: true},
-            {dataIndex: 'creat', header: 'Numérisateur'},
-            {dataIndex: 'role', header: 'Rôle'}
+            {dataIndex: 'creat', header: 'Créateur'},
+            {dataIndex: 'role', header: 'Rôle'},
+            {dataIndex: 'nom_structure', header: "Structure d'appartenance"}
         ]
     });
     //Barre de menu
@@ -150,14 +155,12 @@ function afficheEcran() {
                 text: 'Ajouter',
                 tooltip: 'Ajouter une nouvelle personne',
                 handler: ajouter,
-                iconCls: 'add',
-                hidden: ((typeof CST_activeGestionUtilisateur === "undefined") ) ? false : !CST_activeGestionUtilisateur 
+                iconCls: 'add'
             }, '-', {
                 text: 'Modifier',
                 tooltip: "Modifier la personne sélectionnée",
                 handler: modifier,
-                iconCls: 'cog_edit',
-                hidden: ((typeof CST_activeGestionUtilisateur === "undefined") ) ? false : !CST_activeGestionUtilisateur 
+                iconCls: 'cog_edit'
             }, /*'-', {
                 text: 'Supprimer',
                 tooltip: "Supprimer la personne sélectionnée",
@@ -192,7 +195,7 @@ function afficheEcran() {
         view: new Ext.grid.GroupingView({
             groupTextTpl: '{text} ({[values.rs.length]} {[values.rs.length > 1 ? "lignes" : "ligne"]})'
         }),
-        id: CST_appli + '_grillePersonnes', // unique pour conserver la configuration de la grille
+        id: GetParam('appli') + '_grillePersonnes', // unique pour conserver la configuration de la grille
         header: false,
         ds: donneesGrille,
         cm: configCols,
@@ -211,19 +214,24 @@ function afficheEcran() {
         displayInfo: true,
         plugins: [filtres, new Ext.ux.grid.PageSizer()],
         items: ['-', {
+                text: 'Défiltrer',
+                handler: function() {filtres.clearFilters();},
+                iconCls: 'cancel_find',
+                tooltip: 'Désactiver tous les filtres de la grille de données'
+            }, '-', {
                 text: 'Se déconnecter',
                 handler: deconnecter,
                 iconCls: 'deconnection',
                 tooltip: "Se déconnecter de l'application"
             }, '-', {
-                handler: function() {document.location.href = 'vSaisieStructures.php';},
+                handler: function() {document.location.href = 'vSaisieStructures.php?appli=' + GetParam('appli');},
                 text: 'Structures',
                 iconCls: 'maison',
                 tooltip: 'Gérer les structures'
             }, '-', {
                 text: 'Retour obs.',
                 tooltip: 'Retourner aux observations occasionnelles',
-                handler: function() {document.location.href = 'vSaisieObs.php';},
+                handler: function() {document.location.href = 'vSaisieObs.php?appli=' + GetParam('appli');},
                 iconCls: 'return'
             }
         ]
@@ -240,11 +248,11 @@ function afficheEcran() {
         maximized: true,
         layout: 'border',
         title: 'Gestion des personnes',
-        close: function() {document.location.href = 'vSaisieObs.php';},
+        close: function() {document.location.href = 'vSaisieObs.php?appli=' + GetParam('appli');},
         items: grillePanel
         });
     //Chargement des données selon cookies
-    if (Ext.util.Cookies.get('ys-grillePersonnes') == null) {
+    if (Ext.util.Cookies.get('ys-0-' + GetParam('appli') + '_grillePersonnes') == null) {
         donneesGrille.load();
     }
     //Affichage de la fenêtre au chargement de la page
@@ -253,21 +261,17 @@ function afficheEcran() {
 
 //Ajout
 function ajouter() {
-  if ((typeof CST_activeGestionUtilisateur !== "undefined") &&  CST_activeGestionUtilisateur == true ) {
     ajoute();
-  }
 }
 
 //Modification
 function modifier() {
-  if ((typeof CST_activeGestionUtilisateur !== "undefined") &&  CST_activeGestionUtilisateur == true ) {
     if (grille.selModel.getCount() == 1) {
         modifie();
     }
     else {
         Ext.MessageBox.alert('Attention', 'Vous devez sélectionner une personne et une seule').setIcon(Ext.MessageBox.WARNING);
     }
-  }
 }
 
 //Suppression
@@ -301,7 +305,7 @@ function supprime(btn) {
         var nbSuppr = grille.selModel.getCount();
         if (nbSuppr == 1) {
             Ext.Ajax.request({
-                url: '../Controleurs/Gestion/GestPersonnes.php',
+                url: '../Controleurs/Gestion/GestPersonnes.php?appli=' + GetParam('appli'),
                 params: {
                     action: 'Supprimer',
                     id_personne: grille.selModel.getSelected().data['id_personne']
@@ -339,7 +343,7 @@ function supprime(btn) {
                 listId += ', ' + selection[i].data['id_personne'];
             }
             Ext.Ajax.request({
-                url: '../Controleurs/Gestion/GestPersonnes.php',
+                url: '../Controleurs/Gestion/GestPersonnes.php?appli=' + GetParam('appli'),
                 params: {
                     action: 'SupprimerListeId',
                     listId: listId
@@ -378,6 +382,7 @@ function exporterExcel() {
     var types = new Array();
     types['id_personne'] = Ext.data.Types.INT;
     types['createur'] = Ext.data.Types.INT;
+    types['id_structure'] = Ext.data.Types.INT;
     document.location.href = 'data:application/vnd.ms-excel;base64,' + Base64.encode(getExcelXml(grille, types));
 }
 

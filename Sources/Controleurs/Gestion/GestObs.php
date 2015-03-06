@@ -4,7 +4,7 @@
     }
     require_once '../../Configuration/ConfigUtilisee.php';
     require_once '../../Modeles/Classes/ClassObs.php';
-    require_once '../../' . CONFIG . '/PostGreSQL.php';
+    require_once '../../' . $configInstance . '/PostGreSQL.php';
     require_once '../../Modeles/Classes/ClassCnxPgObsOcc.php';
     require_once '../../Securite/Decrypt.php';
                         
@@ -62,10 +62,10 @@
                     die('{success: false, errorMessage: "' . $errorMessage . '", data: "' .
                         $data .'"}');
                     break;
+            }
             break;
-        }
         case 'Valider':
-            if (Obs::valide($_POST['id_obs'], $_POST['statut_validation'], decrypteRSA(APPLI, $_SESSION[APPLI]['numerisateur']['code']),
+            if (Obs::valide($_POST['id_obs'], $_POST['statut_validation'], decrypteRSA($_GET['appli'], $_SESSION[$_GET['appli']]['numerisateur']['code']),
             $_POST['decision_validation']) == 0) {
                 $errorMessage = 'Opération de validation impossible';
                 $data = "Vous n'avez pas les droits suffisants de validation";
@@ -190,7 +190,7 @@
             }
             switch ($_POST['action']) {
                 case 'Ajouter':
-                    $obs->numerisateur = decrypteRSA(APPLI, $_SESSION[APPLI]['numerisateur']['code']);
+                    $obs->numerisateur = decrypteRSA($_GET['appli'], $_SESSION[$_GET['appli']]['numerisateur']['code']);
                     traiteCoord($obs, $_POST['longitude'], $_POST['latitude']);
                     traiteTaxonomie($obs, $_POST['regne'], $_POST['cd_nom']);
                     $obs->ajoute(false);

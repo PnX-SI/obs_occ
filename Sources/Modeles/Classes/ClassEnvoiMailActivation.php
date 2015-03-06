@@ -1,6 +1,7 @@
 <?php
     require_once 'ClassEnvoiMail.php';
-    require_once '../../Configuration/ConfigUtilisee.php';    require_once '../../' . CONFIG . '/Serveur.php';
+    require_once '../../Configuration/ConfigUtilisee.php';
+    require_once '../../' . $configInstance . '/Serveur.php';
 
     class EnvoiMailActivation extends EnvoiMail {
         function __construct($titre, $prenom, $nom, $email, $mdp) {
@@ -19,7 +20,8 @@
                         </p>
                         <p>
                             Nous vous remercions pour votre inscription et vous
-                            souhaitons bonne navigation sur <u><a href='" . INSTALL .
+                            souhaitons bonne navigation sur <u><a href='" . 
+                            INSTALL . '/Vues/vAuthent.php?appli=' . $_GET['appli'] .
                             "'> l'application " . TITRE_APPLI . "</a></u> .
                         </p>
                         <p>

@@ -1,11 +1,11 @@
 //Variables globales utilisées pour gérer le formulaire
-var formulaire, fenetreFormulaire, comboTitre, comboRole, comboCreateur, comboSpecialite;
+var formulaire, fenetreFormulaire, comboTitre, comboRole, comboCreateur, comboSpecialite, comboStructureD_Appartenance;
 
 Ext.onReady(function() {
     //Combo d'auto-complétion "titre"
     comboTitre = new Ext.form.ComboBox({
         store: new Ext.data.JsonStore({
-            url: '../Modeles/Json/jListEnum.php?typeEnum=md.enum_titre',
+            url: '../Modeles/Json/jListEnum.php?appli=' + GetParam('appli') + '&typeEnum=md.enum_titre',
             fields: ['val']
         }),
         id: 'titre',
@@ -17,27 +17,10 @@ Ext.onReady(function() {
         valueField: 'val',
         fieldLabel: 'Titre'
     });
-    //Combo d'auto-complétion "créateur"
-    comboCreateur = new Ext.form.ComboBox({
-        id: 'creat',
-        triggerAction: 'all',
-        store: new Ext.data.JsonStore({
-            url: "../Modeles/Json/jListVal.php?table=MD.PERSONNE&chId=id_personne&chVal=(nom || ' ' || prenom)",
-            fields: ['id', 'val']
-        }),
-        emptyText: 'Sélectionnez',
-        mode: 'local',
-        displayField: 'val',
-        valueField: 'id',
-        fieldLabel: 'Numérisateur de la personne',
-        allowBlank: false,
-        blankText: "Veuillez sélectionner le numérisateur de la personne !",
-        forceSelection: true
-    });
     //Combo d'auto-complétion "rôle"
     comboRole = new Ext.form.ComboBox({
         store: new Ext.data.JsonStore({
-            url: '../Modeles/Json/jListEnum.php?typeEnum=md.enum_role',
+            url: '../Modeles/Json/jListEnum.php?appli=' + GetParam('appli') + '&typeEnum=md.enum_role',
             fields: ['val']
         }),
         id: 'role',
@@ -49,10 +32,10 @@ Ext.onReady(function() {
         valueField: 'val',
         fieldLabel: 'rôle'
     });
-    //Combo d'auto-complétion "rôle"
+    //Combo d'auto-complétion "spécialité"
     comboSpecialite = new Ext.form.ComboBox({
         store: new Ext.data.JsonStore({
-            url: '../Modeles/Json/jListEnum.php?typeEnum=md.enum_specialite',
+            url: '../Modeles/Json/jListEnum.php?appli=' + GetParam('appli') + '&typeEnum=md.enum_specialite',
             fields: ['val']
         }),
         id: 'specialite',
@@ -62,7 +45,39 @@ Ext.onReady(function() {
         forceSelection: true,
         displayField: 'val',
         valueField: 'val',
-        fieldLabel: 'Specialité'
+        fieldLabel: 'Spécialité'
+    });
+    //Combo d'auto-complétion "créateur"
+    comboCreateur = new Ext.form.ComboBox({
+        id: 'creat',
+        triggerAction: 'all',
+        store: new Ext.data.JsonStore({
+            url: '../Modeles/Json/jCodesPersonnes.php?appli=' + GetParam('appli') + '&role=cpt',
+            fields: ['code', 'libelle']
+        }),
+        emptyText: 'Sélectionnez',
+        mode: 'local',
+        displayField: 'libelle',
+        valueField: 'code',
+        fieldLabel: 'Créateur de la personne',
+        allowBlank: false,
+        blankText: "Veuillez sélectionner le créateur de la personne !",
+        forceSelection: true
+    });
+    //Combo d'auto-complétion "structure d'appartenance"
+    comboStructureD_Appartenance = new Ext.form.ComboBox({
+        store: new Ext.data.JsonStore({
+            url: '../Modeles/Json/jCodesStructures.php?appli=' + GetParam('appli'),
+            fields: ['code', 'libelle']
+        }),
+        id: 'nom_structure',
+        emptyText: 'Sélectionnez',
+        triggerAction: 'all',
+        mode: 'local',
+        forceSelection : true,
+        displayField: 'libelle',
+        valueField: 'code',
+        fieldLabel: "Structure d'appartenance"
     });
     //Panel contenant le formulaire avec titre, contrôles de saisie et boutons action
     formulaire = new Ext.FormPanel({
@@ -78,6 +93,9 @@ Ext.onReady(function() {
            }, {
                 xtype: 'hidden',
                 id: 'id_personne'
+           }, {
+                xtype: 'hidden',
+                id: 'id_structure'
            }, {
                 xtype: 'hidden',
                 id: 'createur'
@@ -150,7 +168,8 @@ Ext.onReady(function() {
             },
                 comboRole,
                 comboSpecialite,
-                comboCreateur
+                comboCreateur,
+                comboStructureD_Appartenance
         ]
     });
     //Panel container rajoutant la barre de status
@@ -192,7 +211,8 @@ Ext.onReady(function() {
         }
     });
      //Initialisation des listes et des variables quasi-stables dans le temps
-    comboCreateur.store.load();    
+    comboCreateur.store.load();
+    comboStructureD_Appartenance.store.load();
 });
 
 //Affichage en mode ajout
@@ -243,7 +263,11 @@ function soumettre() {
     if (Ext.getCmp('creat').getRawValue() != createur) {
         Ext.getCmp('createur').setValue(createur); // traitement spécifique du contrôle caché
     }
-    templateValidation('../Controleurs/Gestion/GestPersonnes.php', Ext.getCmp('statusbar'),
+    var structureD_Appartenance = Ext.getCmp('nom_structure').value;
+    if (Ext.getCmp('nom_structure').getRawValue() != structureD_Appartenance) {
+        Ext.getCmp('id_structure').setValue(structureD_Appartenance); // traitement spécifique du contrôle caché
+    }
+    templateValidation('../Controleurs/Gestion/GestPersonnes.php?appli=' + GetParam('appli'), Ext.getCmp('statusbar'),
         formulaire, termineAffichage);
 }
 
@@ -271,6 +295,7 @@ function finaliseFormulaire() {
     }
     // mise en écriture des contrôles pour l'administrateur uniquement
     comboCreateur.setReadOnly((droit != 'admin'));
+    comboStructureD_Appartenance.setReadOnly((droit != 'admin'));
     comboRole.setReadOnly((droit != 'admin'));
     comboSpecialite.setReadOnly((droit != 'admin'));
     Ext.getCmp('email').setReadOnly((droit != 'admin'));

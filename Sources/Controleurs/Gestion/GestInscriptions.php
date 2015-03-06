@@ -5,12 +5,12 @@
     require_once '../../Configuration/ConfigUtilisee.php';
     set_include_path('../' . LIB . '/PEAR/');
     require_once '../' . LIB . '/PEAR/Crypt/RSA.php';
-    require_once '../../' . CONFIG . '/PostGreSQL.php';
+    require_once '../../' . $configInstance . '/PostGreSQL.php';
     require_once '../../Modeles/Classes/ClassEnvoiMailInscription.php';
     require_once '../../Modeles/Classes/ClassEnvoiMailActivation.php';
     require_once '../../Modeles/Classes/ClassEnvoiMailReinitMdp.php';
     require_once '../../Modeles/Classes/ClassPersonne.php';
-    require_once '../../' . CONFIG . '/Serveur.php';
+    require_once '../../' . $configInstance . '/Serveur.php';
     require_once '../' . ENV . '/Outils/Fct.php';
     
     // Génération des clés RSA classiques
@@ -20,20 +20,20 @@
         $public_key = $key_pair->getPublicKey();
         $private_key = $key_pair->getPrivateKey();
         // Remplacement en session par la clé privée classique
-        $_SESSION[APPLI]['Securite']['private_module'] = $private_key->getModulus();
-        $_SESSION[APPLI]['Securite']['private_exp'] = $private_key->getExponent();
+        $_SESSION[$_GET['appli']]['Securite']['private_module'] = $private_key->getModulus();
+        $_SESSION[$_GET['appli']]['Securite']['private_exp'] = $private_key->getExponent();
         // Cryptage RSA classique des variables de session utilisées dans le constructeur de "CnxPgObsOcc" appelé par "Personne::compteDejaExistant"
         $rsa_obj = new Crypt_RSA(null, 'BCMath');
     }
     switch ($_POST['action']) {
         case 'inscrire':
             if (CRYPTAGE) {
-                $_SESSION[APPLI]['Connexion']['USER'] = $rsa_obj->encrypt(USER, $public_key);
-                $_SESSION[APPLI]['Connexion']['PASSWORD'] = $rsa_obj->encrypt(PASSWORD, $public_key);
+                $_SESSION[$_GET['appli']]['Connexion']['USER'] = $rsa_obj->encrypt(USER, $public_key);
+                $_SESSION[$_GET['appli']]['Connexion']['PASSWORD'] = $rsa_obj->encrypt(PASSWORD, $public_key);
             }
             else {
-                $_SESSION[APPLI]['Connexion']['USER'] = USER;
-                $_SESSION[APPLI]['Connexion']['PASSWORD'] = PASSWORD;
+                $_SESSION[$_GET['appli']]['Connexion']['USER'] = USER;
+                $_SESSION[$_GET['appli']]['Connexion']['PASSWORD'] = PASSWORD;
             }           
             $codeErreur = Personne::compteDejaExistant($_POST['prenom'], $_POST['nom'], $_POST['email']);
             switch ($codeErreur) {
@@ -73,12 +73,12 @@
             break;
         case 'activer' :
             if (CRYPTAGE) {
-                $_SESSION[APPLI]['Connexion']['USER'] = $rsa_obj->encrypt(DBNAME . '_amateur', $public_key);
-                $_SESSION[APPLI]['Connexion']['PASSWORD'] = $rsa_obj->encrypt(DBNAME . '_amateur', $public_key);
+                $_SESSION[$_GET['appli']]['Connexion']['USER'] = $rsa_obj->encrypt(DBNAME . '_amateur', $public_key);
+                $_SESSION[$_GET['appli']]['Connexion']['PASSWORD'] = $rsa_obj->encrypt(DBNAME . '_amateur', $public_key);
             }
             else {
-                $_SESSION[APPLI]['Connexion']['USER'] = DBNAME . '_amateur';
-                $_SESSION[APPLI]['Connexion']['PASSWORD'] = DBNAME . '_amateur';
+                $_SESSION[$_GET['appli']]['Connexion']['USER'] = DBNAME . '_amateur';
+                $_SESSION[$_GET['appli']]['Connexion']['PASSWORD'] = DBNAME . '_amateur';
             }
             if (!Personne::personneDejaExistante($_POST['email'])) {
                 $personne = new Personne();
@@ -128,12 +128,12 @@
             break;
         case 'reinitialiserMdp':
             if (CRYPTAGE) {
-                $_SESSION[APPLI]['Connexion']['USER'] = $rsa_obj->encrypt(DBNAME . '_amateur', $public_key);
-                $_SESSION[APPLI]['Connexion']['PASSWORD'] = $rsa_obj->encrypt(DBNAME . '_amateur', $public_key);
+                $_SESSION[$_GET['appli']]['Connexion']['USER'] = $rsa_obj->encrypt(DBNAME . '_amateur', $public_key);
+                $_SESSION[$_GET['appli']]['Connexion']['PASSWORD'] = $rsa_obj->encrypt(DBNAME . '_amateur', $public_key);
             }
             else {
-                $_SESSION[APPLI]['Connexion']['USER'] = DBNAME . '_amateur';
-                $_SESSION[APPLI]['Connexion']['PASSWORD'] = DBNAME . '_amateur';
+                $_SESSION[$_GET['appli']]['Connexion']['USER'] = DBNAME . '_amateur';
+                $_SESSION[$_GET['appli']]['Connexion']['PASSWORD'] = DBNAME . '_amateur';
             }
             $idPersonne = Personne::personneDejaExistante($_POST['email']);
             if ($idPersonne) {
@@ -186,8 +186,8 @@
             }
             break;
         default:
-            header('Location: ' . INSTALL . '/Vues/vInscription.php?action=activer&' .
-                base64_decode($_GET['url']));
+            header('Location: ' . INSTALL . '/Vues/vInscription.php?appli=' . 
+                $_GET['appli'] . '&action=activer&' . base64_decode($_GET['url']));
             break;
     }
 ?>

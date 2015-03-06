@@ -6,7 +6,7 @@ Ext.onReady(function() {
         fieldLabel: 'Zoomez sur le lieu-dit L-R sélectionné',
         triggerAction: 'all',
         store: new Ext.data.JsonStore({
-            url: '../Modeles/Json/jLieuxDitsCommunes.php',
+            url: '../Modeles/Json/jLieuxDitsCommunes.php?appli=' + GetParam('appli'),
             fields: ['centre_ld', 'ld_com']
         }),
         mode: 'local',
@@ -29,7 +29,7 @@ Ext.onReady(function() {
         fieldLabel: 'Zoomez sur la commune L-R sélectionnée',
         triggerAction: 'all',
         store: new Ext.data.JsonStore({
-            url: '../Modeles/Json/jEmprisesCommunes.php',
+            url: '../Modeles/Json/jEmprisesCommunes.php?appli=' + GetParam('appli'),
             fields: ['emprise_com', 'dep_com']
         }),
         mode: 'local',

@@ -4,11 +4,11 @@
     }
     require_once '../Securite/VerifCnx.php';
     require_once '../Configuration/ConfigUtilisee.php';
-    require_once '../' . CONFIG . '/PostGreSQL.php';
+    require_once '../' . $configInstance . '/PostGreSQL.php';
     require_once '../Securite/Decrypt.php';
     
-    if (decrypteRSA(APPLI, $_SESSION[APPLI]['numerisateur']['droit']) != 'admin') {
-         header('Location: vSaisieObs.php');
+    if (decrypteRSA($_GET['appli'], $_SESSION[$_GET['appli']]['numerisateur']['droit']) != 'admin') {
+         header('Location: vSaisieObs.php?appli=' . $_GET['appli']);
     }
 ?>
 <html>
@@ -37,7 +37,7 @@
         <!-- Outils -->
         <script type="text/javascript" src="<?php echo ENV; ?>/Outils/Global.js"></script>
         <!-- Personnalisation de l'application -->
-        <script type="text/javascript" src="../<?php echo CONFIG; ?>/Appli.js"></script>
+        <script type="text/javascript" src="../<?php echo $configInstance; ?>/Appli.js"></script>
         <!-- Configuration de base -->
         <script type="text/javascript" src="../Controleurs/Defaut/General.js"></script>
         <!--Formulaires -->

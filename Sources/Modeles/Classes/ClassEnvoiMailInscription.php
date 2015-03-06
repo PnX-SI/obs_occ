@@ -1,6 +1,7 @@
 <?php
     require_once 'ClassEnvoiMail.php';
-    require_once '../../Configuration/ConfigUtilisee.php';    require_once '../../' . CONFIG . '/Serveur.php';
+    require_once '../../Configuration/ConfigUtilisee.php';
+    require_once '../../' . $configInstance . '/Serveur.php';
 
     class EnvoiMailInscription extends EnvoiMail {
         function __construct($titre, $prenom, $nom, $email) {
@@ -12,7 +13,7 @@
                             Afin d'activer votre compte et recevoir vos paramètres
                             de connexion dans un second mail, nous vous invitons
                             à cliquer sur ce lien : <br/>
-                            <u><a href='" . INSTALL . '/Controleurs/Gestion/GestInscriptions.php?url=' .
+                            <u><a href='" . INSTALL . '/Controleurs/Gestion/GestInscriptions.php?appli=' . $_GET['appli'] . '&url=' .
                             base64_encode('titre=' . $titre . '&prenom=' . $prenom .
                             '&nom=' .$nom . '&email=' . $email) . "'>activation de votre
                             compte " . TITRE_APPLI . "</a></u> . <br/>

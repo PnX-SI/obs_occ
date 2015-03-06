@@ -3,12 +3,12 @@
         session_start();
     }
     require_once '../../Configuration/ConfigUtilisee.php';
-    require_once '../../' . CONFIG . '/PostGreSQL.php';
+    require_once '../../' . $configInstance . '/PostGreSQL.php';
     require_once '../../Securite/Decrypt.php';
     
     // ATTENTION : un niveau d'arborescence de + ici par rapport à la constante JS
-    $cheminRelatifPhoto = '../' . $_POST['CST_cheminRelatifPhoto'] . decrypteRSA(APPLI, $_SESSION[APPLI]['numerisateur']['droit'])
-        . '/' . decrypteRSA(APPLI, $_SESSION[APPLI]['numerisateur']['code']) . '/';
+    $cheminRelatifPhoto = '../' . $_POST['CST_cheminRelatifPhoto'] . decrypteRSA($_GET['appli'], $_SESSION[$_GET['appli']]['numerisateur']['droit'])
+        . '/' . decrypteRSA($_GET['appli'], $_SESSION[$_GET['appli']]['numerisateur']['code']) . '/';
     // si le répertoirePhoto n'existe pas, on tente de le créer
     if (!is_dir($cheminRelatifPhoto)) {
         mkdir($cheminRelatifPhoto, 0777, true);
@@ -58,8 +58,8 @@
                         imagesy($img_src));
                     imagejpeg($img_dst, $cheminRelatifPhoto . substr($data, 0, strlen($data) - (strlen($ext) + 1)) .
                         '_MINI.jpeg');
-                    die('{success: true, data: "' . decrypteRSA(APPLI, $_SESSION[APPLI]['numerisateur']['droit']) .
-                        '/' . decrypteRSA(APPLI, $_SESSION[APPLI]['numerisateur']['code']) . '/' . iconv("ISO-8859-1", "UTF-8//TRANSLIT", $data) .'"}');
+                    die('{success: true, data: "' . decrypteRSA($_GET['appli'], $_SESSION[$_GET['appli']]['numerisateur']['droit']) .
+                        '/' . decrypteRSA($_GET['appli'], $_SESSION[$_GET['appli']]['numerisateur']['code']) . '/' . iconv("ISO-8859-1", "UTF-8//TRANSLIT", $data) .'"}');
                 }
                 else {
                     $data = 'Le fichier que vous avez envoyé est impossible à copier sur le serveur !';

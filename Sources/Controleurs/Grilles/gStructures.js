@@ -28,7 +28,7 @@ Ext.onReady(function() {
         ]
     });
     donneesGrille = new Ext.data.GroupingStore({
-        proxy: new Ext.data.HttpProxy({url: '../Modeles/Json/jStructures.php'}),
+        proxy: new Ext.data.HttpProxy({url: '../Modeles/Json/jStructures.php?appli=' + GetParam('appli')}),
         reader: lecteurDonnees,
         remoteSort: true,
         remoteGroup: true,
@@ -77,7 +77,7 @@ Ext.onReady(function() {
             {dataIndex: 'site_web', header: 'Site internet'},
             {dataIndex: 'remarque', header: 'Remarque', hidden: true},
             {dataIndex: 'date_maj', header: 'Modifiée', renderer: Ext.util.Format.dateRenderer('d/m/Y'), hidden: true},
-            {dataIndex: 'creat', header: 'Numérisateur'},
+            {dataIndex: 'creat', header: 'Créateur'},
             {dataIndex: 'diffusable', header: 'Publiée', renderer: traiteAffichageBoolean}
         ]
     });
@@ -89,14 +89,12 @@ Ext.onReady(function() {
                 text: 'Ajouter',
                 tooltip: 'Ajouter une nouvelle structure',
                 handler: ajouter,
-                iconCls: 'add',
-                hidden: ((typeof CST_activeGestionUtilisateur === "undefined") ) ? false : !CST_activeGestionUtilisateur 
+                iconCls: 'add'
             }, '-', {
                 text: 'Modifier',
                 tooltip: "Modifier la structure sélectionnée",
                 handler: modifier,
-                iconCls: 'cog_edit',
-                hidden: ((typeof CST_activeGestionUtilisateur === "undefined") ) ? false : !CST_activeGestionUtilisateur 
+                iconCls: 'cog_edit'
             }, '-', /*{
                 text: 'Supprimer',
                 tooltip: "Supprimer la structure sélectionnée",
@@ -131,7 +129,7 @@ Ext.onReady(function() {
         view: new Ext.grid.GroupingView({
             groupTextTpl: '{text} ({[values.rs.length]} {[values.rs.length > 1 ? "lignes" : "ligne"]})'
         }),
-        id: CST_appli + '_grilleStructures', // unique pour conserver la configuration de la grille
+        id: GetParam('appli') + '_grilleStructures', // unique pour conserver la configuration de la grille
         header: false,
         ds: donneesGrille,
         cm: configCols,
@@ -155,14 +153,14 @@ Ext.onReady(function() {
                 iconCls: 'deconnection',
                 tooltip: "Se déconnecter de l'application"
             }, '-', {
-                handler: function() {document.location.href = 'vSaisiePersonnes.php';},
+                handler: function() {document.location.href = 'vSaisiePersonnes.php?appli=' + GetParam('appli');},
                 text: 'Observateurs',
                 iconCls: 'portrait',
                 tooltip: 'Gérer les observateurs'
             }, '-', {
                 text: 'Retour obs.',
                 tooltip: 'Retourner aux observations occasionnelles',
-                handler: function() {document.location.href = 'vSaisieObs.php';},
+                handler: function() {document.location.href = 'vSaisieObs.php?appli=' + GetParam('appli');},
                 iconCls: 'return'
             }
         ]
@@ -179,11 +177,11 @@ Ext.onReady(function() {
         maximized: true,
         layout: 'border',
         title: 'Gestion des structures',
-        close: function() {document.location.href = 'vSaisieObs.php';},
+        close: function() {document.location.href = 'vSaisieObs.php?appli=' + GetParam('appli');},
         items: grillePanel
         });
     //Chargement des données selon cookies
-    if (Ext.util.Cookies.get('ys-grilleStructures') == null) {
+    if (Ext.util.Cookies.get('ys-0-' + GetParam('appli') + '_grilleStructures') == null) {
         donneesGrille.load();
     }
     //Affichage de la fenêtre au chargement de la page
@@ -192,21 +190,17 @@ Ext.onReady(function() {
 
 //Ajout
 function ajouter() {
-  if ((typeof CST_activeGestionUtilisateur !== "undefined") &&  CST_activeGestionUtilisateur == true ) {
     ajoute();
-  }
 }
 
 //Modification
 function modifier() {
-  if ((typeof CST_activeGestionUtilisateur !== "undefined") &&  CST_activeGestionUtilisateur == true ) {
     if (grille.selModel.getCount() == 1) {
         modifie();
     }
     else {
         Ext.MessageBox.alert('Attention', 'Vous devez sélectionner une structure et une seule').setIcon(Ext.MessageBox.WARNING);
     }
-  }
 }
 
 //Suppression
@@ -240,7 +234,7 @@ function supprime(btn) {
         var nbSuppr = grille.selModel.getCount();
         if (nbSuppr == 1) {
             Ext.Ajax.request({
-                url: '../Controleurs/Gestion/GestStructures.php',
+                url: '../Controleurs/Gestion/GestStructures.php?appli=' + GetParam('appli'),
                 params: {
                     action: 'Supprimer',
                     id_structure: grille.selModel.getSelected().data['id_structure']
@@ -278,7 +272,7 @@ function supprime(btn) {
                 listId += ', ' + selection[i].data['id_structure'];
             }
             Ext.Ajax.request({
-                url: '../Controleurs/Gestion/GestStructures.php',
+                url: '../Controleurs/Gestion/GestStructures.php?appli=' + GetParam('appli'),
                 params: {
                     action: 'SupprimerListeId',
                     listId: listId

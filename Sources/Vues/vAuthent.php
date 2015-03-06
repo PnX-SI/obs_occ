@@ -1,14 +1,14 @@
 <?php
     if (!isset($_SESSION)) {
         session_start();
-    }
+    }    
     require_once '../Configuration/ConfigUtilisee.php';
     set_include_path(LIB . '/PEAR/');
     require_once LIB . '/PEAR/Crypt/RSA.php';
     require_once ENV . '/Adaptations/CryptRSA/class/myKey.php';
     require_once ENV . '/Adaptations/CryptRSA/class/myKeyPair.php';
     require_once ENV . '/Adaptations/CryptRSA/class/myRSA.php';
-    require_once '../' . CONFIG . '/PostGreSQL.php';
+    require_once '../' . $configInstance . '/PostGreSQL.php';
 
     // Génération des clés RSA personnalisées
     $nbBits = 128;
@@ -20,8 +20,8 @@
         $private_key_perso = $key_pair_perso->getPrivateKey();
         unset($key_pair_perso);
         // Mise en session de la clé privée personnalisée
-        $_SESSION[APPLI]['Securite']['private_module_perso'] = $private_key_perso->getModulus();
-        $_SESSION[APPLI]['Securite']['private_exp_perso'] = $private_key_perso->getExponent();
+        $_SESSION[$_GET['appli']]['Securite']['private_module_perso'] = $private_key_perso->getModulus();
+        $_SESSION[$_GET['appli']]['Securite']['private_exp_perso'] = $private_key_perso->getExponent();
 
         // Regénération de nouvelles clés RSA classiques
         $key_pair = new Crypt_RSA_KeyPair($nbBits, 'BCMath');
@@ -29,17 +29,17 @@
         $private_key = $key_pair->getPrivateKey();
         unset($key_pair);
         // Remplacement en session par la clé privée classique
-        $_SESSION[APPLI]['Securite']['private_module'] = $private_key->getModulus();
-        $_SESSION[APPLI]['Securite']['private_exp'] = $private_key->getExponent();
+        $_SESSION[$_GET['appli']]['Securite']['private_module'] = $private_key->getModulus();
+        $_SESSION[$_GET['appli']]['Securite']['private_exp'] = $private_key->getExponent();
         // Cryptage RSA classique des variables de session pour initialiser comboStructure
         $rsa_obj = new Crypt_RSA(null, 'BCMath');
-        $_SESSION[APPLI]['Connexion']['USER'] = $rsa_obj->encrypt(USER, $public_key);
-        $_SESSION[APPLI]['Connexion']['PASSWORD'] = $rsa_obj->encrypt(PASSWORD, $public_key);
+        $_SESSION[$_GET['appli']]['Connexion']['USER'] = $rsa_obj->encrypt(USER, $public_key);
+        $_SESSION[$_GET['appli']]['Connexion']['PASSWORD'] = $rsa_obj->encrypt(PASSWORD, $public_key);
         unset($rsa_obj);
     }
     else {
-        $_SESSION[APPLI]['Connexion']['USER'] = USER;
-        $_SESSION[APPLI]['Connexion']['PASSWORD'] = PASSWORD;
+        $_SESSION[$_GET['appli']]['Connexion']['USER'] = USER;
+        $_SESSION[$_GET['appli']]['Connexion']['PASSWORD'] = PASSWORD;
         $getIntExponent = 0;
         $getIntModulus = 0;
     }
@@ -82,7 +82,7 @@
         <!-- Outils -->
         <script type="text/javascript" src="<?php echo ENV; ?>/Outils/Global.js"></script>
         <!-- Personnalisation de l'application -->
-        <script type="text/javascript" src="../<?php echo CONFIG; ?>/Appli.js"></script>
+        <script type="text/javascript" src="../<?php echo $configInstance; ?>/Appli.js"></script>
         <!-- Formulaire -->
         <script type="text/javascript" src="../Controleurs/Formulaires/frmAuthent.js"></script>
     </head>

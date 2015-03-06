@@ -4,7 +4,7 @@
     }
     require_once '../../Configuration/ConfigUtilisee.php';
     require_once '../' . ENV . '/Outils/ClassEnreg.php';
-    require_once '../../' . CONFIG . '/PostGreSQL.php';
+    require_once '../../' . $configInstance . '/PostGreSQL.php';
     require_once 'ClassCnxPgObsOcc.php';
     require_once '../' . ENV . '/Outils/Fct.php';
     require_once '../../Securite/Decrypt.php';
@@ -13,31 +13,31 @@
         static private $chIdObs = 'id_obs';
 
         function __construct() {
-            if (decrypteRSA(APPLI, $_SESSION[APPLI]['numerisateur']['droit']) == 'admin') {
-                parent::__construct(HOST, PORT, DBNAME, decrypteRSA(APPLI, $_SESSION[APPLI]['Connexion']['USER']),
-                    decrypteRSA(APPLI, $_SESSION[APPLI]['Connexion']['PASSWORD']), 'SAISIE.SAISIE_OBSERVATION',
-                    self::$chIdObs, 'SAISIE.SAISIE_OBSERVATION_id_obs_seq', decrypteRSA(APPLI, $_SESSION[APPLI]['Connexion']['LOGIN']));
+            if (decrypteRSA($_GET['appli'], $_SESSION[$_GET['appli']]['numerisateur']['droit']) == 'admin') {
+                parent::__construct(HOST, PORT, DBNAME, decrypteRSA($_GET['appli'], $_SESSION[$_GET['appli']]['Connexion']['USER']),
+                    decrypteRSA($_GET['appli'], $_SESSION[$_GET['appli']]['Connexion']['PASSWORD']), 'SAISIE.SAISIE_OBSERVATION',
+                    self::$chIdObs, 'SAISIE.SAISIE_OBSERVATION_id_obs_seq', decrypteRSA($_GET['appli'], $_SESSION[$_GET['appli']]['Connexion']['LOGIN']));
             }
             else {
-                parent::__construct(HOST, PORT, DBNAME, decrypteRSA(APPLI, $_SESSION[APPLI]['Connexion']['USER']),
-                    decrypteRSA(APPLI, $_SESSION[APPLI]['Connexion']['PASSWORD']), 'SAISIE.SAISIE_OBSERVATION_' .
-                    decrypteRSA(APPLI, $_SESSION[APPLI]['numerisateur']['code']), self::$chIdObs,
-                    'SAISIE.SAISIE_OBSERVATION_id_obs_seq', decrypteRSA(APPLI, $_SESSION[APPLI]['Connexion']['LOGIN']));
+                parent::__construct(HOST, PORT, DBNAME, decrypteRSA($_GET['appli'], $_SESSION[$_GET['appli']]['Connexion']['USER']),
+                    decrypteRSA($_GET['appli'], $_SESSION[$_GET['appli']]['Connexion']['PASSWORD']), 'SAISIE.SAISIE_OBSERVATION_' .
+                    decrypteRSA($_GET['appli'], $_SESSION[$_GET['appli']]['numerisateur']['code']), self::$chIdObs,
+                    'SAISIE.SAISIE_OBSERVATION_id_obs_seq', decrypteRSA($_GET['appli'], $_SESSION[$_GET['appli']]['Connexion']['LOGIN']));
             }
         }
 
         static function supprimeId($listId)
         {
-            if (decrypteRSA(APPLI, $_SESSION[APPLI]['numerisateur']['droit']) == 'admin') {
-                return parent::supprimeId(HOST, PORT, DBNAME, decrypteRSA(APPLI, $_SESSION[APPLI]['Connexion']['USER']),
-                    decrypteRSA(APPLI, $_SESSION[APPLI]['Connexion']['PASSWORD']), 'SAISIE.SAISIE_OBSERVATION',
-                    self::$chIdObs, $listId, decrypteRSA(APPLI, $_SESSION[APPLI]['Connexion']['LOGIN']));
+            if (decrypteRSA($_GET['appli'], $_SESSION[$_GET['appli']]['numerisateur']['droit']) == 'admin') {
+                return parent::supprimeId(HOST, PORT, DBNAME, decrypteRSA($_GET['appli'], $_SESSION[$_GET['appli']]['Connexion']['USER']),
+                    decrypteRSA($_GET['appli'], $_SESSION[$_GET['appli']]['Connexion']['PASSWORD']), 'SAISIE.SAISIE_OBSERVATION',
+                    self::$chIdObs, $listId, decrypteRSA($_GET['appli'], $_SESSION[$_GET['appli']]['Connexion']['LOGIN']));
             }
             else {
-                return parent::supprimeId(HOST, PORT, DBNAME, decrypteRSA(APPLI, $_SESSION[APPLI]['Connexion']['USER']),
-                    decrypteRSA(APPLI, $_SESSION[APPLI]['Connexion']['PASSWORD']), 'SAISIE.SAISIE_OBSERVATION_' .
-                    decrypteRSA(APPLI, $_SESSION[APPLI]['numerisateur']['code']), self::$chIdObs,
-                    $listId, decrypteRSA(APPLI, $_SESSION[APPLI]['Connexion']['LOGIN']));
+                return parent::supprimeId(HOST, PORT, DBNAME, decrypteRSA($_GET['appli'], $_SESSION[$_GET['appli']]['Connexion']['USER']),
+                    decrypteRSA($_GET['appli'], $_SESSION[$_GET['appli']]['Connexion']['PASSWORD']), 'SAISIE.SAISIE_OBSERVATION_' .
+                    decrypteRSA($_GET['appli'], $_SESSION[$_GET['appli']]['numerisateur']['code']), self::$chIdObs,
+                    $listId, decrypteRSA($_GET['appli'], $_SESSION[$_GET['appli']]['Connexion']['LOGIN']));
             }
         }
 

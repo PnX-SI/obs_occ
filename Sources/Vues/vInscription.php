@@ -3,12 +3,12 @@
         session_start();
     }
     require_once '../Configuration/ConfigUtilisee.php';
-    require_once '../' . CONFIG . '/PostGreSQL.php';
+    require_once '../' . $configInstance . '/PostGreSQL.php';
     require_once '../Securite/Decrypt.php';
     
     if (($_GET['action'] != 'activer') && ($_GET['action'] != 'reinitialiserMdp') &&
-    (decrypteRSA(APPLI, $_SESSION[APPLI]['numerisateur']['droit']) != 'admin')) {
-         header('Location: vAuthent.php');
+    (decrypteRSA($_GET['appli'], $_SESSION[$_GET['appli']]['numerisateur']['droit']) != 'admin')) {
+         header('Location: vAuthent.php?appli=' . $_GET['appli']);
     }
 
     // Génération de nouvelles clés RSA classiques
@@ -18,19 +18,18 @@
         $public_key = $key_pair->getPublicKey();
         $private_key = $key_pair->getPrivateKey();
         // Remplacement en session par la clé privée classique
-        $_SESSION[APPLI]['Securite']['private_module'] = $private_key->getModulus();
-        $_SESSION[APPLI]['Securite']['private_exp'] = $private_key->getExponent();
+        $_SESSION[$_GET['appli']]['Securite']['private_module'] = $private_key->getModulus();
+        $_SESSION[$_GET['appli']]['Securite']['private_exp'] = $private_key->getExponent();
         // Cryptage RSA classique des variables de session utilisées dans le constructeur de "CnxPgObsOcc" appelé par "Personne::authentifie"
         $rsa_obj = new Crypt_RSA(null, 'BCMath');
-        $_SESSION[APPLI]['Connexion']['USER'] = $rsa_obj->encrypt(USER, $public_key);
-        $_SESSION[APPLI]['Connexion']['PASSWORD'] = $rsa_obj->encrypt(PASSWORD, $public_key);
+        $_SESSION[$_GET['appli']]['Connexion']['USER'] = $rsa_obj->encrypt(USER, $public_key);
+        $_SESSION[$_GET['appli']]['Connexion']['PASSWORD'] = $rsa_obj->encrypt(PASSWORD, $public_key);
     }
     else {
-        $_SESSION[APPLI]['Connexion']['USER'] = USER;
-        $_SESSION[APPLI]['Connexion']['PASSWORD'] = PASSWORD;
+        $_SESSION[$_GET['appli']]['Connexion']['USER'] = USER;
+        $_SESSION[$_GET['appli']]['Connexion']['PASSWORD'] = PASSWORD;
     }
 ?>
-}
 <html>
     <head>
          <style type="text/css">
@@ -57,7 +56,7 @@
         <link type="text/css" rel="stylesheet" href="<?php echo ENV; ?>/Ergonomie/Formulaires/frmFds.css" />
         <link type="text/css" rel="stylesheet" href="<?php echo ENV; ?>/Ergonomie/Grilles/gFds.css" />
         <!-- Personnalisation de l'application -->
-        <script type="text/javascript" src="../<?php echo CONFIG; ?>/Appli.js"></script>
+        <script type="text/javascript" src="../<?php echo $configInstance; ?>/Appli.js"></script>
         <!-- Outils -->
         <script type="text/javascript" src="<?php echo ENV; ?>/Outils/Global.js"></script>
         <!-- Formulaire -->

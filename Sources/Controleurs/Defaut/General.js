@@ -11,7 +11,7 @@ function deconnecter() {
 function deconnecte(btn) {
     if (btn == 'yes') {
         Ext.Ajax.request({
-            url: '../Controleurs/Gestion/GestSession.php',
+            url: '../Controleurs/Gestion/GestSession.php?appli=' + GetParam('appli'),
             params: {
                 action: 'Deconnecter'
             },
@@ -21,7 +21,7 @@ function deconnecte(btn) {
                     if (obj.success) {
                         Ext.MessageBox.show({
                             title: 'Déconnection réussie',
-                            fn: function() {document.location.href = 'vAuthent.php';},
+                            fn: function() {document.location.href = 'vAuthent.php?appli=' + GetParam('appli');},
                             msg: obj.data,
                             buttons: Ext.MessageBox.OK,
                             icon: Ext.MessageBox.INFO
@@ -30,7 +30,7 @@ function deconnecte(btn) {
                     else {
                         Ext.MessageBox.show({
                             title: obj.errorMessage,
-                            fn: function() {document.location.href = 'vAuthent.php';},
+                            fn: function() {document.location.href = 'vAuthent.php?appli=' + GetParam('appli');},
                             msg: obj.data,
                             buttons: Ext.MessageBox.OK,
                             icon: Ext.MessageBox.WARNING
@@ -40,7 +40,7 @@ function deconnecte(btn) {
                 else {
                     Ext.MessageBox.show({
                         title: 'ERREUR : ' + response.statusText,
-                        fn: function() {document.location.href = 'vAuthent.php';},
+                        fn: function() {document.location.href = 'vAuthent.php?appli=' + GetParam('appli');},
                         msg: 'Code erreur ' + response.status,
                         buttons: Ext.MessageBox.OK,
                         icon: Ext.MessageBox.ERROR

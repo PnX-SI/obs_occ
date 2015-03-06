@@ -1,6 +1,7 @@
 <?php
     require_once 'ClassEnvoiMail.php';
-    require_once '../../Configuration/ConfigUtilisee.php';    require_once '../../' . CONFIG . '/Serveur.php';
+    require_once '../../Configuration/ConfigUtilisee.php';
+    require_once '../../' . $configInstance . '/Serveur.php';
     
     class EnvoiMailReinitMdp extends EnvoiMail {
         function __construct($titre, $prenom, $nom, $email, $mdp) {
@@ -18,8 +19,9 @@
                                 <b>" . $mdp . "</b>
                         </p>
                         <p>
-                            Nous vous souhaitons bonne navigation sur <u><a href='" .
-                            INSTALL . "'> l'application " . TITRE_APPLI . "</a></u> .
+                            Nous vous souhaitons bonne navigation sur <u><a href='" . 
+                            INSTALL . '/Vues/vAuthent.php?appli=' . $_GET['appli'] .
+                            "'> l'application " . TITRE_APPLI . "</a></u> .
                         </p>
                         <p>
                             En vous remerciant de votre contribution, <br/>

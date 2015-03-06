@@ -15,7 +15,7 @@ Ext.onReady(function() {
     //Combo d'auto-complétion "Lieux-dits"
     comboLieuDit = new Ext.form.ComboBox({
         store: new Ext.data.JsonStore({
-            url: '../Modeles/Json/jLieuxDits.php',
+            url: '../Modeles/Json/jLieuxDits.php?appli=' + GetParam('appli'),
             fields: ['id', 'val']
         }),
         id: 'lieu_dit',
@@ -33,7 +33,7 @@ Ext.onReady(function() {
         id: 'nom_complet',
         triggerAction: 'all',
         store: new Ext.data.JsonStore({
-            url: '../Modeles/Json/jEspeces.php',
+            url: '../Modeles/Json/jEspeces.php?appli=' + GetParam('appli'),
             fields: ['espece']
         }),
         allowBlank: false,
@@ -89,7 +89,7 @@ Ext.onReady(function() {
         id: 'nom_vern',
         triggerAction: 'all',
         store: new Ext.data.JsonStore({
-            url: '../Modeles/Json/jEspecesUsuelles.php',
+            url: '../Modeles/Json/jEspecesUsuelles.php?appli=' + GetParam('appli'),
             fields: ['espece']
         }),
         emptyText: 'Saisissez 1 caractère',
@@ -98,26 +98,23 @@ Ext.onReady(function() {
         valueField: 'espece',
         fieldLabel: 'Espèce (usuel)',
         listeners: {
-            keyup: function() {
-                var requete = this.getRawValue();
-                if (requete.length >= 1) { // si au moins 1 lettres
-                    var tabRequete = requete.split(' ', 2);
-                    if (tabRequete[1] == '' && (modeRequete != 'espece')) { // si au moins 2 mots
-                        modeRequete = 'espece';
-                        tailleGenre = tabRequete[0].length;
-                        this.store.load({params: {
-                                critere: tabRequete[0],
-                                mode: modeRequete,
-                                filtre: Ext.getCmp('regne').value
-                            }
-                        });
-                    }
-                    else {
-                        if (!tabRequete[1] && (modeRequete != 'genre') && ((requete.length == 1) ||
-                        (requete.length == tailleGenre))) {
+            keyup: function(field, event) {
+                if (this.getRawValue().length >= 1) { // si au moins 1 lettre tapée
+                    if (event.getKey() < 33 || (event.getKey() > 40)) { // si pas les touches de navigation (pageUp, pageDown, end, home, left, up, right, down)
+                        var tabMots = this.getRawValue().split(' ', 2);
+                        if ((typeof(tabMots[1]) == 'undefined')) {  // si l'utilisateur recherche le genre tout d'abord
                             modeRequete = 'genre';
                             this.store.load({params: {
-                                    critere: tabRequete[0],
+                                    critere: tabMots[0],
+                                    mode: modeRequete,
+                                    filtre: Ext.getCmp('regne').value
+                                }
+                            });
+                        }
+                        else {
+                            modeRequete = 'espece'; // si l'utilisateur tape un espace pour la suite de la recherche du taxon après avoir saisi le genre
+                            this.store.load({params: {
+                                    critere: tabMots[0],
                                     mode: modeRequete,
                                     filtre: Ext.getCmp('regne').value
                                 }
@@ -187,7 +184,7 @@ Ext.onReady(function() {
         id: 'id_etude',
         triggerAction: 'all',
         store: new Ext.data.JsonStore({
-            url: '../Modeles/Json/jListVal.php?table=MD.ETUDE&chId=id_etude&chVal=nom_etude',
+            url: '../Modeles/Json/jListVal.php?appli=' + GetParam('appli') + '&table=MD.ETUDE&chId=id_etude&chVal=nom_etude',
             fields: ['id', 'val']
         }),
         emptyText: 'Sélectionnez',
@@ -198,14 +195,14 @@ Ext.onReady(function() {
         allowBlank: false,
         blankText: "Veuillez sélectionner l'étude !",
         forceSelection: true,
-        hidden: true
+        hidden: true // @TODO : intégrer au paramétrer
     });
     //Combo d'auto-complétion "protocole"
     var comboProtocole = new Ext.form.ComboBox({
         id: 'id_protocole',
         triggerAction: 'all',
         store: new Ext.data.JsonStore({
-            url: '../Modeles/Json/jListVal.php?table=MD.PROTOCOLE&chId=id_protocole&chVal=libelle',
+            url: '../Modeles/Json/jListVal.php?appli=' + GetParam('appli') + '&table=MD.PROTOCOLE&chId=id_protocole&chVal=libelle',
             fields: ['id', 'val']
         }),
         emptyText: 'Sélectionnez',
@@ -216,12 +213,12 @@ Ext.onReady(function() {
         allowBlank: false,
         blankText: 'Veuillez sélectionner le protocole !',
         forceSelection: true,
-        hidden: true
+        hidden: true // @TODO : intégrer au paramétrer
     });
     //Combo d'auto-complétion "type d'effectif"
     comboTypeEffectif = new Ext.form.ComboBox({
         store: new Ext.data.JsonStore({
-            url: '../Modeles/Json/jListEnum.php?typeEnum=saisie.enum_type_effectif',
+            url: '../Modeles/Json/jListEnum.php?appli=' + GetParam('appli') + '&typeEnum=saisie.enum_type_effectif',
             fields: ['val']
         }),
         id: 'type_effectif',
@@ -236,7 +233,7 @@ Ext.onReady(function() {
     //Combo d'auto-complétion "phénologie"
     comboPheno = new Ext.form.ComboBox({
         store: new Ext.data.JsonStore({
-            url: '../Modeles/Json/jListEnum.php?typeEnum=saisie.enum_phenologie',
+            url: '../Modeles/Json/jListEnum.php?appli=' + GetParam('appli') + '&typeEnum=saisie.enum_phenologie',
             fields: ['val']
         }),
         id: 'phenologie',
@@ -251,7 +248,7 @@ Ext.onReady(function() {
     //Combo d'auto-complétion "précision"
     comboPrecision = new Ext.form.ComboBox({
         store: new Ext.data.JsonStore({
-            url: '../Modeles/Json/jListEnum.php?typeEnum=saisie.enum_precision',
+            url: '../Modeles/Json/jListEnum.php?appli=' + GetParam('appli') + '&typeEnum=saisie.enum_precision',
             fields: ['val']
         }),
         id: 'precision',
@@ -266,7 +263,7 @@ Ext.onReady(function() {
     //Combo d'auto-complétion "détermination"
     comboDetermination = new Ext.form.ComboBox({
         store: new Ext.data.JsonStore({
-            url: '../Modeles/Json/jListEnum.php?typeEnum=saisie.enum_determination',
+            url: '../Modeles/Json/jListEnum.php?appli=' + GetParam('appli') + '&typeEnum=saisie.enum_determination',
             fields: ['val']
         }),
         id: 'determination',
@@ -282,7 +279,7 @@ Ext.onReady(function() {
     //Combo d'auto-complétion "statut de validation"
     comboStatutValidation = new Ext.form.ComboBox({
         store: new Ext.data.JsonStore({
-            url: '../Modeles/Json/jListEnum.php?typeEnum=saisie.enum_statut_validation',
+            url: '../Modeles/Json/jListEnum.php?appli=' + GetParam('appli') + '&typeEnum=saisie.enum_statut_validation',
             fields: ['val']
         }),
         id: 'statut_validation',
@@ -337,7 +334,7 @@ Ext.onReady(function() {
         width: 300,
         triggerAction: 'all',
         store: new Ext.data.JsonStore({
-            url: '../Modeles/Json/jCodesPersonnes.php',
+            url: '../Modeles/Json/jCodesPersonnes.php?appli=' + GetParam('appli') + '&role=obs',
             fields: ['code', 'libelle']
         }),
         emptyText: 'Sélectionez pour ajouter',
@@ -373,7 +370,7 @@ Ext.onReady(function() {
         width: 160,
         triggerAction: 'all',
         store: new Ext.data.JsonStore({
-            url: '../Modeles/Json/jCodesStructures.php',
+            url: '../Modeles/Json/jCodesStructures.php?appli=' + GetParam('appli'),
             fields: ['code', 'libelle']
         }),
         emptyText: 'Sélectionez pour ajouter',
@@ -569,11 +566,11 @@ Ext.onReady(function() {
                                             comboTypeEffectif.setFieldLabel("Type d'effectif");
                                             comboPheno.setFieldLabel('Phénologie');
                                             comboTypeEffectif.store.proxy = new Ext.data.HttpProxy({
-                                                url: '../Modeles/Json/jListEnum.php?typeEnum=saisie.enum_type_effectif',
+                                                url: '../Modeles/Json/jListEnum.php?appli=' + GetParam('appli') + '&typeEnum=saisie.enum_type_effectif',
                                                 api: comboTypeEffectif.store.api
                                             });
                                             comboPheno.store.proxy = new Ext.data.HttpProxy({
-                                                url: '../Modeles/Json/jListEnum.php?typeEnum=saisie.enum_phenologie',
+                                                url: '../Modeles/Json/jListEnum.php?appli=' + GetParam('appli') + '&typeEnum=saisie.enum_phenologie',
                                                 api: comboPheno.store.api
                                             });
                                             comboEspecesUsuelles.setFieldLabel('Espèce (usuel)');
@@ -586,11 +583,11 @@ Ext.onReady(function() {
                                                     comboTypeEffectif.setFieldLabel('Age');
                                                     comboPheno.setFieldLabel('Sexe');
                                                     comboTypeEffectif.store.proxy = new Ext.data.HttpProxy({
-                                                        url: '../Modeles/Json/jListEnum.php?typeEnum=saisie.enum_age',
+                                                        url: '../Modeles/Json/jListEnum.php?appli=' + GetParam('appli') + '&typeEnum=saisie.enum_age',
                                                         api: comboTypeEffectif.store.api
                                                     });
                                                     comboPheno.store.proxy = new Ext.data.HttpProxy({
-                                                        url: '../Modeles/Json/jListEnum.php?typeEnum=saisie.enum_sexe',
+                                                        url: '../Modeles/Json/jListEnum.php?appli=' + GetParam('appli') + '&typeEnum=saisie.enum_sexe',
                                                         api: comboPheno.store.api
                                                     });
                                                     comboDetermination.show();
@@ -600,11 +597,11 @@ Ext.onReady(function() {
                                                     comboTypeEffectif.setFieldLabel("Type d'effectif");
                                                     comboPheno.setFieldLabel('Phénologie');
                                                     comboTypeEffectif.store.proxy = new Ext.data.HttpProxy({
-                                                        url: '../Modeles/Json/jListEnum.php?typeEnum=saisie.enum_type_effectif',
+                                                        url: '../Modeles/Json/jListEnum.php?appli=' + GetParam('appli') + '&typeEnum=saisie.enum_type_effectif',
                                                         api: comboTypeEffectif.store.api
                                                     });
                                                     comboPheno.store.proxy = new Ext.data.HttpProxy({
-                                                        url: '../Modeles/Json/jListEnum.php?typeEnum=saisie.enum_phenologie',
+                                                        url: '../Modeles/Json/jListEnum.php?appli=' + GetParam('appli') + '&typeEnum=saisie.enum_phenologie',
                                                         api: comboPheno.store.api
                                                     });
                                                     comboDetermination.hide();
@@ -614,11 +611,11 @@ Ext.onReady(function() {
                                                     comboTypeEffectif.setFieldLabel('Stade reproductif');
                                                     comboPheno.setFieldLabel('Support');
                                                     comboTypeEffectif.store.proxy = new Ext.data.HttpProxy({
-                                                        url: '../Modeles/Json/jListEnum.php?typeEnum=saisie.enum_stade_reproductif',
+                                                        url: '../Modeles/Json/jListEnum.php?appli=' + GetParam('appli') + '&typeEnum=saisie.enum_stade_reproductif',
                                                         api: comboTypeEffectif.store.api
                                                     });
                                                     comboPheno.store.proxy = new Ext.data.HttpProxy({
-                                                        url: '../Modeles/Json/jListEnum.php?typeEnum=saisie.enum_stade_phenologique',
+                                                        url: '../Modeles/Json/jListEnum.php?appli=' + GetParam('appli') + '&typeEnum=saisie.enum_stade_phenologique',
                                                         api: comboPheno.store.api
                                                     });
                                                     comboDetermination.hide();
@@ -628,11 +625,11 @@ Ext.onReady(function() {
                                                     comboTypeEffectif.setFieldLabel('Unité');
                                                     comboPheno.setFieldLabel('Etat conservation');
                                                     comboTypeEffectif.store.proxy = new Ext.data.HttpProxy({
-                                                        url: '../Modeles/Json/jListEnum.php?typeEnum=saisie.enum_unite',
+                                                        url: '../Modeles/Json/jListEnum.php?appli=' + GetParam('appli') + '&typeEnum=saisie.enum_unite',
                                                         api: comboTypeEffectif.store.api
                                                     });
                                                     comboPheno.store.proxy = new Ext.data.HttpProxy({
-                                                        url: '../Modeles/Json/jListEnum.php?typeEnum=saisie.enum_etat_de_conservation',
+                                                        url: '../Modeles/Json/jListEnum.php?appli=' + GetParam('appli') + '&typeEnum=saisie.enum_etat_de_conservation',
                                                         api: comboPheno.store.api
                                                     });
                                                     comboEspecesUsuelles.setFieldLabel('Code - Libellé');
@@ -799,10 +796,11 @@ Ext.onReady(function() {
                         hidden: modeSimplifie,
                         layout: 'form',
                         items: [
-                            /*{
+                            {
                                xtype: 'panel',
-                               height: 14
-                            },*/ {
+                               height: 23,//78,
+                               hidden: false
+                            }, {
                                 xtype: 'textfield',
                                 fieldLabel: "ID observation",
                                 id: 'id_obs',
@@ -1003,7 +1001,7 @@ Ext.onReady(function() {
         listeners: {
             hide: function() {
                 Ext.Ajax.request({
-                    url: '../Controleurs/Gestion/GestSession.php',
+                    url: '../Controleurs/Gestion/GestSession.php?appli=' + GetParam('appli'),
                     params: {
                         action: 'AttendreSaisie',
                         saisieEnCours: 'NON'
@@ -1016,7 +1014,7 @@ Ext.onReady(function() {
     comboEtude.store.load();
     comboProtocole.store.load();
     Ext.Ajax.request({
-        url: '../Modeles/Json/jVarSession.php',
+        url: '../Modeles/Json/jVarSession.php?appli=' + GetParam('appli'),
         params: {
             varSession: 'infosNumerisateur'
         },
@@ -1318,7 +1316,7 @@ function soumettre() {
         Ext.getCmp('structure').setValue(listStruct.getValue());
         // vérification auprès du référentiel
         Ext.Ajax.request({
-            url: '../Modeles/Json/jCdNom.php',
+            url: '../Modeles/Json/jCdNom.php?appli=' + GetParam('appli'),
             params: {
                 valeur: comboEspeces.value,
                 filtre: Ext.getCmp('regne').value
@@ -1331,11 +1329,11 @@ function soumettre() {
                         Ext.getCmp('cd_nom').setValue(obj.data);
                         if (Ext.getCmp('geometrie').value.CLASS_NAME == 'OpenLayers.Geometry.Point') {
                             traiteCodeInsee(new OpenLayers.Geometry.Point(Ext.getCmp('longitude').value,
-                                Ext.getCmp('latitude').value), function() {templateValidation('../Controleurs/Gestion/GestObs.php',
+                                Ext.getCmp('latitude').value), function() {templateValidation('../Controleurs/Gestion/GestObs.php?appli=' + GetParam('appli'),
                                 Ext.getCmp('statusbar'), formulaire, termineAffichage)});
                         }
                         else {
-                            templateValidation('../Controleurs/Gestion/GestObs.php', Ext.getCmp('statusbar'),
+                            templateValidation('../Controleurs/Gestion/GestObs.php?appli=' + GetParam('appli'), Ext.getCmp('statusbar'),
                                 formulaire, termineAffichage);
                         }
                     }
@@ -1505,7 +1503,7 @@ function finaliseFormulaire() {
 //Traitement du "code_insee"
 function traiteCodeInsee(geom, traiteCodeInseeFonctionRetour) {
     Ext.Ajax.request({
-        url: '../Modeles/Json/jCommune.php',
+        url: '../Modeles/Json/jCommune.php?appli=' + GetParam('appli'),
         params: {
             centroid: geom.getCentroid(),
             EPSG: projectionPostGIS.getCode().replace('EPSG:', '')
@@ -1581,7 +1579,7 @@ function dupliquer() {
 //Fonction d'arrêt de l'importation
 function arreter() {
     Ext.Ajax.request({
-        url: '../Controleurs/Gestion/GestSession.php',
+        url: '../Controleurs/Gestion/GestSession.php?appli=' + GetParam('appli'),
         params: {
             action: 'AttendreSaisie',
             saisieEnCours: 'STOP'
@@ -1614,7 +1612,7 @@ function importerPhoto() {
 //Fonction de validation d'une liste d'observations
 function valideListeObservations(listIdObs, cb, decisionValidation) {
     Ext.Ajax.request({
-        url: '../Controleurs/Gestion/GestObs.php',
+        url: '../Controleurs/Gestion/GestObs.php?appli=' + GetParam('appli'),
         params: {
             action: 'Valider',
             id_obs: listIdObs,
@@ -1684,7 +1682,7 @@ Ext.apply(Ext.form.VTypes, {
 
 function verifieTaxonOK(cd_nom) {
     Ext.Ajax.request({
-        url: '../Modeles/Adaptations/fTaxRef.php',
+        url: '../Modeles/Filtres/fTaxRef.php?appli=' + GetParam('appli'),
         params: {
             valeur: cd_nom,
             saisie: comboEspeces.value,

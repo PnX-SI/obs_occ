@@ -1,7 +1,7 @@
 <?php
     require_once '../Securite/VerifCnx.php';
     require_once '../Configuration/ConfigUtilisee.php';
-    require_once '../' . CONFIG . '/Serveur.php';
+    require_once '../' . $configInstance . '/Serveur.php';
 ?>
 <html>
     <head>
@@ -42,12 +42,12 @@
         <!-- Outils -->
         <script type="text/javascript" src="<?php echo ENV; ?>/Outils/Global.js"></script>
         <!-- Personnalisation de l'application -->
-        <script type="text/javascript" src="../<?php echo CONFIG; ?>/Appli.js"></script>
+        <script type="text/javascript" src="../<?php echo $configInstance; ?>/Appli.js"></script>
         <script type='text/javascript'>
             var authWMS = '<?php echo WMS_USERNAME; ?>';
             var mdpWMS = '<?php echo WMS_PASSWORD; ?>'
         </script>
-        <script type="text/javascript" src="../<?php echo CONFIG; ?>/Carte.js"></script>
+        <script type="text/javascript" src="../<?php echo $configInstance; ?>/Carte.js"></script>
         <!-- Configuration de base -->
         <script type="text/javascript" src="../Controleurs/Defaut/General.js"></script>
         <script type="text/javascript" src="../Controleurs/Defaut/Carto.js"></script>

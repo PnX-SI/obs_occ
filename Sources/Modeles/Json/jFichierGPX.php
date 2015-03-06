@@ -3,7 +3,7 @@
         session_start();
     }
     require_once '../../Configuration/ConfigUtilisee.php';
-    require_once '../../' . CONFIG . '/PostGreSQL.php';
+    require_once '../../' . $configInstance . '/PostGreSQL.php';
     require_once '../../Securite/Decrypt.php';
     
     // ATTENTION : un niveau d'arborescence de + ici par rapport à la constante JS
@@ -23,7 +23,7 @@
         switch ($_FILES['fichierLocalGPX']['error']){
             case UPLOAD_ERR_OK :
                 date_default_timezone_set('Europe/Paris'); // fuseau horaire français
-                $data = date('YmdHis') . '_' . decrypteRSA(APPLI, $_SESSION[APPLI]['numerisateur']['code']) .
+                $data = date('YmdHis') . '_' . decrypteRSA($_GET['appli'], $_SESSION[$_GET['appli']]['numerisateur']['code']) .
                     '_' . $_FILES['fichierLocalGPX']['name'];
                 if (move_uploaded_file($_FILES['fichierLocalGPX']['tmp_name'],
                 $cheminRelatifGPX . iconv("UTF-8", "ISO-8859-1//TRANSLIT", $data))) { // "iconv" pour la gestion des accents dans le nom de fichier lors de son déplacement sur le serveur

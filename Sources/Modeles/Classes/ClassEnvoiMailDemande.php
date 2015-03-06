@@ -1,8 +1,8 @@
 <?php
     require_once 'ClassEnvoiMail.php';
     require_once '../../Configuration/ConfigUtilisee.php';
-    require_once '../../' . CONFIG . '/Serveur.php';
-    require_once '../../' . CONFIG . '/Serveur.php';
+    require_once '../../' . $configInstance . '/Serveur.php';
+    require_once '../../' . $configInstance . '/Serveur.php';
     
     class EnvoiMailDemande extends EnvoiMail {
         function __construct($titre, $prenom, $nom, $email, $structure, $programme,

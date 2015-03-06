@@ -13,7 +13,7 @@ Ext.onReady(function() {
             //Combo d'auto-complétion "Titre"
             comboTitre = new Ext.form.ComboBox({
                 store: new Ext.data.JsonStore({
-                    url: '../Modeles/Json/jListEnum.php?typeEnum=md.enum_titre',
+                    url: '../Modeles/Json/jListEnum.php?appli=' + GetParam('appli') + '&typeEnum=md.enum_titre',
                     fields: ['val']
                 }),
                 id: 'titre',
@@ -88,10 +88,10 @@ function afficheFormulaire() {
                 }, '-', {
                 text: 'Retourner auth.',
                 tooltip: "Retourner à l'authentification",
-                handler: function() {document.location.href = 'vAuthent.php';},
+                handler: function() {document.location.href = 'vAuthent.php?appli=' + GetParam('appli');},
                 iconCls: 'return'
             }, '-', {
-                    text: "S'inscrire",
+                    text: "Inscrire",
                     handler: soumettre,
                     iconCls: 'inscription'
                 }
@@ -133,7 +133,7 @@ function soumettre() {
             Ext.getCmp('statusbar').showBusy('Connexion en cours...'); // affichage du message de chargement
             // vérification des paramètres de connexion dans la base
             Ext.Ajax.request({
-                url: '../Controleurs/Gestion/GestInscriptions.php',
+                url: '../Controleurs/Gestion/GestInscriptions.php?appli=' + GetParam('appli'),
                 params: {
                     action: 'inscrire',
                     titre: Ext.getCmp('titre').getValue(),
@@ -220,7 +220,7 @@ function soumettre() {
 
 function reinitialiserMdp() {
     Ext.Ajax.request({
-            url: '../Controleurs/Gestion/GestInscriptions.php',
+            url: '../Controleurs/Gestion/GestInscriptions.php?appli=' + GetParam('appli'),
             params: {
                 action: 'reinitialiserMdp',
                 email: GetParam('email')
@@ -231,7 +231,7 @@ function reinitialiserMdp() {
                     if (obj.success) {
                         Ext.MessageBox.show({
                             title: 'Réinitialisation de mot de passe réussie',
-                            fn: function() {document.location.href = 'vAuthent.php'},
+                            fn: function() {document.location.href = 'vAuthent.php?appli=' + GetParam('appli')},
                             msg: obj.data,
                             buttons: Ext.MessageBox.OK,
                             icon: Ext.MessageBox.INFO
@@ -240,7 +240,7 @@ function reinitialiserMdp() {
                     else {
                         Ext.MessageBox.show({
                             title: obj.errorMessage,
-                            fn: function() {document.location.href = 'vAuthent.php'},
+                            fn: function() {document.location.href = 'vAuthent.php?appli=' + GetParam('appli')},
                             msg: obj.data,
                             buttons: Ext.MessageBox.OK,
                             icon: Ext.MessageBox.WARNING
@@ -250,7 +250,7 @@ function reinitialiserMdp() {
                 else {
                     Ext.MessageBox.show({
                         title: 'ERREUR : ' + response.statusText,
-                        fn: function() {document.location.href = 'vAuthent.php'},
+                        fn: function() {document.location.href = 'vAuthent.php?appli=' + GetParam('appli')},
                         msg: 'Code erreur ' + response.status,
                         buttons: Ext.MessageBox.OK,
                         icon: Ext.MessageBox.ERROR
@@ -262,7 +262,7 @@ function reinitialiserMdp() {
 
 function activerCompte() {
     Ext.Ajax.request({
-            url: '../Controleurs/Gestion/GestInscriptions.php',
+            url: '../Controleurs/Gestion/GestInscriptions.php?appli=' + GetParam('appli'),
             params: {
                 action: 'activer',
                 titre: GetParam('titre'),
@@ -276,7 +276,7 @@ function activerCompte() {
                     if (obj.success) {
                         Ext.MessageBox.show({
                             title: 'Activation réussie',
-                            fn: function() {document.location.href = 'vAuthent.php'},
+                            fn: function() {document.location.href = 'vAuthent.php?appli=' + GetParam('appli')},
                             msg: obj.data,
                             buttons: Ext.MessageBox.OK,
                             icon: Ext.MessageBox.INFO
@@ -285,7 +285,7 @@ function activerCompte() {
                     else {
                         Ext.MessageBox.show({
                             title: obj.errorMessage,
-                            fn: function() {document.location.href = 'vInscription.php'},
+                            fn: function() {document.location.href = 'vInscription.php?appli=' + GetParam('appli')},
                             msg: obj.data,
                             buttons: Ext.MessageBox.OK,
                             icon: Ext.MessageBox.WARNING
@@ -295,7 +295,7 @@ function activerCompte() {
                 else {
                     Ext.MessageBox.show({
                         title: 'ERREUR : ' + response.statusText,
-                        fn: function() {document.location.href = 'vInscription.php'},
+                        fn: function() {document.location.href = 'vInscription.php?appli=' + GetParam('appli')},
                         msg: 'Code erreur ' + response.status,
                         buttons: Ext.MessageBox.OK,
                         icon: Ext.MessageBox.ERROR

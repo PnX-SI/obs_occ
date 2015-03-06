@@ -168,7 +168,7 @@ function basculeEcran(sens) {
             }, '-', {
                 text: 'Retourner obs.',
                 tooltip: 'Retourner aux observations occasionnelles',
-                handler: function() {document.location.href = 'vSaisieObs.php?modeSimplifie=' + modeSimplifie;},
+                handler: function() {document.location.href = 'vSaisieObs.php?appli=' + GetParam('appli') + '&modeSimplifie=' + modeSimplifie;},
                 iconCls: 'return'
             }, '-', {
                 text: 'Se déconnecter',
@@ -184,7 +184,7 @@ function basculeEcran(sens) {
         view: new Ext.grid.GroupingView({
             groupTextTpl: '{text} ({[values.rs.length]} {[values.rs.length > 1 ? "lignes" : "ligne"]})'
         }),
-        id: CST_appli + '_grilleGPX', // unique pour conserver la configuration de la grille
+        id: GetParam('appli') + '_grilleGPX', // unique pour conserver la configuration de la grille
         header: false,
         ds: donneesGrille,
         cm: configCols,     
@@ -196,7 +196,7 @@ function basculeEcran(sens) {
     });    
     //Panel de la carte
     var cartePanel = new GeoExt.MapPanel({
-        id: CST_appli + '_cartePanelGPX', // unique pour conserver la configuration de la carte
+        id: GetParam('appli') + '_cartePanelGPX', // unique pour conserver la configuration de la carte
         map: carte,
         region: sens,
         split: true,
@@ -309,7 +309,7 @@ function afficherBilan(totalSelection) {
 }
 function attendreSaisie() {
     Ext.Ajax.request({
-        url: '../Modeles/Json/jVarSession.php',
+        url: '../Modeles/Json/jVarSession.php?appli=' + GetParam('appli'),
         params: {
             varSession: 'saisieEnCours'
         },
@@ -320,7 +320,7 @@ function attendreSaisie() {
                     switch (obj.data) {
                         case 'NON':
                             Ext.Ajax.request({
-                                url: '../Controleurs/Gestion/GestSession.php',
+                                url: '../Controleurs/Gestion/GestSession.php?appli=' + GetParam('appli'),
                                 params: {
                                     action: 'AttendreSaisie',
                                     saisieEnCours: 'OUI'
@@ -377,7 +377,7 @@ function importerSelection() {
     var selection = coucheConsultable.selectedFeatures;
     if (selection.length > 0) {
         Ext.Ajax.request({
-            url: '../Controleurs/Gestion/GestSession.php',
+            url: '../Controleurs/Gestion/GestSession.php?appli=' + GetParam('appli'),
             params: {
                 action: 'AttendreSaisie',
                 saisieEnCours: 'OUI'
