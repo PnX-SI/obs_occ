@@ -6,9 +6,7 @@
     define('USER', DBNAME . '_cnx');
     define('PASSWORD', DBNAME . '_cnx');
     define('BASENAME', DBNAME); //Préfixe des rôles de la base
-    //Configuration navigateur
-    define('APPLI', 'ObsOccPNX'); // nom unique idem que dans "Appli.js"
-
+    
     // Activation du cryptage RSA (désactivé pour le site de démo)
     define('CRYPTAGE', true); // nom unique idem que dans "Appli.js"
 

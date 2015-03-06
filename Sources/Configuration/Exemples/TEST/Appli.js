@@ -16,10 +16,6 @@ const CST_activeGestionUtilisateur= false;
 // gestion des utilisateurs
 const CST_activeSaisieEtudeProtocole=true;
 
-
-//Configuration navigateur
-const CST_appli = 'ObsOccPNX'; // nom unique idem que "PostGreSQL.php"
-
 //Configuration du formulaire de saisie des observations occasionelles
 // propres aux métadonnées de la base sinon null
 const CST_id_structure = null;
