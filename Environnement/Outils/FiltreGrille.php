@@ -23,14 +23,14 @@
                 case 'string' :
                     if (strstr($data_value,'||')) {
                         $fi = explode('||' ,$data_value);
-                        $qs .= ' AND (UPPER( ' . $filter[$i]['field'] . " ) LIKE UPPER('%" . $fi[0] . "%')";
+                        $qs .= ' AND ' . $filter[$i]['field'] . " ILIKE '%" . $fi[0] . "%'";
                         for ($q = 1; $q < count($fi); $q++) {
-                            $qs .= ' OR UPPER( ' . $filter[$i]['field'] . " ) LIKE UPPER('%" . $fi[$q] . "%')";
+                            $qs .= ' OR ' . $filter[$i]['field'] . " ILIKE '%" . $fi[$q] . "%'";
                         }
                         $qs .= ' )';
                     }
                     else {
-                        $qs .= ' AND UPPER( ' . $filter[$i]['field'] . " ) LIKE UPPER('%" . $data_value . "%')";
+                        $qs .= ' AND ' . $filter[$i]['field'] . " ILIKE '%" . $data_value . "%'";
                     }
                     break;
                 case 'list' :
