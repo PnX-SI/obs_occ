@@ -1684,7 +1684,7 @@ Ext.apply(Ext.form.VTypes, {
 
 function verifieTaxonOK(cd_nom) {
     Ext.Ajax.request({
-        url: '../Modeles/Filtres/fTaxRef.php',
+        url: '../Modeles/Adaptations/fTaxRef.php',
         params: {
             valeur: cd_nom,
             saisie: comboEspeces.value,

@@ -1,10 +1,10 @@
 <?php
+
     require_once '../../Configuration/ConfigUtilisee.php';
     include_once '../' . LIB . '/jsonwrapper/jsonwrapper.php';
     require_once '../../Modeles/Classes/ClassCnxPgObsOcc.php';
     require_once '../' . ENV . '/Outils/FiltreGrille.php';
-    require_once '../../Modeles/Filtres/fGrille.php';
-
+    require_once '../Adaptations/grille.php';
     $cnxPgObsOcc = new CnxPgObsOcc();
     $req = "SELECT MD.STRUCTURE.*, (CREATEURS.nom || ' ' || CREATEURS.prenom)
         AS creat FROM MD.STRUCTURE LEFT JOIN (SELECT nom, prenom, id_personne FROM

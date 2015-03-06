@@ -9,10 +9,8 @@
     require_once '../../Securite/Decrypt.php';
     
     $filter = '0 = 0'; // variable globale pour le filtre
-
-    // construction du filtre
-    $droit = decrypteRSA(APPLI, $_SESSION[APPLI]['numerisateur']['droit']);
-    if (($droit != 'expert') && ($droit != 'admin')) {
-        //$filter .= ' AND numerisateur = ' . decrypteRSA(APPLI, $_SESSION[APPLI]['numerisateur']['code']);
-    }
+    
+    //POSSIBILITE D'Ajouter d'autre filtre ICI
+    //$filter .= ' AND .....' 
+    
 ?>

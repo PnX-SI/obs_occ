@@ -4,8 +4,8 @@
     require_once '../../Modeles/Classes/ClassCnxPgObsOcc.php';
     require_once '../' . ENV . '/Outils/FiltreCarte.php';
     require_once '../' . ENV . '/Outils/FiltreGrille.php';
-    require_once '../../Modeles/Filtres/fGrille.php';
-    require_once '../../Modeles/Filtres/fAppli.php';
+    require_once '../Adaptations/grille.php';
+    require_once '../../' . CONFIG . '/Filtres/fAppli.php';
 
     $cnxPgObsOcc = new CnxPgObsOcc();
     // traitement particulier pour utiliser ici le champ "nom" de la table "IGN_BD_TOPO.COMMUNE"

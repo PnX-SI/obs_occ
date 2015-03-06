@@ -150,12 +150,14 @@ function afficheEcran() {
                 text: 'Ajouter',
                 tooltip: 'Ajouter une nouvelle personne',
                 handler: ajouter,
-                iconCls: 'add'
+                iconCls: 'add',
+                hidden: ((typeof CST_activeGestionUtilisateur === "undefined") ) ? false : !CST_activeGestionUtilisateur 
             }, '-', {
                 text: 'Modifier',
                 tooltip: "Modifier la personne sélectionnée",
                 handler: modifier,
-                iconCls: 'cog_edit'
+                iconCls: 'cog_edit',
+                hidden: ((typeof CST_activeGestionUtilisateur === "undefined") ) ? false : !CST_activeGestionUtilisateur 
             }, /*'-', {
                 text: 'Supprimer',
                 tooltip: "Supprimer la personne sélectionnée",
@@ -251,17 +253,21 @@ function afficheEcran() {
 
 //Ajout
 function ajouter() {
+  if ((typeof CST_activeGestionUtilisateur !== "undefined") &&  CST_activeGestionUtilisateur == true ) {
     ajoute();
+  }
 }
 
 //Modification
 function modifier() {
+  if ((typeof CST_activeGestionUtilisateur !== "undefined") &&  CST_activeGestionUtilisateur == true ) {
     if (grille.selModel.getCount() == 1) {
         modifie();
     }
     else {
         Ext.MessageBox.alert('Attention', 'Vous devez sélectionner une personne et une seule').setIcon(Ext.MessageBox.WARNING);
     }
+  }
 }
 
 //Suppression

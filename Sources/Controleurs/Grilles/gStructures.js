@@ -89,12 +89,14 @@ Ext.onReady(function() {
                 text: 'Ajouter',
                 tooltip: 'Ajouter une nouvelle structure',
                 handler: ajouter,
-                iconCls: 'add'
+                iconCls: 'add',
+                hidden: ((typeof CST_activeGestionUtilisateur === "undefined") ) ? false : !CST_activeGestionUtilisateur 
             }, '-', {
                 text: 'Modifier',
                 tooltip: "Modifier la structure sélectionnée",
                 handler: modifier,
-                iconCls: 'cog_edit'
+                iconCls: 'cog_edit',
+                hidden: ((typeof CST_activeGestionUtilisateur === "undefined") ) ? false : !CST_activeGestionUtilisateur 
             }, '-', /*{
                 text: 'Supprimer',
                 tooltip: "Supprimer la structure sélectionnée",
@@ -190,17 +192,21 @@ Ext.onReady(function() {
 
 //Ajout
 function ajouter() {
+  if ((typeof CST_activeGestionUtilisateur !== "undefined") &&  CST_activeGestionUtilisateur == true ) {
     ajoute();
+  }
 }
 
 //Modification
 function modifier() {
+  if ((typeof CST_activeGestionUtilisateur !== "undefined") &&  CST_activeGestionUtilisateur == true ) {
     if (grille.selModel.getCount() == 1) {
         modifie();
     }
     else {
         Ext.MessageBox.alert('Attention', 'Vous devez sélectionner une structure et une seule').setIcon(Ext.MessageBox.WARNING);
     }
+  }
 }
 
 //Suppression
