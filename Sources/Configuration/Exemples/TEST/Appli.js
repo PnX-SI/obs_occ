@@ -11,6 +11,11 @@ const CST_choixModeAffichage = true;
 const CST_titreAppli = 'Observations occasionnelles naturalistes des Parcs nationaux de France'; // idem que "Serveur.php"
 // URL de contact sinon null
 const CST_urlContact = 'http://www.parcsnationaux.fr/Acces-direct/Nous-contacter';
+// gestion des utilisateurs
+const CST_activeGestionUtilisateur= false;
+// gestion des utilisateurs
+const CST_activeSaisieEtudeProtocole=true;
+
 
 //Configuration navigateur
 const CST_appli = 'ObsOccPNX'; // nom unique idem que "PostGreSQL.php"

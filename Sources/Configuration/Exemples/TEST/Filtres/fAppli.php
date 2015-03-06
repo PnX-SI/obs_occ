@@ -5,7 +5,7 @@
         session_start();
     }
     require_once '../../Configuration/ConfigUtilisee.php';
-    require_once '../../' . CONFIG . '/PostGreSQL.php';
+    require_once '../../' . $configInstance . '/PostGreSQL.php';
     require_once '../../Securite/Decrypt.php';
     
     $filter = '0 = 0'; // variable globale pour le filtre

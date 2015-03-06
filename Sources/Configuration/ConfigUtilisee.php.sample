@@ -9,22 +9,36 @@
             $data .'"}');
     }
 
-    // Configuration dynamique de PHP pour le développement
-    /*
+    // Paramétrage dynamique de PHP pour le développement
+    
     ini_set('display_errors','On'); // Development Value: On - Production Value: Off
     ini_set('display_startup_errors','On'); // Development Value: On - Production Value: Off
     ini_set('error_reporting','E_ALL & ~E_DEPRECATED'); // Development Value: E_ALL & ~E_DEPRECATED - Production Value: E_ALL & ~E_NOTICE & ~E_STRICT & ~E_DEPRECATED
     ini_set('track_errors','On'); // Development Value: On - Production Value: Off
-    */
     
-    // Configuration dynamique de PHP pour ma mise en production
+    /*
+    // Paramétrage dynamique de PHP pour ma mise en production
     ini_set('display_errors','Off'); // Development Value: On - Production Value: Off
     ini_set('display_startup_errors','Off'); // Development Value: On - Production Value: Off
     ini_set('error_reporting','E_ALL & ~E_DEPRECATED & ~E_STRICT'); // Development Value: E_ALL & ~E_DEPRECATED - Production Value: E_ALL & ~E_DEPRECATED & ~E_STRICT
     ini_set('track_errors','Off'); // Development Value: On - Production Value: Off
+    */
     
-    // Configuration de l'installation
+    // Architecture de l'installation
+    define('INSTALL', 'http://localhost/obs_occ/Sources'); // pointer ici le dossier "Sources" de l'application
     define('LIB', '../../Librairies');
     define('ENV', '../../Environnement');
-    define('CONFIG', 'Configuration/EnProduction/PnX');
+
+    // Configuration des instances d'application
+    switch ($_GET['appli']) {
+        case 'ObsOccTest':
+            $configInstance = 'Configuration/Exemples/TEST';
+            break;
+        case 'ObsOccPnP':
+            $configInstance = 'Configuration/EnProduction/PnP';
+            break;
+        default:
+            header('Location: ../index.php'); // retour à la page d'accueil de l'application
+            break;
+    }
 ?>

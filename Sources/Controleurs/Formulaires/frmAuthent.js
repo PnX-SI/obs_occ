@@ -118,7 +118,8 @@ function afficheFormulaire() {
                 }, '-', {
                     text: 'Renvoyer mot de passe',
                     handler: reinitialiserMdp,
-                    iconCls: 'mailing_card'
+                    iconCls: 'mailing_card',
+                    hidden: ((typeof CST_activeGestionUtilisateur === "undefined") ) ? false : !CST_activeGestionUtilisateur 
                 }, '-', {
                     text: 'Se connecter',
                     handler: soumettre,
@@ -146,7 +147,10 @@ function afficheFormulaire() {
 
 // vérification de l'accès au bouton de création de compte
 function detecterAdmin() {
-    var MotDePasse =  Ext.getCmp(GetParam('appli') + '_mot_de_passe').getValue();
+    if ((typeof CST_activeGestionUtilisateur  !== "undefined") && (CST_activeGestionUtilisateur  === false)) {
+      return true;
+    }
+    var MotDePasse =  Ext.getCmp('mot_de_passe').getValue();
     if (CST_Cryptage) {
         MotDePasse = encryptedString(public_key, Ext.getCmp(GetParam('appli') + '_mot_de_passe').getValue());
     }
