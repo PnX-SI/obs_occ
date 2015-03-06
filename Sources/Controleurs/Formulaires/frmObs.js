@@ -195,7 +195,7 @@ Ext.onReady(function() {
         allowBlank: false,
         blankText: "Veuillez sélectionner l'étude !",
         forceSelection: true,
-        hidden: true // @TODO : intégrer au paramétrer
+        hidden: ((typeof CST_activeSaisieEtudeProtocole === "undefined") ) ? false : !CST_activeSaisieEtudeProtocole
     });
     //Combo d'auto-complétion "protocole"
     var comboProtocole = new Ext.form.ComboBox({
@@ -213,7 +213,7 @@ Ext.onReady(function() {
         allowBlank: false,
         blankText: 'Veuillez sélectionner le protocole !',
         forceSelection: true,
-        hidden: true // @TODO : intégrer au paramétrer
+        hidden:  ((typeof CST_activeSaisieEtudeProtocole === "undefined") ) ? false : !CST_activeSaisieEtudeProtocole 
     });
     //Combo d'auto-complétion "type d'effectif"
     comboTypeEffectif = new Ext.form.ComboBox({
@@ -1682,7 +1682,7 @@ Ext.apply(Ext.form.VTypes, {
 
 function verifieTaxonOK(cd_nom) {
     Ext.Ajax.request({
-        url: '../Modeles/Filtres/fTaxRef.php?appli=' + GetParam('appli'),
+        url: '../Modeles/Adaptations/fTaxRef.php?appli=' + GetParam('appli'),
         params: {
             valeur: cd_nom,
             saisie: comboEspeces.value,

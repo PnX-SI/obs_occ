@@ -3,7 +3,7 @@
     include_once '../' . LIB . '/jsonwrapper/jsonwrapper.php';
     require_once '../../Modeles/Classes/ClassCnxPgObsOcc.php';
     require_once '../' . ENV . '/Outils/FiltreGrille.php';
-    require_once '../../Modeles/Filtres/fGrille.php';
+    require_once '../Adaptations/grille.php';
 
     $cnxPgObsOcc = new CnxPgObsOcc();
     $req = "SELECT MD.STRUCTURE.id_structure, MD.STRUCTURE.nom_structure,
