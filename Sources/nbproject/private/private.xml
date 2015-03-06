@@ -3,27 +3,19 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/G:/ObsOcc/www/OBS_OCC_PNX_CEN_ok/Sources/Modeles/Classes/ClassCnxPgObsOcc.php</file>
-            <file>file:/G:/ObsOcc/www/OBS_OCC_PNX_CEN_ok/Sources/Controleurs/Formulaires/frmObs.js</file>
-            <file>file:/G:/ObsOcc/www/OBS_OCC_PNX_CEN_ok/Sources/Modeles/GeoJson/gjObs.php</file>
-            <file>file:/G:/ObsOcc/www/OBS_OCC_PNX_CEN_ok/Sources/Configuration/EnProduction/PnX/Serveur.php</file>
-            <file>file:/G:/ObsOcc/www/OBS_OCC_PNX_CEN_ok/Sources/Configuration/EnProduction/PNP/PostGreSQL.php</file>
-            <file>file:/G:/ObsOcc/www/OBS_OCC_PNX_CEN_ok/Sources/Modeles/Json/jEspeces.php</file>
-            <file>file:/G:/ObsOcc/www/OBS_OCC_PNX_CEN_ok/Sources/Configuration/EnProduction/PNP/Carte.js</file>
-            <file>file:/G:/ObsOcc/www/OBS_OCC_PNX_CEN_ok/Sources/Modeles/Filtres/fGrille.php</file>
-            <file>file:/G:/ObsOcc/www/OBS_OCC_PNX_CEN_ok/Sources/Modeles/Filtres/fTaxRef.php</file>
-            <file>file:/G:/ObsOcc/www/OBS_OCC_PNX_CEN_ok/Sources/Modeles/Json/jEspecesUsuelles.php</file>
-            <file>file:/G:/ObsOcc/www/OBS_OCC_PNX_CEN_ok/Sources/Configuration/EnProduction/PNP/Appli.js</file>
-            <file>file:/G:/ObsOcc/www/OBS_OCC_PNX_CEN_ok/Sources/Controleurs/CartoGrilles/cgObs.js</file>
-            <file>file:/G:/ObsOcc/www/OBS_OCC_PNX_CEN_ok/Sources/Controleurs/CartoGrilles/cgGPX.js</file>
-            <file>file:/G:/ObsOcc/www/OBS_OCC_PNX_CEN_ok/Sources/Configuration/EnProduction/PNP/Serveur.php</file>
-            <file>file:/G:/ObsOcc/www/OBS_OCC_PNX_CEN_ok/Sources/Modeles/Json/jFichierPhoto.php</file>
-            <file>file:/G:/ObsOcc/www/OBS_OCC_PNX_CEN_ok/Sources/Modeles/Json/jCdNom.php</file>
-            <file>file:/G:/ObsOcc/www/OBS_OCC_PNX_CEN_ok/Sources/Configuration/ConfigUtilisee.php</file>
-            <file>file:/G:/ObsOcc/www/OBS_OCC_PNX_CEN_ok/Sources/Modeles/Filtres/fAppli.php</file>
-            <file>file:/G:/ObsOcc/www/OBS_OCC_PNX_CEN_ok/Sources/Modeles/Json/jPersonnes.php</file>
-            <file>file:/G:/ObsOcc/www/OBS_OCC_PNX_CEN_ok/Sources/Modeles/Json/jStructures.php</file>
-            <file>file:/G:/ObsOcc/www/OBS_OCC_PNX_CEN_ok/Sources/Controleurs/Gestion/GestObs.php</file>
+            <file>file:/G:/www/git/obs_occ/Sources/Modeles/Json/jPersonnes.php</file>
+            <file>file:/G:/www/git/obs_occ/Sources/Controleurs/Formulaires/frmAuthent.js</file>
+            <file>file:/G:/www/git/obs_occ/Sources/Controleurs/Formulaires/frmStructure.js</file>
+            <file>file:/G:/www/git/obs_occ/Sources/Controleurs/Gestion/GestStructures.php</file>
+            <file>file:/G:/www/git/obs_occ/Sources/Modeles/GeoJson/gjObs.php</file>
+            <file>file:/G:/www/git/obs_occ/Sources/Modeles/Json/jCodesPersonnes.php</file>
+            <file>file:/G:/www/git/obs_occ/Sources/Controleurs/Formulaires/frmPersonne.js</file>
+            <file>file:/G:/www/git/obs_occ/Sources/Modeles/Filtres/fGrille.php</file>
+            <file>file:/G:/www/git/obs_occ/Sources/Modeles/Json/jCodesStructures.php</file>
+            <file>file:/G:/www/git/obs_occ/Sources/Controleurs/Grilles/gPersonnes.js</file>
+            <file>file:/G:/www/git/obs_occ/Sources/Controleurs/Gestion/GestPersonnes.php</file>
+            <file>file:/G:/www/git/obs_occ/Sources/Controleurs/Formulaires/frmObs.js</file>
+            <file>file:/G:/www/git/obs_occ/Sources/Controleurs/CartoGrilles/cgObs.js</file>
         </group>
     </open-files>
 </project-private>
