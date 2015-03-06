@@ -8,7 +8,7 @@
     require_once '../../' . $configInstance . '/PostGreSQL.php';
     require_once '../../Securite/Decrypt.php';
     
-    $critere = pg_escape_string($_REQUEST['critere']);// besoin de "pg_escape_string" car valeur maîtrisée par l'utilisateur
+    $critere = mb_substr(pg_escape_string($_REQUEST['critere']), 0, NULL, 'UTF-8');// besoin de "pg_escape_string" car valeur maîtrisée par l'utilisateur
     $cnxPgObsOcc = new CnxPgObsOcc();
     switch ($_REQUEST['mode']) {
         case '7dernieres':
@@ -19,13 +19,15 @@
         case 'genre':
             if ($_REQUEST['filtre'] == 'Habitat') {
                 $req = "SELECT cd_cb || ' - ' || lb_cb97_fr AS espece FROM INPN.TYPO_CORINE_BIOTOPES
-                    WHERE lb_cb97_fr IS NOT NULL AND cd_cb || ' - ' || lb_cb97_fr ILIKE '%" . mb_substr($critere, 0, null, 'UTF-8') . "%' ORDER BY espece";
+                    WHERE lb_cb97_fr IS NOT NULL AND cd_cb || ' - ' || lb_cb97_fr ILIKE '%" . $critere . "%' ORDER BY espece";
             }
             else {
-                $req = "SELECT DISTINCT(split_part(nom_vern, ' ', 1)) AS espece FROM
+                $req = "(SELECT DISTINCT(split_part(nom_vern, ' ', 1)) AS espece FROM
                     INPN.TAXREF WHERE regne = '" . $_REQUEST['filtre'] . "' AND
-                    split_part(nom_vern, ' ', 1) ILIKE '" .
-                    mb_substr($critere, 0, null, 'UTF-8') . "%' ORDER BY espece";
+                    split_part(nom_vern, ' ', 1) ILIKE '%" . $critere . "%' ORDER BY espece)
+                    UNION ALL (SELECT '-') UNION ALL (SELECT DISTINCT(nom_vern) AS espece FROM        
+                    INPN.TAXREF WHERE regne = '" . $_REQUEST['filtre'] . "' AND             
+                    nom_vern ILIKE '%" . $critere . "%' ORDER BY espece)";
             }
             break;
         case 'espece':

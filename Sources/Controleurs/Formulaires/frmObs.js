@@ -1,6 +1,6 @@
 //Variables globales utilisées pour gérer le formulaire
 var formulaire, fenetreFormulaire, listObs, listStruct, comboAjoutObs, comboAjoutStruct,
-    comboEspeces, comboEspecesUsuelles, tailleGenre = 0, modeRequete = '', nbImport = 0,
+    comboEspeces, comboEspecesUsuelles, modeRequete = '', nbImport = 0,
     nbDuplicata = 0, modeDuplication = false, toucheENTREE = true, comboPheno,
     comboStatutValidation, numerisat, numerisateur, profil, comboPrecision, comboDetermination,
     comboTypeEffectif, focusEffectifActif = true, comboLieuDit, idSociete, nomSociete,
@@ -44,41 +44,35 @@ Ext.onReady(function() {
         valueField: 'espece',
         fieldLabel: 'Espèce (latin)',
         listeners: {
-            keyup: function() {
-                var requete = this.getRawValue();
-                if (requete.length >= 3) { // si au moins 3 lettres
-                    var tabRequete = requete.split(' ', 2);
-                    if (tabRequete[1] == '' && (modeRequete != 'espece')) { // si au moins 2 mots
-                        modeRequete = 'espece';
-                        tailleGenre = tabRequete[0].length;
-                        this.store.load({params: {
-                                critere: tabRequete[0],
-                                mode: modeRequete,
-                                choixEspeceForcee: CST_choixEspeceForcee, // filtre "genre" avec/sans "espèce" obligatoire
-                                filtre: Ext.getCmp('regne').value
-                            }
-                        });
-                        comboEspecesUsuelles.store.removeAll();
-                        comboEspecesUsuelles.reset();
-                    }
-                    else {
-                        if (!tabRequete[1] && (modeRequete != 'genre') && ((requete.length == 3) ||
-                        (requete.length == tailleGenre))) {
+            keyup: function(field, event) {
+                if (this.getRawValue().length >= 3) { // si au moins 3 lettres tapées
+                    if ([13, 38, 40].indexOf(event.getKey()) == -1) { // si pas les flèches "Haut", "Bas" ni la touche "Enter"
+                        var tabMots = this.getRawValue().split(' ', 2);
+                        if ((typeof(tabMots[1]) == 'undefined')) {  // si l'utilisateur lance la recherche sur un seul mot (le genre en général)keyup: function() {
+                            modeRequete = 'espece';
+                            this.store.load({params: {
+                                    critere: tabMots[0],
+                                    mode: modeRequete,
+                                    choixEspeceForcee: CST_choixEspeceForcee, // filtre "genre" avec/sans "espèce" obligatoire
+                                    filtre: Ext.getCmp('regne').value
+                                }
+                            });
+                        }
+                        else {
                             modeRequete = 'genre';
                             this.store.load({params: {
-                                    critere: tabRequete[0],
+                                    critere: tabMots[0],
                                     mode: modeRequete,
                                     filtre: Ext.getCmp('regne').value
                                 }
                             });
-                            comboEspecesUsuelles.store.removeAll();
-                            comboEspecesUsuelles.reset();
                         }
+                        comboEspecesUsuelles.store.removeAll();
+                        comboEspecesUsuelles.reset();
                     }
                 }
                 else {
                     modeRequete = ''
-                    tailleGenre = 0;
                     this.store.removeAll();
                 }
             }
@@ -100,9 +94,9 @@ Ext.onReady(function() {
         listeners: {
             keyup: function(field, event) {
                 if (this.getRawValue().length >= 1) { // si au moins 1 lettre tapée
-                    if (event.getKey() < 33 || (event.getKey() > 40)) { // si pas les touches de navigation (pageUp, pageDown, end, home, left, up, right, down)
+                    if ([13, 38, 40].indexOf(event.getKey()) == -1) { // si pas les flèches "Haut", "Bas" ni la touche "Enter"
                         var tabMots = this.getRawValue().split(' ', 2);
-                        if ((typeof(tabMots[1]) == 'undefined')) {  // si l'utilisateur recherche le genre tout d'abord
+                        if ((typeof(tabMots[1]) == 'undefined')) {  // si l'utilisateur lance la recherche sur un seul mot (le genre en général)
                             modeRequete = 'genre';
                             this.store.load({params: {
                                     critere: tabMots[0],
@@ -124,7 +118,6 @@ Ext.onReady(function() {
                 }
                 else {
                     modeRequete = ''
-                    tailleGenre = 0;
                     this.store.removeAll();
                 }
             },
@@ -1454,7 +1447,6 @@ function reinitialiseFormulaire() {
     comboPheno.reset();
     // réinitialisation des variables globales
     toucheENTREE = true;
-    tailleGenre = 0;
     modeRequete = '';
 }
 

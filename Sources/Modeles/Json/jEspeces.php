@@ -8,7 +8,7 @@
     require_once '../../' . $configInstance . '/PostGreSQL.php';
     require_once '../../Securite/Decrypt.php';
     
-    $critere = pg_escape_string($_REQUEST['critere']);// besoin de "pg_escape_string" car valeur maîtrisée par l'utilisateur
+    $critere = mb_substr(pg_escape_string($_REQUEST['critere']), 0, NULL, 'UTF-8');// besoin de "pg_escape_string" car valeur maîtrisée par l'utilisateur
     $cnxPgObsOcc = new CnxPgObsOcc();
     switch ($_REQUEST['mode']) {
         case '7dernieres':
@@ -23,10 +23,12 @@
                     ILIKE '%" . mb_substr($critere, 0, 3, 'UTF-8') . "%' ORDER BY espece";
             }
             else {
-                $req = "SELECT DISTINCT(split_part(nom_complet, ' ', 1)) AS espece FROM
+                $req = "(SELECT DISTINCT(split_part(nom_complet, ' ', 1)) AS espece FROM
                     INPN.TAXREF WHERE regne = '" . $_REQUEST['filtre'] . "' AND
-                    split_part(nom_complet, ' ', 1) ILIKE '%" .
-                    mb_substr($critere, 0, 3, 'UTF-8') . "%' ORDER BY espece";
+                    split_part(nom_complet, ' ', 1) ILIKE '%" . $critere . "%' ORDER BY espece)
+                    UNION ALL (SELECT '-') UNION ALL (SELECT DISTINCT(nom_complet) AS espece FROM        
+                    INPN.TAXREF WHERE regne = '" . $_REQUEST['filtre'] . "' AND             
+                    nom_complet ILIKE '%" . $critere . "%' ORDER BY espece)";
             }
             break;
         case 'espece':
