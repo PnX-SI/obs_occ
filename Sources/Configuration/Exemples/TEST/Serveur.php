@@ -15,8 +15,7 @@
 
     define('MAIL_CONTACT', 'USER <user@domain.com>');
     define('TITRE_APPLI','Observations occasionnelles naturalistes des Parcs nationaux de France'); // idem que dans "Appli.js"
-    define('INSTALL', 'http://localhost/Applications/TEST/Sources'); // nommer ici le dossier "Sources" de l'appli
-
+    
     //define('WMS_USERNAME', 'user');
     //define('WMS_PASSWORD', 'psw');
 ?>

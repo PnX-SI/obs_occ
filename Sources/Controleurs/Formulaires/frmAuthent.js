@@ -150,7 +150,7 @@ function detecterAdmin() {
     if ((typeof CST_activeGestionUtilisateur  !== "undefined") && (CST_activeGestionUtilisateur  === false)) {
       return true;
     }
-    var MotDePasse =  Ext.getCmp('mot_de_passe').getValue();
+    var MotDePasse =  Ext.getCmp(GetParam('appli') + '_mot_de_passe').getValue();
     if (CST_Cryptage) {
         MotDePasse = encryptedString(public_key, Ext.getCmp(GetParam('appli') + '_mot_de_passe').getValue());
     }

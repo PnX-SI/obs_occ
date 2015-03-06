@@ -49,20 +49,20 @@ Ext.onReady(function() {
                     if ([13, 38, 40].indexOf(event.getKey()) == -1) { // si pas les flèches "Haut", "Bas" ni la touche "Enter"
                         var tabMots = this.getRawValue().split(' ', 2);
                         if ((typeof(tabMots[1]) == 'undefined')) {  // si l'utilisateur lance la recherche sur un seul mot (le genre en général)keyup: function() {
-                            modeRequete = 'espece';
+                            modeRequete = 'genre';
                             this.store.load({params: {
                                     critere: tabMots[0],
                                     mode: modeRequete,
-                                    choixEspeceForcee: CST_choixEspeceForcee, // filtre "genre" avec/sans "espèce" obligatoire
                                     filtre: Ext.getCmp('regne').value
                                 }
                             });
                         }
                         else {
-                            modeRequete = 'genre';
+                            modeRequete = 'espece';
                             this.store.load({params: {
                                     critere: tabMots[0],
                                     mode: modeRequete,
+                                    choixEspeceForcee: CST_choixEspeceForcee, // filtre "genre" avec/sans "espèce" obligatoire
                                     filtre: Ext.getCmp('regne').value
                                 }
                             });

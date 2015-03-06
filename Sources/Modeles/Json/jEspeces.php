@@ -18,9 +18,8 @@
             break;
         case 'genre':
             if ($_REQUEST['filtre'] == 'Habitat') {
-                $req = "SELECT DISTINCT(split_part(lb_cb97_fr, ' ', 1)) AS espece FROM
-                    INPN.TYPO_CORINE_BIOTOPES WHERE split_part(lb_cb97_fr, ' ', 1)
-                    ILIKE '%" . mb_substr($critere, 0, 3, 'UTF-8') . "%' ORDER BY espece";
+                $req = "SELECT lb_cb97_fr AS espece FROM INPN.TYPO_CORINE_BIOTOPES
+                    WHERE lb_cb97_fr IS NOT NULL AND lb_cb97_fr ILIKE '%" . $critere . "%' ORDER BY espece";
             }
             else {
                 $req = "(SELECT DISTINCT(split_part(nom_complet, ' ', 1)) AS espece FROM
@@ -33,7 +32,7 @@
             break;
         case 'espece':
             if ($_REQUEST['filtre'] == 'Habitat') {
-                $req = "SELECT DISTINCT(lb_cb97_fr) AS espece FROM INPN.TYPO_CORINE_BIOTOPES
+                $req = "SELECT lb_cb97_fr AS espece FROM INPN.TYPO_CORINE_BIOTOPES
                     WHERE split_part(lb_cb97_fr, ' ', 1) ILIKE '" . $critere .
                     "' ORDER BY espece";
             }
@@ -52,6 +51,7 @@
                         AND split_part(nom_complet, ' ', 2) != '' UNION SELECT '" . $critere .
                         " sp.'  AS nom_complet) AS ESPECES ORDER BY espece";
                 }
+                
             }
             break;
         default:

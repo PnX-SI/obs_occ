@@ -29,10 +29,10 @@ var WMS_PNX = new OpenLayers.Layer.WMS('Limites PNX',
 var couches = [WMS_IGN, WMS_Ortho, WMS_PNX]; // ordre des couches : arrière-plan >>> premier-plan
 
 // paramètrage visuel
-const CST_center = [747329, 6358407]; // coordonnées dans la projection de la carte
-const CST_zoom = 12;
-const CST_seuilZoomSelection = 17;
-const CST_region = 'north';
+var CST_center = [747329, 6358407]; // coordonnées dans la projection de la carte
+var CST_zoom = 12;
+var CST_seuilZoomSelection = 17;
+var CST_region = 'north';
 
 //############################################################""
 //    Exemple 2 :
@@ -86,8 +86,8 @@ var WMS_PNX = new OpenLayers.Layer.WMS('Limites PNX',
 var couches = [WMTS_IGN_SCANS,WMTS_IGN_ORTHO, WMS_PNX ]; // ordre des couches : arrière-plan >>> premier-plan
 
 // paramètrage visuel
-const CST_center = [411185.962,5504029.003]; // coordonnées dans la projection de la carte
-const CST_zoom = 12;
-const CST_seuilZoomSelection = 17;
-const CST_region = 'north';
+var CST_center = [411185.962,5504029.003]; // coordonnées dans la projection de la carte
+var CST_zoom = 12;
+var CST_seuilZoomSelection = 17;
+var CST_region = 'north';
 
