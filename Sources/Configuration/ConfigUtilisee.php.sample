@@ -38,7 +38,7 @@
             $configInstance = 'Configuration/EnProduction/PnP';
             break;
         default:
-            header('Location: ../index.php'); // retour à la page d'accueil de l'application
+            header('Location: ../../index.html'); // retour à la page d'accueil de l'application
             break;
     }
 ?>
