@@ -1,5 +1,5 @@
 <?php
-    //Fichier servant Ã  filtrer la grille en cours
+    //Fichier servant à gérer l'activation/déactivation du filtre sur l'emprise de la carte (bouton Filtrer emprise)
     $chGeom = ($_REQUEST['chGeom'] == null)? '' : $_REQUEST['chGeom'];
     $filtreEmprise = ($_REQUEST['filtreEmprise'] == null)? '' : $_REQUEST['filtreEmprise'];
 

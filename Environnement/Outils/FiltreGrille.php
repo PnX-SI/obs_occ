@@ -1,5 +1,7 @@
 <?php
-    //Fichier servant Ã  filtrer la grille en cours
+    //Fichier servant à filtrer les données de la grille selon les critères définis par l'utilisateur dans chaque champs (avec un "AND" si plusieurs)
+    //Remarque : possibilité de faire un "OR" sur les valeurs d'un même champ avec la syntaxe "||"
+ 
     $start = (pg_escape_string($_REQUEST['start']) == null)? 0 : pg_escape_string($_REQUEST['start']);// besoin de "pg_escape_string" car valeur maîtrisée par l'utilisateur
     $limit = (pg_escape_string($_REQUEST['limit']) == null)? 20 : pg_escape_string($_REQUEST['limit']);// besoin de "pg_escape_string" car valeur maîtrisée par l'utilisateur
     $sort = ($_REQUEST['sort'] == null)? '' : $_REQUEST['sort'];
