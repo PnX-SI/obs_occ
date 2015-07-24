@@ -4,8 +4,8 @@
     require_once '../../Modeles/Classes/ClassCnxPgObsOcc.php';
     require_once '../' . ENV . '/Outils/FiltreCarte.php';
     require_once '../' . ENV . '/Outils/FiltreGrille.php';
-    require_once '../Adaptations/grille.php';
-    require_once '../../' . $configInstance . '/Filtres/fAppli.php';
+    require_once '../Adaptations/fGrille.php';
+    require_once '../Adaptations/fAppli.php';
     
 
     $cnxPgObsOcc = new CnxPgObsOcc();

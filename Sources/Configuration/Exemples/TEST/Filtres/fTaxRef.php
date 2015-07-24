@@ -1,22 +1,39 @@
 <?php
+    /*
+     * N'EMPECHE PAS LA SAISIE DE L'OBSERVATION => PERMET JUSTE D'AFFICHER UN MESSAGE D'AVERTISSEMENT PERSONNALISE A LA FERMETURE DU FORMULAIRE
+     */
+    
     require_once '../../Modeles/Classes/ClassCnxPgObsOcc.php';
-
-    $valeur = pg_escape_string($_POST['valeur']); // besoin de "pg_escape_string" car piratage possible par l'utilisateur
+    
+    // variables utilisables pour une requête si on souhaite que l'apllication ne permette pas de saisir certains taxons 
+    // dans le cas où on aurait d'autres outils de collecte dédiés (exemple : l'application SaisieFlore spécifique au Parc national des Cévennes)
+    $regne = $_POST['filtre']; // règne choisi
+    $especeLatinSaisie = pg_escape_string($_POST['saisie']); // espece en latin saisie (besoin de "pg_escape_string" car piratage possible par l'utilisateur)
+    $cd_nom = $_POST['valeur']; // unique cd_nom trouvé pour l'espece en latin saisie
+    
     $cnxPgObsOcc = new CnxPgObsOcc();
-    $cpt = 0;
     
-    #$req = "MA REQUETE QUI PERMET DE FILTRER/VERIFIER LES DONNEES';
-    #$rs = $cnxPgObsOcc->executeSql($req);
-    #$cpt = pg_numrows($rs);
+    // A DECOMMENTER ET A ADAPTER SELON VOTRE CAS
+    // Exemple bidon pour afficher un message d'avertissement lorque l'utilisateur n'a pas choisi un taxon de référence mais un synonyme
+    /*
+    if ($regne != 'Habitat') {
+        $req = "SELECT cd_nom FROM inpn.taxref WHERE cd_nom = '" . $cd_nom . "' AND cd_ref = cd_nom";
+        $rs = $cnxPgObsOcc->executeSql($req);
+        $cpt = pg_numrows($rs);
+        if ($cpt == 0) {
+            $errorMessage = 'AVERTISSEMENT : taxon synonyme';
+            $data = 'Le taxon ' . $especeLatinSaisie . ' que vous venez de saisir n\'est pas un taxon de référence !!!';
+        }
+    }
+    */
     
-    if ($cpt == 0) {
+    unset($cnxPgObsOcc);
+    
+    if (!isset($errorMessage)) {
         $data = 'Taxon OK';
         die('{success: true, data: "' . $data .'"}');
     }
     else {
-        $errorMessage = 'AVERTISSEMENT : taxon XYZ';
-        $data = 'Le taxon ' . $_POST['saisie'] . ' fait partie de XXX et ne devrait pas apparaitre ici !!!!! ';
+        die('{success: false, errorMessage: "' . $errorMessage . '", data: "' . $data .'"}');
     }
-    die('{success: false, errorMessage: "' . $errorMessage . '", data: "' . $data .'"}');
-    unset($cnxPgObsOcc);
 ?>

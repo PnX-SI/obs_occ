@@ -7,8 +7,8 @@
     
     if (!(isset($_SESSION[$_GET['appli']]['numerisateur']['code']) && isset($_SESSION[$_GET['appli']]['numerisateur']['libelle']) &&
     isset($_SESSION[$_GET['appli']]['numerisateur']['droit']) && isset($_SESSION[$_GET['appli']]['numerisateur']['profil']) &&
-    isset($_SESSION[$_GET['appli']]['Connexion']['LOGIN']) && isset($_SESSION[$_GET['appli']]['Connexion']['USER']) &&
-    isset($_SESSION[$_GET['appli']]['Connexion']['PASSWORD']))) {
+    isset($_SESSION[$_GET['appli']]['numerisateur']['idStructAppart']) && isset($_SESSION[$_GET['appli']]['Connexion']['LOGIN']) &&
+    isset($_SESSION[$_GET['appli']]['Connexion']['USER']) && isset($_SESSION[$_GET['appli']]['Connexion']['PASSWORD']))) {
         header('Location: vAuthent.php?appli=' . $_GET['appli']);
     }
 ?>

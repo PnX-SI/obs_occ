@@ -12,11 +12,13 @@
             $numerisat = decrypteRSA($_GET['appli'], $_SESSION[$_GET['appli']]['numerisateur']['libelle']);
             $profil = decrypteRSA($_GET['appli'], $_SESSION[$_GET['appli']]['numerisateur']['profil']);
             $droit = decrypteRSA($_GET['appli'], $_SESSION[$_GET['appli']]['numerisateur']['droit']);
+            $idStructAppart = decrypteRSA($_GET['appli'], $_SESSION[$_GET['appli']]['numerisateur']['idStructAppart']);
             $idSociete = decrypteRSA($_GET['appli'], $_SESSION[$_GET['appli']]['numerisateur']['idSociete']);
             $nomSociete = decrypteRSA($_GET['appli'], $_SESSION[$_GET['appli']]['numerisateur']['nomSociete']);
             die('{success: true, numerisateur: "' . $numerisateur . '", numerisat: "' .
-                $numerisat . '", profil: "' . $profil . '", droit: "' . $droit . 
-                '", idSociete: "' . $idSociete . '", nomSociete: "' . $nomSociete . '"}');
+                $numerisat . '", profil: "' . $profil . '", droit: "' . $droit .
+                '", idStructAppart: "' . $idStructAppart . '", idSociete: "' . 
+                $idSociete . '", nomSociete: "' . $nomSociete . '"}');
         break;
         case 'saisieEnCours':
             $data = $_SESSION[$_GET['appli']]['saisieEnCours'];

@@ -56,6 +56,7 @@
                     $_SESSION[$_GET['appli']]['numerisateur']['libelle'] = $rsa_obj->encrypt($personne->nom . ' ' . $personne->prenom, $public_key);
                     $_SESSION[$_GET['appli']]['numerisateur']['droit'] = $rsa_obj->encrypt($personne->role, $public_key);
                     $_SESSION[$_GET['appli']]['numerisateur']['profil'] = $rsa_obj->encrypt($personne->specialite, $public_key);
+                    $_SESSION[$_GET['appli']]['numerisateur']['idStructAppart'] = $rsa_obj->encrypt($personne->id_structure, $public_key);
                     $_SESSION[$_GET['appli']]['numerisateur']['idSociete'] = $rsa_obj->encrypt($_POST['id_structure'], $public_key);
                     $_SESSION[$_GET['appli']]['numerisateur']['nomSociete'] = $rsa_obj->encrypt($_POST['nom_structure'], $public_key);
                     $_SESSION[$_GET['appli']]['Connexion']['LOGIN'] = $rsa_obj->encrypt($personne->email, $public_key);
@@ -67,6 +68,7 @@
                     $_SESSION[$_GET['appli']]['numerisateur']['libelle'] = $personne->nom . ' ' . $personne->prenom;
                     $_SESSION[$_GET['appli']]['numerisateur']['droit'] = $personne->role;
                     $_SESSION[$_GET['appli']]['numerisateur']['profil'] = $personne->specialite;
+                    $_SESSION[$_GET['appli']]['numerisateur']['idStructAppart'] = $personne->id_structure;
                     $_SESSION[$_GET['appli']]['numerisateur']['idSociete'] = $_POST['id_structure'];
                     $_SESSION[$_GET['appli']]['numerisateur']['nomSociete'] = $_POST['nom_structure'];
                     $_SESSION[$_GET['appli']]['Connexion']['LOGIN'] = $personne->email;
