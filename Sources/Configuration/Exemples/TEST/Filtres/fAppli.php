@@ -20,9 +20,14 @@
     $numerisat = decrypteRSA($_GET['appli'], $_SESSION[$_GET['appli']]['numerisateur']['libelle']);
     $profil = decrypteRSA($_GET['appli'], $_SESSION[$_GET['appli']]['numerisateur']['profil']);
     $droit = decrypteRSA($_GET['appli'], $_SESSION[$_GET['appli']]['numerisateur']['droit']);
-    $idStructAppart = decrypteRSA($_GET['appli'], $_SESSION[$_GET['appli']]['numerisateur']['idStructAppart']);
     $idSociete = decrypteRSA($_GET['appli'], $_SESSION[$_GET['appli']]['numerisateur']['idSociete']);
     $nomSociete = decrypteRSA($_GET['appli'], $_SESSION[$_GET['appli']]['numerisateur']['nomSociete']);
+    //ATTENTION !!! La struture d'appartenance n'est pas obligatoire, penser donc à tester sa valeur avant de l'utiliser dans une requête
+    //si cette dernière est une chaîne de caractères vide alors la remplacer par le mot "NULL" pour être comptabible en SQL
+    $idStructAppart = decrypteRSA($_GET['appli'], $_SESSION[$_GET['appli']]['numerisateur']['idStructAppart']);
+    if ($idStructAppart == '') {
+        $idStructAppart = 'NULL'; // 
+    } 
     */        
     
     // A DECOMMENTER ET A ADAPTER SELON VOTRE PROPRE CAS
@@ -42,10 +47,13 @@
     /*
     $droit = decrypteRSA($_GET['appli'], $_SESSION[$_GET['appli']]['numerisateur']['droit']);
     $numerisateur = decrypteRSA($_GET['appli'], $_SESSION[$_GET['appli']]['numerisateur']['code']);
+    $idStructAppart = decrypteRSA($_GET['appli'], $_SESSION[$_GET['appli']]['numerisateur']['idStructAppart']);
+    if ($idStructAppart == '') {
+        $idStructAppart = 'NULL'; // compatibilité avec la requête SQL
+    }            
     if (($droit != 'expert') && ($droit != 'admin')) {
-        $filter .= ' AND (numerisateur = ' . decrypteRSA($_GET['appli'], $_SESSION[$_GET['appli']]['numerisateur']['code']);
-        $filter .= ' OR ' . decrypteRSA($_GET['appli'], $_SESSION[$_GET['appli']]['numerisateur']['idStructAppart']) . 
-            ' IN (SELECT regexp_split_to_table(structure,' . "'&'" . ')::integer))';
+        $filter .= ' AND (numerisateur = ' . $numerisateur;
+        $filter .= ' OR ' . $idStructAppart . ' IN (SELECT regexp_split_to_table(structure,' . "'&'" . ')::integer))';
     }
     */
 ?>
