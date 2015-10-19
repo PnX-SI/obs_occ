@@ -499,6 +499,7 @@ Ext.onReady(function() {
                                                 xtype: 'datefield',
                                                 format: 'd/m/Y',
                                                 id: 'date_obs',
+                                                maxValue: new Date(),
                                                 blankText: "Veuillez entrer la date d'observation !"
                                             }
                                         ]
@@ -510,12 +511,14 @@ Ext.onReady(function() {
                                                 xtype: 'datefield',
                                                 format: 'd/m/Y',
                                                 id: 'date_debut_obs',
+                                                maxValue: new Date(),
                                                 blankText: "Veuillez entrer la date de début d'observation !"
 
                                             }, {
                                                 xtype: 'datefield',
                                                 format: 'd/m/Y',
                                                 id: 'date_fin_obs',
+                                                maxValue: new Date(),
                                                 blankText: "Veuillez entrer la date de fin d'observation !"
                                             }
                                         ]
