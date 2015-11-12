@@ -14,18 +14,6 @@
     $where = str_replace(' lieu_dit ', ' IGN_BD_TOPO.LIEU_DIT.nom ', $where);
 
 
-    $sort = str_replace('commune', 'IGN_BD_TOPO.COMMUNE.nom', $sort);
-    $sort = str_replace('lieu_dit', 'IGN_BD_TOPO.LIEU_DIT.nom', $sort);
-
-    $sort = str_replace('observat', 'md.liste_nom_auteur(observateur)', $sort);
-    $sort = str_replace('struct', "md.liste_nom_structure(structure)", $sort);
-    $sort = str_replace('validat', "(validateurs.nom || ' ' || validateurs.prenom)", $sort);
-    $sort = str_replace('numerisat', "(numerisateurs.nom || ' ' || numerisateurs.prenom)", $sort);
-    $sort = str_replace('code_insee', "IGN_BD_TOPO.COMMUNE.code_insee", $sort);
-    $sort = str_replace('st_geometrytype', "st_geometrytype(saisie_observation.geometrie)", $sort);
-
-
-
 
     $row_number = $start + 1 +$limit;
     $req = "WITH tri AS (

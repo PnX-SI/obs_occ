@@ -124,7 +124,7 @@
                 break;
             }
         }
-        // traitement des cas particuliers de concatÃ©nation/dÃ©concatÃ©nation de champs
+        // traitement des cas particuliers de concaténation/déoncaténation de champs
         // aucun ici
         $where .= $qs;
     }
