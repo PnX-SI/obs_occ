@@ -33,4 +33,3 @@
     $sort = str_replace(' lieu_dit ', ' IGN_BD_TOPO.LIEU_DIT.nom ', $sort);
 
 ?>
-r
