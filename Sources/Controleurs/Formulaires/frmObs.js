@@ -914,7 +914,7 @@ Ext.onReady(function() {
             items: [{
                     handler: importerPhoto,
                     iconCls: 'photo',
-                    tooltip: 'Visualiser / Charger une photo'
+                    tooltip: 'visualiser/charger/supprimer une photo'
                 }, {
                     xtype: 'label',
                     text: 'Photo:'
