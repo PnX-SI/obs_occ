@@ -9,13 +9,7 @@
 
 
     $cnxPgObsOcc = new CnxPgObsOcc();
-    // traitement particulier pour utiliser ici le champ "nom" de la table "IGN_BD_TOPO.COMMUNE"
-    $where = str_replace(' commune ', ' IGN_BD_TOPO.COMMUNE.nom ', $where);
-    $where = str_replace(' lieu_dit ', ' IGN_BD_TOPO.LIEU_DIT.nom ', $where);
 
-
-
-    $row_number = $start + 1 +$limit;
     $req = "WITH tri AS (
             SELECT row_number() over (order by " . $sort . ' ' . $dir . " NULLS LAST), id_obs
             FROM saisie.saisie_observation
@@ -43,9 +37,13 @@
         LEFT JOIN md.personne AS numerisateurs ON numerisateur = numerisateurs.id_personne
         LEFT JOIN md.personne AS validateurs ON validateur = validateurs.id_personne
         LEFT JOIN ign_bd_topo.lieu_dit ON id_lieu_dit = ign_bd_topo.lieu_dit.id
-        LEFT JOIN ign_bd_topo.commune ON ign_bd_topo.commune.code_insee = saisie.saisie_observation.code_insee
-            WHERE row_number > " . $start . ' AND row_number < ' . $row_number;
-        
+        LEFT JOIN ign_bd_topo.commune ON ign_bd_topo.commune.code_insee = saisie.saisie_observation.code_insee ";
+            
+    if ($limit !== 'AUCUNE') {
+        $row_number = $start + 1 +$limit;  
+        $req .= 'WHERE row_number > ' . $start . ' AND row_number < ' . $row_number;  
+    }
+    
     $rs = $cnxPgObsOcc->executeSql($req);
     $rsTot = $cnxPgObsOcc->executeSql('SELECT COUNT(*) FROM SAISIE.SAISIE_OBSERVATION
         LEFT JOIN MD.ETUDE USING(id_etude) LEFT JOIN MD.PROTOCOLE USING(id_protocole)
