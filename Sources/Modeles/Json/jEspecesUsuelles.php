@@ -7,9 +7,8 @@
     require_once '../../Modeles/Classes/ClassCnxPgObsOcc.php';
     require_once '../../' . $configInstance . '/PostGreSQL.php';
     require_once '../../Securite/Decrypt.php';
-
-    $critere = ($_REQUEST['critere'] == null)? '' : mb_substr(pg_escape_string($_REQUEST['critere']), 0, NULL, 'UTF-8'); // besoin de "pg_escape_string" car valeur maîtrisée par l'utilisateur
-
+    
+    $critere = mb_substr(pg_escape_string($_REQUEST['critere']), 0, NULL, 'UTF-8');// besoin de "pg_escape_string" car valeur maîtrisée par l'utilisateur
     $cnxPgObsOcc = new CnxPgObsOcc();
     switch ($_REQUEST['mode']) {
         case '7dernieres':
