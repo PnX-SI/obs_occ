@@ -22,12 +22,17 @@
                     WHERE lb_cb97_fr IS NOT NULL AND cd_cb || ' - ' || lb_cb97_fr ILIKE '%" . $critere . "%' ORDER BY espece";
             }
             else {
-                $req = "(SELECT DISTINCT(split_part(nom_vern, ' ', 1)) AS espece FROM
-                    INPN.TAXREF WHERE regne = '" . $_REQUEST['filtre'] . "' AND
-                    split_part(nom_vern, ' ', 1) ILIKE '%" . $critere . "%' ORDER BY espece)
-                    UNION ALL (SELECT '-') UNION ALL (SELECT DISTINCT(nom_vern) AS espece FROM        
-                    INPN.TAXREF WHERE regne = '" . $_REQUEST['filtre'] . "' AND             
-                    nom_vern ILIKE '%" . $critere . "%' ORDER BY espece)";
+                $req = "(
+                      SELECT DISTINCT(split_part(nom_vern, ' ', 1)) AS espece 
+                      FROM INPN.TAXREF 
+                      WHERE regne = '" . $_REQUEST['filtre'] . "' AND split_part(nom_vern, ' ', 1) ILIKE '" . $critere . "%' ORDER BY espece
+                    )
+                    UNION ALL (SELECT '-') 
+                    UNION ALL (
+                      SELECT DISTINCT(nom_vern) AS espece FROM 
+                      INPN.TAXREF WHERE regne = '" . $_REQUEST['filtre'] . "' AND 
+                      nom_vern ILIKE '%" . $critere . "%' ORDER BY espece
+                    )";
             }
             break;
         case 'espece':
@@ -36,9 +41,10 @@
                     WHERE cd_cb = '" . $critere . "' ORDER BY espece";
             }
             else {
-                $req = "SELECT DISTINCT(nom_vern) AS espece FROM INPN.TAXREF WHERE
-                    regne = '" . $_REQUEST['filtre'] . "' AND split_part(nom_vern, ' ', 1)
-                    ILIKE '" . $critere . "' ORDER BY espece";
+                $req = "SELECT DISTINCT(nom_vern) AS espece 
+                    FROM INPN.TAXREF 
+                    WHERE regne = '" . $_REQUEST['filtre'] . "' AND nom_vern ILIKE '" . $critere . "%' 
+                    ORDER BY espece";
             }
             break;
     }

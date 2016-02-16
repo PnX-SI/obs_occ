@@ -60,7 +60,7 @@ Ext.onReady(function() {
                         else {
                             modeRequete = 'espece';
                             this.store.load({params: {
-                                    critere: tabMots[0],
+                                    critere: this.getRawValue(),
                                     mode: modeRequete,
                                     choixEspeceForcee: CST_choixEspeceForcee, // filtre "genre" avec/sans "espèce" obligatoire
                                     filtre: Ext.getCmp('regne').value
@@ -108,7 +108,7 @@ Ext.onReady(function() {
                         else {
                             modeRequete = 'espece'; // si l'utilisateur tape un espace pour la suite de la recherche du taxon après avoir saisi le genre
                             this.store.load({params: {
-                                    critere: tabMots[0],
+                                    critere: this.getRawValue(),
                                     mode: modeRequete,
                                     filtre: Ext.getCmp('regne').value
                                 }

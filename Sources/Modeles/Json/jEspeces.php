@@ -22,34 +22,53 @@
                     WHERE lb_cb97_fr IS NOT NULL AND lb_cb97_fr ILIKE '%" . $critere . "%' ORDER BY espece";
             }
             else {
-                $req = "(SELECT DISTINCT(split_part(nom_complet, ' ', 1)) AS espece FROM
-                    INPN.TAXREF WHERE regne = '" . $_REQUEST['filtre'] . "' AND
-                    split_part(nom_complet, ' ', 1) ILIKE '%" . $critere . "%' ORDER BY espece)
-                    UNION ALL (SELECT '-') UNION ALL (SELECT DISTINCT(nom_complet) AS espece FROM        
-                    INPN.TAXREF WHERE regne = '" . $_REQUEST['filtre'] . "' AND             
-                    nom_complet ILIKE '%" . $critere . "%' ORDER BY espece)";
+                $req = "(
+                      SELECT DISTINCT(split_part(nom_complet, ' ', 1)) AS espece 
+                      FROM INPN.TAXREF 
+                      WHERE regne = '" . $_REQUEST['filtre'] . "' 
+                        AND split_part(nom_complet, ' ', 1) ILIKE '" . $critere . "%' 
+                      ORDER BY espece
+                      LIMIT 30
+                    )
+                    UNION ALL (SELECT '-') 
+                    UNION ALL (
+                      SELECT DISTINCT(nom_complet) AS espece 
+                      FROM INPN.TAXREF 
+                      WHERE regne = '" . $_REQUEST['filtre'] . "' 
+                        AND nom_complet ILIKE '" . $critere . "%' 
+                      ORDER BY espece
+                      LIMIT 30
+                    ) ";
             }
             break;
         case 'espece':
             if ($_REQUEST['filtre'] == 'Habitat') {
-                $req = "SELECT lb_cb97_fr AS espece FROM INPN.TYPO_CORINE_BIOTOPES
-                    WHERE split_part(lb_cb97_fr, ' ', 1) ILIKE '" . $critere .
-                    "' ORDER BY espece";
+                $req = "SELECT lb_cb97_fr AS espece 
+                      FROM INPN.TYPO_CORINE_BIOTOPES
+                      WHERE split_part(lb_cb97_fr, ' ', 1) ILIKE '" . $critere ."' 
+                      ORDER BY espece LIMIT 30";
             }
             else {
                 if ($_REQUEST['choixEspeceForcee'] == 'true') {
-                    $req = "SELECT DISTINCT(nom_complet) AS espece FROM INPN.TAXREF
-                        WHERE regne = '" . $_REQUEST['filtre'] . "' AND split_part(nom_complet, ' ', 1)
-                        ILIKE '" . $critere . "' AND split_part(nom_complet, ' ', 2)
-                        != '' AND split_part(nom_complet, ' ', 2) != 'sp.' ORDER
-                        BY espece";
+                    $req = "SELECT DISTINCT(nom_complet) AS espece 
+                        FROM INPN.TAXREF
+                        WHERE regne = '" . $_REQUEST['filtre'] . "' 
+                          AND nom_complet ILIKE '" . $critere . "%' 
+                          AND split_part(nom_complet, ' ', 2) != '' AND split_part(nom_complet, ' ', 2) != 'sp.' 
+                        ORDER BY espece 
+                        LIMIT 30";
                 }
                 else {
-                    $req = "SELECT DISTINCT(nom_complet) AS espece FROM (SELECT DISTINCT(nom_complet)
-                        FROM INPN.TAXREF WHERE regne = '" . $_REQUEST['filtre'] . "'
-                        AND split_part(nom_complet, ' ', 1) ILIKE '" . $critere . "'
-                        AND split_part(nom_complet, ' ', 2) != '' UNION SELECT '" . $critere .
-                        " sp.'  AS nom_complet) AS ESPECES ORDER BY espece";
+                    $req = "SELECT DISTINCT(nom_complet) AS espece 
+                        FROM (
+                          SELECT DISTINCT(nom_complet)
+                          FROM INPN.TAXREF 
+                          WHERE regne = '" . $_REQUEST['filtre'] . "'
+                            AND nom_complet ILIKE '" . $critere . "%'
+                            AND split_part(nom_complet, ' ', 2) != '' 
+                          UNION SELECT '" . $critere ." sp.'  AS nom_complet
+                        ) AS ESPECES 
+                        ORDER BY espece LIMIT 30";
                 }
                 
             }
@@ -61,25 +80,35 @@
             }
             else {
                 if ($_REQUEST['choixEspeceForcee'] == 'true') {
-                    $req = "SELECT DISTINCT(nom_complet) AS espece FROM INPN.TAXREF
-                        WHERE regne = '" . $_REQUEST['filtre'] . "' AND cd_nom IN
-                        (SELECT DISTINCT(cd_ref) FROM INPN.TAXREF WHERE regne =
-                        '" . $_REQUEST['filtre'] . "' AND nom_vern = '" . $critere .
-                        "') ORDER BY espece";
+                    $req = "SELECT DISTINCT(nom_complet) AS espece 
+                        FROM INPN.TAXREF
+                        WHERE regne = '" . $_REQUEST['filtre'] . "' 
+                        AND cd_nom IN (
+                          SELECT DISTINCT(cd_ref) FROM INPN.TAXREF WHERE regne ='" . $_REQUEST['filtre'] . "' AND nom_vern = '" . $critere . "') 
+                        ORDER BY espece LIMIT 30";
                 }
                 else {
-                    $req = "WITH TAXONS AS (SELECT DISTINCT(nom_complet) FROM INPN.TAXREF
-                        WHERE regne = '" . $_REQUEST['filtre'] . "' AND cd_nom IN (SELECT
-                        DISTINCT(cd_ref) FROM INPN.TAXREF WHERE regne = '" . $_REQUEST['filtre'] .
-                        "' AND nom_vern = '" . $critere . "')) SELECT DISTINCT(nom_complet)
-                        AS espece FROM (SELECT nom_complet FROM TAXONS UNION SELECT
-                        DISTINCT(split_part(nom_complet, ' ', 1) || ' sp.') AS nom_complet
-                        FROM TAXONS) AS ESPECES WHERE split_part(nom_complet, ' ', 2) != ''
-                        ORDER BY espece";
+                    $req = "WITH TAXONS AS (
+                          SELECT DISTINCT(nom_complet) 
+                          FROM INPN.TAXREF
+                          WHERE regne = '" . $_REQUEST['filtre'] . "' 
+                            AND cd_nom IN (
+                              SELECT DISTINCT(cd_ref) FROM INPN.TAXREF WHERE regne = '" . $_REQUEST['filtre'] . "' AND nom_vern = '" . $critere . "'
+                            )
+                        ) SELECT DISTINCT(nom_complet) AS espece 
+                        FROM (
+                          SELECT nom_complet FROM TAXONS 
+                          UNION 
+                          SELECT DISTINCT(split_part(nom_complet, ' ', 1) || ' sp.') AS nom_complet
+                          FROM TAXONS
+                        ) AS ESPECES 
+                        WHERE split_part(nom_complet, ' ', 2) != ''
+                        ORDER BY espece LIMIT 30";
                 }
             }
             break;
     }
+    //print $req;
     $rs = $cnxPgObsOcc->executeSql($req);
     $arr = array();
     while ($obj = pg_fetch_object($rs)) {
