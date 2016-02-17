@@ -19,32 +19,37 @@
         case 'genre':
             if ($_REQUEST['filtre'] == 'Habitat') {
                 $req = "SELECT cd_cb || ' - ' || lb_cb97_fr AS espece FROM INPN.TYPO_CORINE_BIOTOPES
-                    WHERE lb_cb97_fr IS NOT NULL AND cd_cb || ' - ' || lb_cb97_fr ILIKE '%" . $critere . "%' ORDER BY espece";
+                    WHERE lb_cb97_fr IS NOT NULL AND cd_cb || ' - ' || lb_cb97_fr ILIKE '%" . $critere . "%' ORDER BY espece LIMIT 30";
             }
             else {
                 $req = "(
                       SELECT DISTINCT(split_part(nom_vern, ' ', 1)) AS espece 
                       FROM INPN.TAXREF 
-                      WHERE regne = '" . $_REQUEST['filtre'] . "' AND split_part(nom_vern, ' ', 1) ILIKE '" . $critere . "%' ORDER BY espece
+                      WHERE regne = '" . $_REQUEST['filtre'] . "' 
+                        AND UNACCENT(split_part(nom_vern, ' ', 1)) ILIKE UNACCENT('" . $critere . "%') ORDER BY espece
+                      LIMIT 15
                     )
                     UNION ALL (SELECT '-') 
                     UNION ALL (
                       SELECT DISTINCT(nom_vern) AS espece FROM 
                       INPN.TAXREF WHERE regne = '" . $_REQUEST['filtre'] . "' AND 
-                      nom_vern ILIKE '%" . $critere . "%' ORDER BY espece
+                      UNACCENT(nom_vern) ILIKE UNACCENT('" . $critere . "%') ORDER BY espece
+                      LIMIT 15
                     )";
             }
             break;
         case 'espece':
             if ($_REQUEST['filtre'] == 'Habitat') {
                 $req = "SELECT cd_cb || ' - ' || lb_cb97_fr AS espece FROM INPN.TYPO_CORINE_BIOTOPES
-                    WHERE cd_cb = '" . $critere . "' ORDER BY espece";
+                    WHERE cd_cb = '" . $critere . "' ORDER BY espece LIMIT 30";
             }
             else {
                 $req = "SELECT DISTINCT(nom_vern) AS espece 
                     FROM INPN.TAXREF 
-                    WHERE regne = '" . $_REQUEST['filtre'] . "' AND nom_vern ILIKE '" . $critere . "%' 
-                    ORDER BY espece";
+                    WHERE regne = '" . $_REQUEST['filtre'] . "' 
+                      AND UNACCENT(nom_vern) ILIKE UNACCENT('" . $critere . "%') 
+                    ORDER BY espece
+                    LIMIT 30";
             }
             break;
     }
