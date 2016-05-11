@@ -27,12 +27,12 @@ Ext.onReady(function() {
     var filtres = new Ext.ux.grid.GridFilters({
         menuFilterText: 'Filtres',
         filters: [{type: 'numeric', dataIndex: 'id_etude', menuItemCfgs : {emptyText: ''}},
-            {type: 'string', dataIndex: 'nom_etude', emptyText: 'Ex. : Val1||Val2||Val3'},
+            {type: 'string', dataIndex: 'nom_etude', emptyText: 'Val1||Val2||IS NULL'},
             {type: 'date', dataIndex: 'date_debut', beforeText: 'Avant le', afterText: 'Après le', onText: 'Le'},
             {type: 'date', dataIndex: 'date_fin', beforeText: 'Avant le', afterText: 'Après le', onText: 'Le'},
-            {type: 'string', dataIndex: 'cahier_des_charges', emptyText: 'Ex. : Val1||Val2||Val3'},
-            {type: 'string', dataIndex: 'description', emptyText: 'Ex. : Val1||Val2||Val3'},
-            {type: 'string', dataIndex: 'lien_rapport_final', emptyText: 'Ex. : Val1||Val2||Val3'}
+            {type: 'string', dataIndex: 'cahier_des_charges', emptyText: 'Val1||Val2||IS NULL'},
+            {type: 'string', dataIndex: 'description', emptyText: 'Val1||Val2||IS NULL'},
+            {type: 'string', dataIndex: 'lien_rapport_final', emptyText: 'Val1||Val2||IS NULL'}
         ]
     });
     //Configuration type de chaque colonne
@@ -42,8 +42,8 @@ Ext.onReady(function() {
             colonneSelection, // en premier obligatoirement
             {dataIndex: 'id_etude', header: 'id_etude', hidden: true},
             {dataIndex: 'nom_etude', header: 'Nom'},
-            {dataIndex: 'date_debut', header: 'Début', renderer: Ext.util.Format.dateRenderer('d/m/Y')},
-            {dataIndex: 'date_fin', header: 'Fin', renderer: Ext.util.Format.dateRenderer('d/m/Y')},
+            {dataIndex: 'date_debut', header: 'Début', renderer: dateRenderer},
+            {dataIndex: 'date_fin', header: 'Fin', renderer: dateRenderer},
             {dataIndex: 'cahier_des_charges', header: 'CDC'},
             {dataIndex: 'description', header: 'Description'},
             {dataIndex: 'lien_rapport_final', header: 'Lien'}

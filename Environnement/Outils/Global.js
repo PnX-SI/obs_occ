@@ -538,6 +538,16 @@ function timeRenderer(value) {
     return result;
 }
 
+//Fonction de traitement de l'affichage du type date dans les grilles
+function dateRenderer(value) {
+    var result = '';
+    if (value) {
+        var d = new Date(value + 'T12:00:00Z'); // astuce : heure de midi pour que ça marche quelque soit le fuseau horaire (à +/- 12 heures donc)
+        result = d.format('d/m/Y');
+    }
+    return result;
+}
+
 //Fonction de traitement de l'affichage du type booléen dans les grilles
 function traiteAffichageBoolean(val) {
     switch (val) {

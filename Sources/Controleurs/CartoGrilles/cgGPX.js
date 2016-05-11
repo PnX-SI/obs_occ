@@ -96,18 +96,18 @@ function basculeEcran(sens) {
         menuFilterText: 'Filtres',
         local: true,
         filters: [
-            {type: 'string', dataIndex: 'name', emptyText: 'Ex. : Val1||Val2||Val3'},
+            {type: 'string', dataIndex: 'name', emptyText: 'Val1||Val2||IS NULL'},
             {type: 'numeric', dataIndex: 'ele', menuItemCfgs : {emptyText: ''}},
-            {type: 'string', dataIndex: 'time', emptyText: 'Ex. : Val1||Val2||Val3'},
+            {type: 'string', dataIndex: 'time', emptyText: 'Val1||Val2||IS NULL'},
             {type: 'date', dataIndex: 'date_obs_point', beforeText: 'Avant le', afterText: 'Après le', onText: 'Le'},
-            {type: 'string', dataIndex: 'heure_obs_point', emptyText: 'Ex. : Val1||Val2||Val3'},
+            {type: 'string', dataIndex: 'heure_obs_point', emptyText: 'Val1||Val2||IS NULL'},
             {type: 'date', dataIndex: 'date_obs_ligne', beforeText: 'Avant le', afterText: 'Après le', onText: 'Le'},
-            {type: 'string', dataIndex: 'heure_obs_ligne', emptyText: 'Ex. : Val1||Val2||Val3'},
-            {type: 'string', dataIndex: 'cmt', emptyText: 'Ex. : Val1||Val2||Val3'},
+            {type: 'string', dataIndex: 'heure_obs_ligne', emptyText: 'Val1||Val2||IS NULL'},
+            {type: 'string', dataIndex: 'cmt', emptyText: 'Val1||Val2||IS NULL'},
             {type: 'date', dataIndex: 'date_obs_point_bis', beforeText: 'Avant le', afterText: 'Après le', onText: 'Le'},
-            {type: 'string', dataIndex: 'heure_obs_point_bis', emptyText: 'Ex. : Val1||Val2||Val3'},
-            {type: 'string', dataIndex: 'desc', emptyText: 'Ex. : Val1||Val2||Val3'},
-            {type: 'string', dataIndex: 'sym', emptyText: 'Ex. : Val1||Val2||Val3'}
+            {type: 'string', dataIndex: 'heure_obs_point_bis', emptyText: 'Val1||Val2||IS NULL'},
+            {type: 'string', dataIndex: 'desc', emptyText: 'Val1||Val2||IS NULL'},
+            {type: 'string', dataIndex: 'sym', emptyText: 'Val1||Val2||IS NULL'}
         ]
     });
     //Configuration type de chaque colonne
@@ -118,12 +118,12 @@ function basculeEcran(sens) {
             {dataIndex: 'name', header: 'ID (name)'},
         {dataIndex: 'ele', header: 'Altitude (ele)'},
         {dataIndex: 'time', header: 'time'},
-        {dataIndex: 'date_obs_point', header: 'Date (point)', renderer: Ext.util.Format.dateRenderer('d/m/Y')},
+        {dataIndex: 'date_obs_point', header: 'Date (point)', renderer: dateRenderer},
         {dataIndex: 'heure_obs_point', header: 'Heure (point)', renderer: Ext.util.Format.dateRenderer('H:i:s')},
-        {dataIndex: 'date_obs_ligne', header: 'Date (ligne)', renderer: Ext.util.Format.dateRenderer('d/m/Y')},
+        {dataIndex: 'date_obs_ligne', header: 'Date (ligne)', renderer: dateRenderer},
         {dataIndex: 'heure_obs_ligne', header: 'Heure (ligne)', renderer: Ext.util.Format.dateRenderer('H:i:s')},
         {dataIndex: 'cmt', header: 'cmt'},
-        {dataIndex: 'date_obs_point_bis', header: 'Date bis (point)', renderer: Ext.util.Format.dateRenderer('d/m/Y')},
+        {dataIndex: 'date_obs_point_bis', header: 'Date bis (point)', renderer: dateRenderer},
         {dataIndex: 'heure_obs_point_bis', header: 'Heure bis (point)', renderer: Ext.util.Format.dateRenderer('H:i:s')},
         {dataIndex: 'desc', header: 'desc'},
         {dataIndex: 'sym', header: 'sym'}
