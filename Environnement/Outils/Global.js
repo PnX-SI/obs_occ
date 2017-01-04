@@ -1,4 +1,4 @@
-//Fonction de traitement de l'affichage du type combinÈ entier positif/boolÈen dans les grilles
+//Fonction de traitement de l'affichage du type combin√© entier positif/bool√©en dans les grilles
 function traiteAffichageEntierPositifBooleen(val) {
     switch (val) {
         case '-1':
@@ -62,12 +62,12 @@ Ext.override(Ext.state.CookieProvider, {
 
 //Initialisation des caches via le statemanager
 Ext.state.Manager.setProvider(new Ext.state.CookieProvider({
-       path: document.location.pathname, // rÈduction de la taille des cookies ‡ la page web
+       path: document.location.pathname, // r√©duction de la taille des cookies √† la page web
        expires: new Date(new Date().getTime()+(1000*60*60*24*365)) // expiration dans 365 jours
    }
-)); // rechargement de la derniËre configuration au niveau de l'affichage
+)); // rechargement de la derni√®re configuration au niveau de l'affichage
 
-//Fonction de rÈcupÈration du champ "field" sous forme de tableau
+//Fonction de r√©cup√©ration du champ "field" sous forme de tableau
 function listeValeurs(cmp) {
     var lstVal = [];
     var nb = cmp.store.getCount();
@@ -80,7 +80,7 @@ function listeValeurs(cmp) {
     return lstVal;
 }
 
-//Fonction de modification d'un paramËtre GET
+//Fonction de modification d'un param√®tre GET
 function RemoveParam(name) {
     /**
      * function {public string} ? Returns a parameter from the given URL according its name.
@@ -115,7 +115,7 @@ function RemoveParam(name) {
     return result;
 }
 
-//Fonction de modification d'un paramËtre GET
+//Fonction de modification d'un param√®tre GET
 function SetParam(name, value) {
     /**
      * function {public string} ? Sets a parameter in the given URL and returns a new string.
@@ -201,7 +201,7 @@ function lzw_decode(s) {
 	return out.join("");
 }
 
-//Fonction de rÈcupÈration du champ "val" sous forme de tableau
+//Fonction de r√©cup√©ration du champ "val" sous forme de tableau
 function tableauValeurs(store) {
     var tabVal = [];
     var nb = store.getCount();
@@ -214,7 +214,7 @@ function tableauValeurs(store) {
     return tabVal;
 }
 
-//Actualisation de la liste d'ÈlÈments de la combo
+//Actualisation de la liste d'√©l√©ments de la combo
 function actualiseCombo(cb, lb) {
     var nb = lb.store.getCount();
     if (nb > 0) {
@@ -231,7 +231,7 @@ function actualiseCombo(cb, lb) {
     }
 }
 
-//Suppression des ÈlÈments sÈlectionnÈs de la liste
+//Suppression des √©l√©ments s√©lectionn√©s de la liste
 function supprimeSelection(cb, lb) {
     var listSuppr = lb.view.getSelectedIndexes();
     for (var i = listSuppr.length - 1; i >= 0; i--) {
@@ -240,7 +240,7 @@ function supprimeSelection(cb, lb) {
     actualiseCombo(cb, lb);
 }
 
-//Ajout dans la liste de l'ÈlÈment sÈlectionnÈ par la combo
+//Ajout dans la liste de l'√©l√©ment s√©lectionn√© par la combo
 function selectionne(cb, lb) {
     lb.store.add(
         new lb.store.recordType({
@@ -269,7 +269,7 @@ function remplitListe(codes, libelles, cb, lb) {
     actualiseCombo(cb, lb);
 }
 
-//ProcÈdures de conversion des valeurs GPX
+//Proc√©dures de conversion des valeurs GPX
 function transformeEnEntier(val) {
     if (val) {
         // suppression des z?ros non-significatifs
@@ -286,15 +286,15 @@ function transformeEnEntier(val) {
 }
 function transformeEnDateHeure(val) {
     var result = null;
-    // conversion spÈcifique aux appareils GPS de derniËre gÈnÈration
+    // conversion sp√©cifique aux appareils GPS de derni√®re g√©n√©ration
     if (val) {
         var dateHeure = Date.parseDate(val, 'Y-m-d\\TH:i:s\\Z');
         if (dateHeure) {
             result = dateHeure;
         }
         else {
-            // conversion spÈcifique aux appareils GPS de 1Ëre gÈnÈration avec un traitement
-            // quasi-identique des tracÈs de derniËre gÈnÈration (au libellÈ du mois prËs)
+            // conversion sp√©cifique aux appareils GPS de 1√®re g√©n√©ration avec un traitement
+            // quasi-identique des trac√©s de derni√®re g√©n√©ration (au libell√© du mois pr√®s)
             var moisGPX = val.split('-')[1];
             var mois = 0;
             switch (moisGPX) {
@@ -421,7 +421,7 @@ var Utf8 = {
     }
 }
 
-//Fonction de rÈcupÈration du nom de la photo d'aprËs celui du fichier
+//Fonction de r√©cup√©ration du nom de la photo d'apr√®s celui du fichier
 function nomPhoto(fichierPhoto) {
     fichierPhoto = file_name_only(fichierPhoto);
     return fichierPhoto.substring(15, fichierPhoto.length);
@@ -450,7 +450,7 @@ function file_name_only(str) {
     return result;
 }
 
-//Extension de classe pour masquer/afficher le contÙle de saisie dynamiquement
+//Extension de classe pour masquer/afficher le cont√¥le de saisie dynamiquement
 Ext.override(Ext.form.Field, {
     /**
      * Show the container including the label
@@ -488,7 +488,7 @@ Ext.override(Ext.form.Field, {
     }
 });
 
-//Extension de classe pour changer le libellÈ du contÙle de saisie dynamiquement
+//Extension de classe pour changer le libell√© du cont√¥le de saisie dynamiquement
 Ext.override(Ext.form.Field, {
   setFieldLabel : function(text) {
     if (this.rendered) {
@@ -532,13 +532,13 @@ Ext.data.Types.TIME = {
 function timeRenderer(value) {
     var result = '';
     if (value) {
-        var d = new Date('14/03/1977 ' + value);
+        var d = new Date('1977/03/14 ' + value); // date de naissance du d√©veloppeur (au format am√©ricain) utilis√©e pour instancier l'objet Date
         result = d.format('H:i');
     }
     return result;
 }
 
-//Fonction de traitement de l'affichage du type boolÈen dans les grilles
+//Fonction de traitement de l'affichage du type bool√©en dans les grilles
 function traiteAffichageBoolean(val) {
     switch (val) {
         case 't':
@@ -550,7 +550,7 @@ function traiteAffichageBoolean(val) {
     }
 }
 
-//Fonction de rÈcupÈration d'un paramËtre GET
+//Fonction de r√©cup√©ration d'un param√®tre GET
 function GetParam(name) {
     var start = location.search.indexOf('?' + name + '=');
     if (start < 0) start = location.search.indexOf('&' + name + '=');
@@ -566,7 +566,7 @@ function GetParam(name) {
     return Utf8.decode(unescape(result));
 }
 
-//Vtype contrÙlant que le texte se termine par une annÈe
+//Vtype contr√¥lant que le texte se termine par une ann√©e
 Ext.apply(Ext.form.VTypes, {
     termineParAnnee: function(val, field) {
         var annee = val.substr(val.length - 4, 4);
@@ -577,10 +577,10 @@ Ext.apply(Ext.form.VTypes, {
             return false;
         }
     },
-    termineParAnneeText: 'Veuillez terminer votre saisie par une ann√©e (ex. : "√©t√© 2010")'
+    termineParAnneeText: 'Veuillez terminer votre saisie par une ann√É¬©e (ex. : "√É¬©t√É¬© 2010")'
 });
 
-//Extension de classe pour fixer la colonne de sÈlection ‡ gauche de la grille
+//Extension de classe pour fixer la colonne de s√©lection √† gauche de la grille
 Ext.MyColumnModel = Ext.extend(Ext.grid.ColumnModel, {
     moveColumn: function (oldIndex, newIndex) {
         if (oldIndex != 0 && newIndex != 0) {
@@ -628,12 +628,12 @@ function supprimeCookie(nom) {
 //Template de validation des formulaires
 function templateValidation(url, barreStatus, formulaire, fonctionRetour) {
     if (formulaire.form.isValid()) {
-        formulaire.getEl().mask(); // application d'un masque gris sur le formulaire pour bloquer une saisie Èventuelle
+        formulaire.getEl().mask(); // application d'un masque gris sur le formulaire pour bloquer une saisie √©ventuelle
         barreStatus.showBusy('Traitement en cours...'); // affichage du message de chargement
         formulaire.form.submit({
             url: url,
             method: 'POST',
-            reset: false, // conservation de l'Ètat du formulaire en cas d'echec
+            reset: false, // conservation de l'√©tat du formulaire en cas d'echec
             failure: function(form, action) {
                 barreStatus.setStatus({
                     text: 'Erreur : "' + action.failureType + '"',
@@ -642,8 +642,8 @@ function templateValidation(url, barreStatus, formulaire, fonctionRetour) {
                 if (action.failureType == Ext.form.Action.SERVER_INVALID) {
                     Ext.MessageBox.show({
                         fn: function() {
-                            barreStatus.clearStatus({useDefaults: true}); // remise des valeurs par dÈfaut de la barre de status
-                            formulaire.getEl().unmask();  // dÈblocage de la saisie sur le formulaire
+                            barreStatus.clearStatus({useDefaults: true}); // remise des valeurs par d√©faut de la barre de status
+                            formulaire.getEl().unmask();  // d√©blocage de la saisie sur le formulaire
                         },
                         title: action.result.errorMessage,
                         msg: action.result.data,
@@ -654,8 +654,8 @@ function templateValidation(url, barreStatus, formulaire, fonctionRetour) {
                 else {
                     Ext.MessageBox.show({
                         fn: function() {
-                            barreStatus.clearStatus({useDefaults: true}); // remise des valeurs par dÈfaut de la barre de status
-                            formulaire.getEl().unmask();  // dÈblocage de la saisie sur le formulaire
+                            barreStatus.clearStatus({useDefaults: true}); // remise des valeurs par d√©faut de la barre de status
+                            formulaire.getEl().unmask();  // d√©blocage de la saisie sur le formulaire
                         },
                         title: 'ERREUR : ' + action.response.statusText,
                         msg: 'Code erreur ' + action.response.status,
@@ -666,7 +666,7 @@ function templateValidation(url, barreStatus, formulaire, fonctionRetour) {
             },
             success: function(form, action) {
                 barreStatus.setStatus({
-                    text: 'Op√©ration r√©ussie',
+                    text: 'Op√É¬©ration r√É¬©ussie',
                     iconCls: 'x-status-valid'
                 });
                 if (action.result) {
@@ -680,7 +680,7 @@ function templateValidation(url, barreStatus, formulaire, fonctionRetour) {
     }
     else {
         barreStatus.setStatus({
-            clear: true, // faible attente pour Ítre ‡ nouveau "PrÍt"
+            clear: true, // faible attente pour √™tre √† nouveau "Pr√™t"
             text: 'Formulaire non valide',
             iconCls: 'x-status-error'
         });
@@ -774,7 +774,7 @@ function createWorksheet(grid, types) {
                 '<ss:Data ss:Type="String">' + cm.getColumnHeader(i) + '</ss:Data>' +
                 '<ss:NamedCell ss:Name="Print_Titles" /></ss:Cell>';
             var fld = grid.store.recordType.prototype.fields.get(cm.getDataIndex(i));
-            if (fld.type == Ext.data.Types.AUTO) // forÁage des types passÈs en paramËtre pour les champs "AUTO""
+            if (fld.type == Ext.data.Types.AUTO) // for√ßage des types pass√©s en param√®tre pour les champs "AUTO""
             {
                 fld.type = types[fld.name];
             }
@@ -930,7 +930,7 @@ var Base64 = {
     }
 };
 
-//Lecture de fichier en chaÓne de caractËres
+//Lecture de fichier en cha√Æne de caract√®res
 function file_get_contents (url, flags, context, offset, maxLen) {
     // Read the entire file into a string
     //
