@@ -15,18 +15,19 @@
     
     // A DECOMMENTER ET A ADAPTER SELON VOTRE CAS
     // Exemple bidon pour afficher un message d'avertissement lorque l'utilisateur n'a pas choisi un taxon de référence mais un synonyme
+    
     /*
     if ($regne != 'Habitat') {
-        $req = "SELECT cd_nom FROM inpn.taxref WHERE cd_nom = '" . $cd_nom . "' AND cd_ref = cd_nom";
+        $req = "SELECT nom_valide, cd_ref FROM inpn.taxref WHERE cd_nom = '" . $cd_nom . "'";
         $rs = $cnxPgObsOcc->executeSql($req);
-        $cpt = pg_numrows($rs);
-        if ($cpt == 0) {
+        $nom_valide = pg_fetch_result($rs, 0, 'nom_valide');
+        $cd_ref = pg_fetch_result($rs, 0, 'cd_ref');
+        if ($cd_ref != $cd_nom) {
             $errorMessage = 'AVERTISSEMENT : taxon synonyme';
-            $data = 'Le taxon ' . $especeLatinSaisie . ' que vous venez de saisir n\'est pas un taxon de référence !!!';
+            $data = 'Le taxon ' . $especeLatinSaisie . ' que vous venez de saisir n\'est pas un taxon de référence !!! Nom valide  = ' . $nom_valide;
         }
     }
     */
-    
     unset($cnxPgObsOcc);
     
     if (!isset($errorMessage)) {
