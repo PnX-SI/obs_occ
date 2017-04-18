@@ -532,7 +532,7 @@ Ext.data.Types.TIME = {
 function timeRenderer(value) {
     var result = '';
     if (value) {
-        var d = new Date('14/03/1977 ' + value);
+        var d = new Date('1977/03/14 ' + value);
         result = d.format('H:i');
     }
     return result;
