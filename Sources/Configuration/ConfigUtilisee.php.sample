@@ -33,6 +33,7 @@
     switch ($_GET['appli']) {
         case 'ObsOccTest':
             $configInstance = 'Configuration/Exemples/TEST';
+            define('CST_PROJ_BDD', '2154');
             break;
         case 'ObsOccPnP':
             $configInstance = 'Configuration/EnProduction/PnP';
