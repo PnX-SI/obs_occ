@@ -41,7 +41,8 @@
             
     if ($limit !== 'AUCUNE') {
         $row_number = $start + 1 +$limit;  
-        $req .= 'WHERE row_number > ' . $start . ' AND row_number < ' . $row_number;  
+        $req .= 'WHERE row_number > ' . $start . ' AND row_number < ' . $row_number;
+        $req .= 'ORDER BY ' . $sort . ' ' . $dir . ' NULLS LAST;';
     }
     
     $rs = $cnxPgObsOcc->executeSql($req);
