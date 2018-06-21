@@ -210,6 +210,8 @@ function basculeEcran(sens) {
             {name: 'phenologie'},
             {name: 'precision'},
             {name: 'determination'},
+            {name: 'comportement'},
+            {name: 'taille_cm'},
             {name: 'statut_validation'},
             {name: 'decision_validation'},
             {name: 'id_waypoint'},
@@ -302,6 +304,8 @@ function basculeEcran(sens) {
             {type: 'string', dataIndex: 'phenologie', emptyText: 'Val1||Val2||IS NULL'},
             {type: 'list', dataIndex: 'precision', options: tableauValeurs(comboPrecision.store)},
             {type: 'list', dataIndex: 'determination', options: tableauValeurs(comboDetermination.store)},
+            {type: 'string', dataIndex: 'comportement', emptyText: 'Val1||Val2||IS NULL'},
+            {type: 'numeric', dataIndex: 'taille_cm', menuItemCfgs : {emptyText: ''}},
             {type: 'list', dataIndex: 'statut_validation', options: tableauValeurs(comboStatutValidation.store)},
             {type: 'string', dataIndex: 'decision_validation', emptyText: 'Val1||Val2||IS NULL'},
             {type: 'string', dataIndex: 'id_waypoint', emptyText: 'Val1||Val2||IS NULL'},
@@ -365,8 +369,10 @@ function basculeEcran(sens) {
             {dataIndex: 'effectif_textuel', header: 'Eff. textuel', hidden: true},
             {dataIndex: 'type_effectif', header: 'Age/Type eff./Stade repro/Unité'},
             {dataIndex: 'phenologie', header: 'Sexe/Phéno/Support/Etat conserv.'},
+            {dataIndex: 'taille_cm', header: 'Taille (cm)', hidden: true},
             {dataIndex: 'determination', header: 'Détermination'},
-            {dataIndex: 'precision', header: 'Précision', hidden: true},
+            {dataIndex: 'comportement', header: 'Comportement', hidden: true},
+            {dataIndex: 'precision', header: 'Précision'},
             {dataIndex: 'id_waypoint', header: 'Relevé GPS', hidden: true},
             {dataIndex: 'longitude', header: 'Longitude', hidden: true},
             {dataIndex: 'latitude', header: 'Latitude', hidden: true},
@@ -533,7 +539,7 @@ function basculeEcran(sens) {
                 tooltip: 'Gérer les protocoles',
                 hidden: (droit != 'admin')
             },
-            comboValidationEnMasse,
+            comboValidationEnMasse.setVisible(!(((typeof CST_activeModeValidation === "undefined")) ? false : !CST_activeModeValidation)),
             {
                 text: 'Télécharger',
                 iconCls: 'downloadData',
@@ -837,6 +843,7 @@ function exporterExcel() {
     types['longitude'] = Ext.data.Types.FLOAT;
     types['latitude'] = Ext.data.Types.FLOAT;
     types['elevation'] = Ext.data.Types.INT;
+    types['taille_cm'] = Ext.data.Types.INT;
     document.location.href = 'data:application/vnd.ms-excel;base64,' + Base64.encode(getExcelXml(grille, types));
 }
 

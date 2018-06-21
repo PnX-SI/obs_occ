@@ -18,38 +18,50 @@
             break;
         case 'genre':
             if ($_REQUEST['filtre'] == 'Habitat') {
-                $req = "SELECT cd_cb || ' - ' || lb_cb97_fr AS espece FROM INPN.TYPO_CORINE_BIOTOPES
-                    WHERE lb_cb97_fr IS NOT NULL AND cd_cb || ' - ' || lb_cb97_fr ILIKE '%" . $critere . "%' ORDER BY espece LIMIT 30";
+                $req = "SELECT cd_cb || ' - ' || lb_cb97_fr AS espece
+                    FROM INPN.TYPO_CORINE_BIOTOPES
+                    WHERE UNACCENT(cd_cb || ' - ' || lb_cb97_fr) ILIKE '%' || UNACCENT('". $critere . "') || '%'
+                    AND lb_cb97_fr IS NOT NULL 
+                    ORDER BY espece";
             }
             else {
                 $req = "(
-                      SELECT DISTINCT(split_part(nom_vern, ' ', 1)) AS espece 
-                      FROM INPN.TAXREF 
-                      WHERE regne = '" . $_REQUEST['filtre'] . "' 
-                        AND UNACCENT(split_part(nom_vern, ' ', 1)) ILIKE UNACCENT('" . $critere . "%') ORDER BY espece
-                      LIMIT 15
+                        SELECT DISTINCT(split_part(nom_vern, ' ', 1)) AS espece 
+                        FROM INPN.TAXREF 
+                        WHERE regne = '" . $_REQUEST['filtre'] . "' 
+                        AND UNACCENT(split_part(nom_vern, ' ', 1)) ILIKE '%' || UNACCENT(split_part('" . $critere . "', ' ', 1)) || '%'
+                        ORDER BY espece
                     )
-                    UNION ALL (SELECT '-') 
-                    UNION ALL (
-                      SELECT DISTINCT(nom_vern) AS espece FROM 
-                      INPN.TAXREF WHERE regne = '" . $_REQUEST['filtre'] . "' AND 
-                      UNACCENT(nom_vern) ILIKE UNACCENT('" . $critere . "%') ORDER BY espece
-                      LIMIT 15
+                    UNION ALL 
+                    (
+                        SELECT '-' AS espece
+                    ) 
+                    UNION ALL 
+                    (
+                        SELECT DISTINCT(nom_vern) AS espece 
+                        FROM INPN.TAXREF 
+                        WHERE regne = '" . $_REQUEST['filtre'] . "' 
+                        AND UNACCENT(nom_vern) ILIKE '%' || UNACCENT(split_part('" . $critere . "', ' ', 1)) || '%'
+                        ORDER BY espece
                     )";
             }
             break;
         case 'espece':
             if ($_REQUEST['filtre'] == 'Habitat') {
-                $req = "SELECT cd_cb || ' - ' || lb_cb97_fr AS espece FROM INPN.TYPO_CORINE_BIOTOPES
-                    WHERE cd_cb = '" . $critere . "' ORDER BY espece LIMIT 30";
+                $req = "SELECT cd_cb || ' - ' || lb_cb97_fr AS espece
+                    FROM INPN.TYPO_CORINE_BIOTOPES
+                    WHERE UNACCENT(cd_cb || ' - ' || lb_cb97_fr) ILIKE '%' || UNACCENT('". $critere . "') || '%'
+                    AND lb_cb97_fr IS NOT NULL 
+                    ORDER BY espece";
             }
             else {
                 $req = "SELECT DISTINCT(nom_vern) AS espece 
                     FROM INPN.TAXREF 
-                    WHERE regne = '" . $_REQUEST['filtre'] . "' 
-                      AND UNACCENT(nom_vern) ILIKE UNACCENT('" . $critere . "%') 
-                    ORDER BY espece
-                    LIMIT 30";
+                    WHERE regne = '" . $_REQUEST['filtre'] . "'
+                    AND UNACCENT(nom_vern) ILIKE '%' || UNACCENT(split_part('" . $critere . "', ' ', 1)) || '%' 
+                    AND UNACCENT(nom_vern) ILIKE '%' || UNACCENT(split_part('" . $critere . "', ' ', 2)) || '%' 
+                    ORDER BY espece";
+                
             }
             break;
     }

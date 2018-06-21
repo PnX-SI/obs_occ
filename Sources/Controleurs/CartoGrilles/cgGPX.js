@@ -53,8 +53,15 @@ function basculeEcran(sens) {
         trigger: zoomerSelection,
         displayClass: 'olControlZoomSelection'
     });
+    //Outil de zoom sur l'étendue de la carte
+    var btnZoomEmpriseCadre = new OpenLayers.Control.Button({
+        title: "Recadrer sur l'étendue de la carte",
+        trigger: zoomerEmpriseCadre,
+        displayClass: 'olControlZoomCenter'
+    });
     //Complément de la barre d'outils
     barreOutils.addControls([
+        btnZoomEmpriseCadre,
         btnZoomSel,
         btnSelGeom
     ]);
@@ -116,17 +123,17 @@ function basculeEcran(sens) {
         columns: [
             colonneSelectionCarto, // en premier obligatoirement
             {dataIndex: 'name', header: 'ID (name)'},
-        {dataIndex: 'ele', header: 'Altitude (ele)'},
-        {dataIndex: 'time', header: 'time'},
-        {dataIndex: 'date_obs_point', header: 'Date (point)', renderer: dateRenderer},
-        {dataIndex: 'heure_obs_point', header: 'Heure (point)', renderer: Ext.util.Format.dateRenderer('H:i:s')},
-        {dataIndex: 'date_obs_ligne', header: 'Date (ligne)', renderer: dateRenderer},
-        {dataIndex: 'heure_obs_ligne', header: 'Heure (ligne)', renderer: Ext.util.Format.dateRenderer('H:i:s')},
-        {dataIndex: 'cmt', header: 'cmt'},
-        {dataIndex: 'date_obs_point_bis', header: 'Date bis (point)', renderer: dateRenderer},
-        {dataIndex: 'heure_obs_point_bis', header: 'Heure bis (point)', renderer: Ext.util.Format.dateRenderer('H:i:s')},
-        {dataIndex: 'desc', header: 'desc'},
-        {dataIndex: 'sym', header: 'sym'}
+            {dataIndex: 'ele', header: 'Altitude (ele)'},
+            {dataIndex: 'time', header: 'time'},
+            {dataIndex: 'date_obs_point', header: 'Date (point)', renderer: Ext.util.Format.dateRenderer('d/m/Y')},
+            {dataIndex: 'heure_obs_point', header: 'Heure (point)', renderer: Ext.util.Format.dateRenderer('H:i:s')},
+            {dataIndex: 'date_obs_ligne', header: 'Date (ligne)', renderer: Ext.util.Format.dateRenderer('d/m/Y')},
+            {dataIndex: 'heure_obs_ligne', header: 'Heure (ligne)', renderer: Ext.util.Format.dateRenderer('H:i:s')},
+            {dataIndex: 'cmt', header: 'cmt'},
+            {dataIndex: 'date_obs_point_bis', header: 'Date bis (point)', renderer: Ext.util.Format.dateRenderer('d/m/Y')},
+            {dataIndex: 'heure_obs_point_bis', header: 'Heure bis (point)', renderer: Ext.util.Format.dateRenderer('H:i:s')},
+            {dataIndex: 'desc', header: 'desc'},
+            {dataIndex: 'sym', header: 'sym'}
         ]
     });
     //Barre de menu
@@ -401,4 +408,11 @@ function importerSelection() {
     else {
         Ext.MessageBox.alert('Attention', 'Vous devez sélectionner au moins un relevé GPS').setIcon(Ext.MessageBox.WARNING);
     }
+}
+
+//Zoom sur l'emprise de la carte
+function zoomerEmpriseCadre() {
+    // cadrage sur l'emprise paramétrée par défaut puis zoom d'un niveau
+    carte.zoomToExtent(empriseCadre);
+    carte.zoomIn();
 }

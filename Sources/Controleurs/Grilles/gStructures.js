@@ -90,13 +90,13 @@ Ext.onReady(function() {
                 tooltip: 'Ajouter une nouvelle structure',
                 handler: ajouter,
                 iconCls: 'add',
-                hidden: ((typeof CST_activeGestionUtilisateur === "undefined") ) ? false : !CST_activeGestionUtilisateur 
+                hidden: ((typeof CST_activeGestionUtilisateur === "undefined")) ? false : !CST_activeGestionUtilisateur 
             }, '-', {
                 text: 'Modifier',
                 tooltip: "Modifier la structure sélectionnée",
                 handler: modifier,
                 iconCls: 'cog_edit',
-                hidden: ((typeof CST_activeGestionUtilisateur === "undefined") ) ? false : !CST_activeGestionUtilisateur 
+                hidden: ((typeof CST_activeGestionUtilisateur === "undefined")) ? false : !CST_activeGestionUtilisateur 
             }, '-', /*{
                 text: 'Supprimer',
                 tooltip: "Supprimer la structure sélectionnée",

@@ -133,6 +133,12 @@
             if (isset($_POST['determination'])) {
                 $obs->determination = $_POST['determination'];
             }
+            if (isset($_POST['comportement'])) {
+                $obs->comportement = $_POST['comportement'];
+            }
+            if (isset($_POST['taille_cm'])) {
+                $obs->taille_cm = $_POST['taille_cm'];
+            }
             if (isset($_POST['statut_validation'])) {
                 $obs->statut_validation = $_POST['statut_validation'];
             }

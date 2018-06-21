@@ -119,7 +119,7 @@ function afficheFormulaire() {
                     text: 'Renvoyer mot de passe',
                     handler: reinitialiserMdp,
                     iconCls: 'mailing_card',
-                    hidden: ((typeof CST_activeGestionUtilisateur === "undefined") ) ? false : !CST_activeGestionUtilisateur 
+                    hidden: ((typeof CST_activeGestionUtilisateur === "undefined")) ? false : !CST_activeGestionUtilisateur 
                 }, '-', {
                     text: 'Se connecter',
                     handler: soumettre,

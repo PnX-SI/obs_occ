@@ -1,6 +1,6 @@
 <?php
     /*
-     * N'EMPECHE PAS LA SAISIE DE L'OBSERVATION => PERMET JUSTE D'AFFICHER UN MESSAGE D'AVERTISSEMENT PERSONNALISE A LA FERMETURE DU FORMULAIRE
+     * PEUT BLOQUER LA SAISIE DE L'OBSERVATION => PERMET D'AFFICHER UN MESSAGE D'AVERTISSEMENT PERSONNALISE A L'ENREGISTREMENT DU FORMULAIRE
      */
     
     require_once '../../Modeles/Classes/ClassCnxPgObsOcc.php';
@@ -18,16 +18,25 @@
     
     /*
     if ($regne != 'Habitat') {
-        $req = "SELECT nom_valide, cd_ref FROM inpn.taxref WHERE cd_nom = '" . $cd_nom . "'";
+        $req = "SELECT nom_valide FROM inpn.taxref WHERE cd_nom = '" . $cd_nom . "'";
         $rs = $cnxPgObsOcc->executeSql($req);
-        $nom_valide = pg_fetch_result($rs, 0, 'nom_valide');
-        $cd_ref = pg_fetch_result($rs, 0, 'cd_ref');
-        if ($cd_ref != $cd_nom) {
-            $errorMessage = 'AVERTISSEMENT : taxon synonyme';
-            $data = 'Le taxon ' . $especeLatinSaisie . ' que vous venez de saisir n\'est pas un taxon de référence !!! Nom valide  = ' . $nom_valide;
+        $ref = 'TAXON DE REFERENCE NON TROUVE';
+        if (pg_numrows($rs) == 1) {
+            $ref = pg_fetch_result($rs, 0, 'nom_valide');
+        }
+        $req = "SELECT cd_nom FROM inpn.taxref WHERE cd_ref = '" . $cd_nom . "'";
+        $rs = $cnxPgObsOcc->executeSql($req);
+        if (pg_numrows($rs) == 0) {
+            $errorMessage = 'AVERTISSEMENT !!! taxon synonyme';
+            $data = 'Le taxon<i>' . $especeLatinSaisie . '</i> n\'est pas un taxon de référence.<br/>'.
+                'Il est préféreable d\'utiliser le taxon de référence qui est :<br/>' .
+                '<b><i>' . $ref . '</i></b><br/><br/>'.
+                '<b>[OK]</b> pour enregistrer quand même la saisie<br/>' .
+                '<b>[ANNULER]</b> pour revevenir au formulaire en cours';
         }
     }
     */
+    
     unset($cnxPgObsOcc);
     
     if (!isset($errorMessage)) {
@@ -35,6 +44,6 @@
         die('{success: true, data: "' . $data .'"}');
     }
     else {
-        die('{success: false, errorMessage: "' . $errorMessage . '", data: "' . $data .'"}');
+        die('{success: false, typeMessage: "' . $typeMessage . '", errorMessage: "' . $errorMessage . '", data: "' . $data .'"}');
     }
 ?>

@@ -4,7 +4,8 @@ var formulaire, fenetreFormulaire, listObs, listStruct, comboAjoutObs, comboAjou
     nbDuplicata = 0, modeDuplication = false, toucheENTREE = true, comboPheno,
     comboStatutValidation, numerisat, numerisateur, profil, comboPrecision, comboDetermination,
     comboTypeEffectif, focusEffectifActif = true, comboLieuDit, idSociete, nomSociete,
-    largeurFenetreFormulaire = 990, largeurColonneFormulaire = 0;
+    largeurFenetreFormulaire = 990, largeurColonneFormulaire = 0, comboComportement,
+    desactivationRequeteComportementForcee = false;
 
 Ext.onReady(function() {
     new Ext.KeyMap(document, {
@@ -54,7 +55,8 @@ Ext.onReady(function() {
                             this.store.load({params: {
                                     critere: tabMots[0],
                                     mode: modeRequete,
-                                    filtre: Ext.getCmp('regne').value
+                                    filtre: Ext.getCmp('regne').value,
+                                    choixEspeceForcee: CST_choixEspeceForcee, // filtre "genre" avec/sans "espèce" obligatoire
                                 }
                             });
                         }
@@ -76,6 +78,12 @@ Ext.onReady(function() {
                     modeRequete = ''
                     this.store.removeAll();
                 }
+            },
+            valid: function() {
+                afficheComportement()
+            },
+            invalid: function() {
+                afficheComportement()
             }
         }
     });
@@ -87,16 +95,15 @@ Ext.onReady(function() {
             url: '../Modeles/Json/jEspecesUsuelles.php?appli=' + GetParam('appli'),
             fields: ['espece']
         }),
-        emptyText: 'Saisissez 1 caractère',
+        emptyText: 'Saisissez 3 caractères',
         mode: 'local',
         displayField: 'espece',
         valueField: 'espece',
         fieldLabel: 'Espèce (usuel)',
-        typeAhead: true,
-        forceselection:true,
+        forceselection: true,
         listeners: {
             keyup: function(field, event) {
-                if (this.getRawValue().length >= 1) { // si au moins 1 lettre tapée
+                if (this.getRawValue().length >= 3) { // si au moins 1 lettre tapée
                     if ([13, 38, 40].indexOf(event.getKey()) == -1) { // si pas les flèches "Haut", "Bas" ni la touche "Enter"
                         Ext.Ajax.abort(this.store.proxy.getConnection().transId); //Annule les requêtes précédentes
                         var tabMots = this.getRawValue().split(' ', 2);
@@ -130,7 +137,8 @@ Ext.onReady(function() {
                     params: {
                         critere: this.value,
                         choixEspeceForcee: CST_choixEspeceForcee, // filtre "genre" avec/sans "espèce" obligatoire
-                        filtre: Ext.getCmp('regne').value
+                        filtre: Ext.getCmp('regne').value,
+                        mode: 'selectEspeceUsuelle',
                     },
                     callback: function() {
                         var nbEspeces = comboEspeces.store.getCount();
@@ -192,7 +200,7 @@ Ext.onReady(function() {
         allowBlank: false,
         blankText: "Veuillez sélectionner l'étude !",
         forceSelection: true,
-        hidden: ((typeof CST_activeSaisieEtudeProtocole === "undefined") ) ? false : !CST_activeSaisieEtudeProtocole
+        hidden: ((typeof CST_activeSaisieEtudeProtocole === "undefined")) ? false : !CST_activeSaisieEtudeProtocole
     });
     //Combo d'auto-complétion "protocole"
     var comboProtocole = new Ext.form.ComboBox({
@@ -210,7 +218,7 @@ Ext.onReady(function() {
         allowBlank: false,
         blankText: 'Veuillez sélectionner le protocole !',
         forceSelection: true,
-        hidden:  ((typeof CST_activeSaisieEtudeProtocole === "undefined") ) ? false : !CST_activeSaisieEtudeProtocole 
+        hidden:  ((typeof CST_activeSaisieEtudeProtocole === "undefined")) ? false : !CST_activeSaisieEtudeProtocole 
     });
     //Combo d'auto-complétion "type d'effectif"
     comboTypeEffectif = new Ext.form.ComboBox({
@@ -255,7 +263,9 @@ Ext.onReady(function() {
         forceSelection: true,
         displayField: 'val',
         valueField: 'val',
-        fieldLabel: 'Précision'
+        fieldLabel: 'Précision',
+        allowBlank: ((typeof CST_precisionForcee === "undefined")) ? true : !CST_precisionForcee,
+        blankText: 'Veuillez sélectionner une précision !'
     });
     //Combo d'auto-complétion "détermination"
     comboDetermination = new Ext.form.ComboBox({
@@ -273,6 +283,22 @@ Ext.onReady(function() {
         fieldLabel: 'Détermination',
         hidden: true
     });
+    //Combo d'auto-complétion "comportement"
+    comboComportement = new Ext.form.ComboBox({
+        store: new Ext.data.JsonStore({
+            url: '../Modeles/Json/jListVal.php?appli=' + GetParam('appli') + '&table=SAISIE.COMPORTEMENT&chId=id_comport&chVal=val_comport',
+            fields: ['val']
+        }),
+        id: 'comportement',
+        emptyText: 'Sélectionnez',
+        triggerAction: 'all',
+        mode: 'local',
+        forceSelection: true,
+        displayField: 'val',
+        valueField: 'val',
+        fieldLabel: 'Comportement',
+        hidden: true
+    });
     //Combo d'auto-complétion "statut de validation"
     comboStatutValidation = new Ext.form.ComboBox({
         store: new Ext.data.JsonStore({
@@ -288,6 +314,7 @@ Ext.onReady(function() {
         valueField: 'val',
         fieldLabel: 'Statut validation',
         readOnly: true,
+        hidden: ((typeof CST_activeModeValidation === "undefined")) ? false : !CST_activeModeValidation,
         listeners: {
             select: function() {
                 // si pas en mode ajout
@@ -576,6 +603,7 @@ Ext.onReady(function() {
                                             comboEspecesUsuelles.setFieldLabel('Espèce (usuel)');
                                             comboEspeces.setFieldLabel('Espèce (latin)');
                                             comboDetermination.hide();
+                                            comboComportement.hide();
                                             // renseignement du contrôle caché associé et configuration de saisie (suite)
                                             switch (r.inputValue) {
                                                 case 'Faune':
@@ -591,6 +619,7 @@ Ext.onReady(function() {
                                                         api: comboPheno.store.api
                                                     });
                                                     comboDetermination.show();
+                                                    afficheComportement();
                                                     break;
                                                 case 'Flore':
                                                     Ext.getCmp('regne').setValue('Plantae');
@@ -604,7 +633,6 @@ Ext.onReady(function() {
                                                         url: '../Modeles/Json/jListEnum.php?appli=' + GetParam('appli') + '&typeEnum=saisie.enum_phenologie',
                                                         api: comboPheno.store.api
                                                     });
-                                                    comboDetermination.hide();
                                                     break;
                                                 case 'Fonge':
                                                     Ext.getCmp('regne').setValue('Fungi');
@@ -618,7 +646,6 @@ Ext.onReady(function() {
                                                         url: '../Modeles/Json/jListEnum.php?appli=' + GetParam('appli') + '&typeEnum=saisie.enum_stade_phenologique',
                                                         api: comboPheno.store.api
                                                     });
-                                                    comboDetermination.hide();
                                                     break;
                                                 case 'Habitat':
                                                     Ext.getCmp('regne').setValue('Habitat');
@@ -634,7 +661,6 @@ Ext.onReady(function() {
                                                     });
                                                     comboEspecesUsuelles.setFieldLabel('Code - Libellé');
                                                     comboEspeces.setFieldLabel('Libellé seul');
-                                                    comboDetermination.hide();
                                                     break;
                                             }
                                             // récupération des 7 dernières valeurs saisies selon le "règne"
@@ -681,11 +707,17 @@ Ext.onReady(function() {
                                                 else {
                                                     if (Ext.getCmp('effectif_textuel').value != '') {
                                                         Ext.getCmp('tabEffectif').setActiveTab('tabEffectif_2');
+                                                        Ext.getCmp('tabEffectif').unhideTabStripItem('tabEffectif_2');
                                                     }
                                                     else {
                                                         // onglet actif par défaut selon le règne (si aucune valeur saisie donc)
-                                                        if ((r.inputValue == 'Flore') || (r.inputValue == 'Fonge')) {
-                                                            Ext.getCmp('tabEffectif').setActiveTab('tabEffectif_2');
+                                                        if ((r.inputValue == 'Flore') || (r.inputValue == 'Fonge')) {                                                         
+                                                            if (((typeof CST_choixSaisieLibre === "undefined")) || (!CST_choixSaisieLibre)) {
+                                                                Ext.getCmp('tabEffectif').setActiveTab('tabEffectif_1');
+                                                            }
+                                                            else {
+                                                                Ext.getCmp('tabEffectif').setActiveTab('tabEffectif_2');
+                                                            }
                                                         }
                                                         else {
                                                             Ext.getCmp('tabEffectif').setActiveTab('tabEffectif_0');
@@ -737,20 +769,22 @@ Ext.onReady(function() {
                                     }, {
                                         title: 'Mini-maxi',
                                         id: 'tabEffectif_1',
-                                        defaults: {width: 499},
+                                        defaults: {width: 477},
                                         items: [{
                                                 xtype: 'spinnerfield',
                                                 allowDecimals: false,
                                                 allowNegative: false,
                                                 minValue: 1,
-                                                id: 'effectif_min'
+                                                id: 'effectif_min',
+                                                vtype: 'verifieMiniInferieurMaxi'
                                             },
                                             {
                                                 xtype: 'spinnerfield',
                                                 allowDecimals: false,
                                                 allowNegative: false,
                                                 minValue: 1,
-                                                id: 'effectif_max'
+                                                id: 'effectif_max',
+                                                vtype: 'verifieMiniInferieurMaxi'
                                             }
                                         ]
                                     }, {
@@ -768,6 +802,15 @@ Ext.onReady(function() {
                             },
                             comboTypeEffectif,
                             comboPheno,
+                            {
+                                xtype: 'spinnerfield',
+                                fieldLabel: "Taille (cm)",
+                                allowDecimals: false,
+                                allowNegative: false,
+                                minValue: 1,
+                                id: 'taille_cm',
+                                hidden: ((typeof CST_activeTaille === "undefined")) ? false : !CST_activeTaille
+                            },
                             comboPrecision,
                             listObsPanel,
                             {
@@ -785,7 +828,8 @@ Ext.onReady(function() {
                                 }
                             },
                             comboStatutValidation,
-                            comboDetermination
+                            comboDetermination,
+                            comboComportement,
                         ]
                     }, {
                         labelWidth: 100,
@@ -875,6 +919,7 @@ Ext.onReady(function() {
                                 id: 'decision_validation',
                                 readOnly: true,
                                 maxLength: 254,
+                                hidden: ((typeof CST_activeModeValidation === "undefined")) ? false : !CST_activeModeValidation,
                                 listeners: {
                                     focus: function() {
                                         toucheENTREE = false;
@@ -887,12 +932,14 @@ Ext.onReady(function() {
                                 xtype: 'textfield',
                                 fieldLabel: 'Validateur',
                                 id: 'validat',
-                                readOnly: true
+                                readOnly: true,
+                                hidden: ((typeof CST_activeModeValidation === "undefined")) ? false : !CST_activeModeValidation
                             }, {
                                 xtype: 'checkbox',
                                 fieldLabel: 'Diffusable',
                                 id: 'choixDiffusable',
                                 checked: true,
+                                hidden: ((typeof CST_choixDiffusion === "undefined")) ? false : !CST_choixDiffusion,
                                 listeners: {
                                     change: function(chb, val) {
                                         // gestion de la valeur du contrôle caché associé à la case à cocher
@@ -1091,7 +1138,7 @@ function ajoute(geom, attr) {
                 comboStatutValidation.setValue('à valider');
                 break;
             default:
-                comboStatutValidation.setValue('');
+                comboStatutValidation.setValue(((typeof CST_statutValidationParDefaut === "undefined")) ? '' : CST_statutValidationParDefaut);
                 break;
         }
         // déblocage du choix du règne
@@ -1110,6 +1157,7 @@ function ajoute(geom, attr) {
         Ext.getCmp('date_debut_obs').setValue('');
         Ext.getCmp('date_fin_obs').setValue('');
         Ext.getCmp('date_textuelle').setValue('');
+        Ext.getCmp('localisation').setValue('');
         // complément issu d'une partie du mode duplication
         reinitialiseFormulaire();
         Ext.getCmp('id_obs').setValue('');
@@ -1127,6 +1175,7 @@ function ajoute(geom, attr) {
     }
     // mode import uniquement et pour tous les passages
     if (attr) {
+        Ext.getCmp('precision').setValue(CST_valeurDefautPrecisionImportGPX);        
         // récupération des valeurs GPX selon le type de donnée
         if (geom.CLASS_NAME == 'OpenLayers.Geometry.LineString') {
             Ext.getCmp('date_obs').setValue(transformeEnDateHeure(attr['name']));
@@ -1156,8 +1205,14 @@ function ajoute(geom, attr) {
         Ext.getCmp('tabEffectif').setActiveTab('tabEffectif_0');
         Ext.getCmp('effectif').focus('', 1000); // focus de 1000 ms sinon ça ne marche pas
         if ((Ext.getCmp('regne').value == 'Plantae') || (Ext.getCmp('regne').value == 'Fungi')) {
-            Ext.getCmp('tabEffectif').setActiveTab('tabEffectif_2');
-            Ext.getCmp('effectif_textuel').focus('', 1000); // focus de 1000 ms sinon ça ne marche pas
+            if (((typeof CST_choixSaisieLibre === "undefined")) || (!CST_choixSaisieLibre)) {
+                Ext.getCmp('tabEffectif').setActiveTab('tabEffectif_1');
+                Ext.getCmp('effectif_min').focus('', 1000); // focus de 1000 ms sinon ça ne marche pas
+            }
+            else {
+                Ext.getCmp('tabEffectif').setActiveTab('tabEffectif_2');
+                Ext.getCmp('effectif_textuel').focus('', 1000); // focus de 1000 ms sinon ça ne marche pas
+            }
         }
     }
     // mode ajout uniquement
@@ -1217,6 +1272,7 @@ function modifie() {
         else {
             if (Ext.getCmp('date_textuelle').value != '') {
                 Ext.getCmp('tabMoment').setActiveTab('tabMoment_2');
+                Ext.getCmp('tabMoment').unhideTabStripItem('tabMoment_2');
                 Ext.getCmp('date_textuelle').focus('', 1000); // focus de 1000 ms sinon ça ne marche pas
             }
         }
@@ -1241,18 +1297,26 @@ function termineAffichage() {
                 comboStatutValidation.setValue('à valider');
                 break;
             default:
-                comboStatutValidation.setValue('');
+                comboStatutValidation.setValue(((typeof CST_statutValidationParDefaut === "undefined")) ? '' : CST_statutValidationParDefaut);
                 break;
         }
         // réinitialisation des contrôles secondaires
         Ext.getCmp('validat').setValue('');
         comboPrecision.reset();
         comboDetermination.reset();
+        comboComportement.reset();
+        comboComportement.store.removeAll();
+        comboComportement.hide();    
         comboEspecesUsuelles.reset();
         comboEspeces.reset();
         // gestion du focus
         if ((Ext.getCmp('regne').value == 'Plantae') || (Ext.getCmp('regne').value == 'Fungi')) {
-            Ext.getCmp('tabEffectif').setActiveTab('tabEffectif_2');
+            if (((typeof CST_choixSaisieLibre === "undefined")) || (!CST_choixSaisieLibre)) {
+                Ext.getCmp('tabEffectif').setActiveTab('tabEffectif_1');
+            }
+            else {
+                Ext.getCmp('tabEffectif').setActiveTab('tabEffectif_2');
+            }
             comboEspeces.focus('', 100);
         }
         else {
@@ -1284,21 +1348,25 @@ function soumettre() {
     // selection forcée des listes
     listObs.view.selectRange(0, listObs.store.getCount() - 1);
     listStruct.view.selectRange(0, listStruct.store.getCount() - 1);
+    desactivationRequeteComportementForcee = true;
     if (formulaire.form.isValid()) {
         // invalidation forcée des "emptyText" lors de la soumission
         if (comboPrecision.getRawValue() == '') {
             comboPrecision.setRawValue('');
         }
-        if (comboDetermination.getRawValue() == '') {
+        if ((!comboDetermination.isVisible()) || (comboDetermination.getRawValue() == '')) {
             comboDetermination.setRawValue('');
+        }
+        if ((!comboComportement.isVisible()) || (comboComportement.getRawValue() == '')) {
+            comboComportement.setRawValue('');
         }
         if (comboStatutValidation.getRawValue() == '') {
             comboStatutValidation.setRawValue('');
         }
-        if (comboTypeEffectif.getRawValue() == '') {
+        if ((!comboTypeEffectif.isVisible()) || (comboTypeEffectif.getRawValue() == '')) {
             comboTypeEffectif.setRawValue('');
         }
-        if (comboPheno.getRawValue() == '') {
+        if ((!comboPheno.isVisible()) || (comboPheno.getRawValue() == '')) {
             comboPheno.setRawValue('');
         }
         if (comboEspecesUsuelles.getRawValue() == '') {
@@ -1319,23 +1387,25 @@ function soumettre() {
             url: '../Modeles/Json/jCdNom.php?appli=' + GetParam('appli'),
             params: {
                 valeur: comboEspeces.value,
-                filtre: Ext.getCmp('regne').value
+                filtre: Ext.getCmp('regne').value,
+                choixEspeceForcee: CST_choixEspeceForcee // pour test si "genre" avec + de 1 mot (ex. : avec auteur)
             },
             callback: function(options, success, response) {
                 if (success) {
                     var obj = Ext.util.JSON.decode(response.responseText); // décodage JSON du résultat du POST
                     if (obj.success) {
-                        verifieTaxonOK(obj.data);
-                        Ext.getCmp('cd_nom').setValue(obj.data);
-                        if (Ext.getCmp('geometrie').value.CLASS_NAME == 'OpenLayers.Geometry.Point') {
-                            traiteCodeInsee(new OpenLayers.Geometry.Point(Ext.getCmp('longitude').value,
-                                Ext.getCmp('latitude').value), function() {templateValidation('../Controleurs/Gestion/GestObs.php?appli=' + GetParam('appli'),
-                                Ext.getCmp('statusbar'), formulaire, termineAffichage)});
-                        }
-                        else {
-                            templateValidation('../Controleurs/Gestion/GestObs.php?appli=' + GetParam('appli'), Ext.getCmp('statusbar'),
-                                formulaire, termineAffichage);
-                        }
+                        verifieTaxon(obj.data, function() {
+                            Ext.getCmp('cd_nom').setValue(obj.data);
+                            if (Ext.getCmp('geometrie').value.CLASS_NAME == 'OpenLayers.Geometry.Point') {
+                                traiteCodeInsee(new OpenLayers.Geometry.Point(Ext.getCmp('longitude').value,
+                                    Ext.getCmp('latitude').value), function() {templateValidation('../Controleurs/Gestion/GestObs.php?appli=' + GetParam('appli'),
+                                    Ext.getCmp('statusbar'), formulaire, termineAffichage)});
+                            }
+                            else {
+                                templateValidation('../Controleurs/Gestion/GestObs.php?appli=' + GetParam('appli'), Ext.getCmp('statusbar'),
+                                    formulaire, termineAffichage);
+                            }
+                        });
                     }
                     else {
                         Ext.MessageBox.show({
@@ -1446,15 +1516,24 @@ function reinitialiseFormulaire() {
     formulaire.getEl().unmask();  // déblocage de la saisie sur le formulaire
     // remise à zéro des contrôles à réinitialiser à chaque fois
     Ext.getCmp('effectif').setValue('');
+    Ext.getCmp('taille_cm').setValue('');
     Ext.getCmp('effectif_min').setValue('');
     Ext.getCmp('effectif_max').setValue('');
     Ext.getCmp('effectif_textuel').setValue('');
+    if (((typeof CST_choixSaisieLibre === "undefined")) || (!CST_choixSaisieLibre)) {
+        Ext.getCmp('tabEffectif').hideTabStripItem('tabEffectif_2');
+        Ext.getCmp('tabMoment').hideTabStripItem('tabMoment_2');
+    }
     Ext.getCmp('remarque_obs').setValue('');
     comboTypeEffectif.reset();
     comboPheno.reset();
+    comboDetermination.reset();
+    desactivationRequeteComportementForcee = false;
+    comboComportement.reset();
     // réinitialisation des variables globales
     toucheENTREE = true;
     modeRequete = '';
+    
 }
 
 //Finalisation du formulaire incluant "spatialiseFormulaire"
@@ -1487,6 +1566,7 @@ function finaliseFormulaire() {
             comboEspecesUsuelles.setFieldLabel('Espèce (usuel)');
             comboEspeces.setFieldLabel('Espèce (latin)');
             comboDetermination.hide();
+            comboComportement.hide();
             break;
     }
     // traitement de l'état de diffusion
@@ -1668,7 +1748,7 @@ function valideListeObservations(listIdObs, cb, decisionValidation) {
 //Vtype contrôlant que l'espèce est bien saisie
 Ext.apply(Ext.form.VTypes, {
     verifieEspeceSaisie: function(val, field) {
-        if (!CST_choixEspeceForcee || (comboEspeces.value.split(' ')[1] != undefined
+        if (!CST_choixEspeceForcee || (Ext.getCmp('regne').value == 'Habitat') || (comboEspeces.value.split(' ')[1] != undefined
         && comboEspeces.value.split(' ')[1] != 'sp.')) {
             return true;
         }
@@ -1679,7 +1759,20 @@ Ext.apply(Ext.form.VTypes, {
     verifieEspeceSaisieText: "Veuillez préciser l'espèce"
 });
 
-function verifieTaxonOK(cd_nom) {
+//Vtype contrôlant que l'effectif mini est bien inférieur à l'effectif maxi
+Ext.apply(Ext.form.VTypes, {
+    verifieMiniInferieurMaxi: function(val, field) {
+        if (((Ext.getCmp('effectif_min').getValue() != '') && (Ext.getCmp('effectif_max').getValue() != '')) && (Ext.getCmp('effectif_min').value < Ext.getCmp('effectif_max').value))  {
+            return true;
+        }
+        else {
+            return false;
+        }
+    },
+    verifieMiniInferieurMaxiText: "L'effectif mini doit être inférieur à l'effectif maxi"
+});
+
+function verifieTaxon(cd_nom, verifieTaxonFonctionRetour) {
     Ext.Ajax.request({
         url: '../Modeles/Adaptations/fTaxRef.php?appli=' + GetParam('appli'),
         params: {
@@ -1690,13 +1783,31 @@ function verifieTaxonOK(cd_nom) {
         callback: function(options, success, response) {
             if (success) {
                 var obj = Ext.util.JSON.decode(response.responseText); // décodage JSON du résultat du POST
-                if (!obj.success) {
-                    Ext.MessageBox.show({
-                        title: obj.errorMessage,
-                        msg: obj.data,
-                        buttons: Ext.MessageBox.OK,
-                        icon: Ext.MessageBox.WARNING
-                    });
+                // si taxon OK (pas de pb sur filtre TaxRef) alors enregistrement saisie en cours
+                if (obj.success) {
+                    verifieTaxonFonctionRetour();
+                }
+                // si pb sur filtre taxref alors 2 cas : saisie bloquée ou permise avec avertissement
+                else {
+                    // si taxon considéré comme interdit à la saisie alors blocage avec message d'erreur
+                    if (obj.typeMessage == 'error') {
+                        Ext.MessageBox.show({
+                            title: obj.errorMessage,
+                            msg: obj.data,
+                            buttons: Ext.MessageBox.OK,
+                            icon: Ext.MessageBox.WARNING
+                        });
+                    }
+                    // sinon simple avertissement avec choix de continuer ou pas l'enregistrement
+                    else {
+                        Ext.MessageBox.show({
+                            fn: function(btn) {if (btn == 'ok') {verifieTaxonFonctionRetour()}},
+                            title: obj.errorMessage,
+                            msg: obj.data,
+                            buttons: Ext.MessageBox.OKCANCEL,
+                            icon: Ext.MessageBox.QUESTION
+                        });    
+                    }
                 }
             }
             else {
@@ -1709,4 +1820,32 @@ function verifieTaxonOK(cd_nom) {
             }
         }
     });
+}
+
+function afficheComportement() {
+    if (comboEspeces.value !== '' && !desactivationRequeteComportementForcee) {
+        Ext.Ajax.request({
+            url: '../Modeles/Json/jCdNom.php?appli=' + GetParam('appli'),
+            params: {
+                valeur: comboEspeces.value,
+                filtre: 'Animalia',
+                taxonomie: "'regne=' || coalesce(regne,'') || ';phylum=' ||  coalesce(phylum,'') || ';classe=' || coalesce(classe,'') || ';ordre=' || coalesce(ordre,'') || ';famille=' || coalesce(famille,'') as taxonomie"
+            },
+            callback: function(options, success, response) {
+                if (success) {
+                    var obj = Ext.util.JSON.decode(response.responseText); // décodage JSON du résultat du POST
+                    if (obj.success) {
+                        comboComportement.store.load({
+                            params: {
+                                clauseWHERE: "'" + obj.data + "'" + " ILIKE '%' || niv_tax || '=' || val_tax || '%'"
+                            },
+                            callback: function() {                                
+                                comboComportement.setVisible(comboComportement.store.getCount() > 0);
+                            }
+                        })
+                    }
+                }
+            }
+        });
+    }
 }

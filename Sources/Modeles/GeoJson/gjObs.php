@@ -26,7 +26,7 @@
             saisie_observation.regne, saisie_observation.nom_vern, saisie_observation.nom_complet,
             cd_nom, phylum, classe, ordre, famille, nom_valide, st_geometrytype(saisie.saisie_observation
             .geometrie),effectif, effectif_min, effectif_max, effectif_textuel, type_effectif, phenologie,
-            precision, determination, id_waypoint, depart, latitude, elevation, ign_bd_topo.commune.code_insee,
+            precision, determination, comportement, taille_cm, id_waypoint, depart, latitude, elevation, ign_bd_topo.commune.code_insee,
             ign_bd_topo.commune.dep, ign_bd_topo.commune.nom AS commune,
             id_lieu_dit, ign_bd_topo.lieu_dit.nom AS lieu_dit, observateur, md.liste_nom_auteur(observateur
             ) AS observat, validateur, structure, md.liste_nom_structure(structure) AS struct, localisation, id_etude, nom_etude, id_protocole, libelle,
