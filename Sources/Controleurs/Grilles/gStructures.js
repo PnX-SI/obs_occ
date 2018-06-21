@@ -38,23 +38,23 @@ Ext.onReady(function() {
     var filtres = new Ext.ux.grid.GridFilters({
         menuFilterText: 'Filtres',
         filters: [{type: 'numeric', dataIndex: 'id_structure', menuItemCfgs : {emptyText: ''}},
-            {type: 'string', dataIndex: 'nom_structure', emptyText: 'Ex. : Val1||Val2||Val3'},
-            {type: 'string', dataIndex: 'detail_nom_structure', emptyText: 'Ex. : Val1||Val2||Val3'},
-            {type: 'string', dataIndex: 'statut', emptyText: 'Ex. : Val1||Val2||Val3'},
-            {type: 'string', dataIndex: 'adresse_1', emptyText: 'Ex. : Val1||Val2||Val3'},
-            {type: 'string', dataIndex: 'code_postal', emptyText: 'Ex. : Val1||Val2||Val3'},
-            {type: 'string', dataIndex: 'ville', emptyText: 'Ex. : Val1||Val2||Val3'},
-            {type: 'string', dataIndex: 'pays', emptyText: 'Ex. : Val1||Val2||Val3'},
-            {type: 'string', dataIndex: 'tel', emptyText: 'Ex. : Val1||Val2||Val3'},
-            {type: 'string', dataIndex: 'fax', emptyText: 'Ex. : Val1||Val2||Val3'},
-            {type: 'string', dataIndex: 'courriel_1', emptyText: 'Ex. : Val1||Val2||Val3'},
-            {type: 'string', dataIndex: 'courriel_2', emptyText: 'Ex. : Val1||Val2||Val3'},
-            {type: 'string', dataIndex: 'site_web', emptyText: 'Ex. : Val1||Val2||Val3'},
-            {type: 'string', dataIndex: 'remarque', emptyText: 'Ex. : Val1||Val2||Val3'},
+            {type: 'string', dataIndex: 'nom_structure', emptyText: 'Val1||Val2||IS NULL'},
+            {type: 'string', dataIndex: 'detail_nom_structure', emptyText: 'Val1||Val2||IS NULL'},
+            {type: 'string', dataIndex: 'statut', emptyText: 'Val1||Val2||IS NULL'},
+            {type: 'string', dataIndex: 'adresse_1', emptyText: 'Val1||Val2||IS NULL'},
+            {type: 'string', dataIndex: 'code_postal', emptyText: 'Val1||Val2||IS NULL'},
+            {type: 'string', dataIndex: 'ville', emptyText: 'Val1||Val2||IS NULL'},
+            {type: 'string', dataIndex: 'pays', emptyText: 'Val1||Val2||IS NULL'},
+            {type: 'string', dataIndex: 'tel', emptyText: 'Val1||Val2||IS NULL'},
+            {type: 'string', dataIndex: 'fax', emptyText: 'Val1||Val2||IS NULL'},
+            {type: 'string', dataIndex: 'courriel_1', emptyText: 'Val1||Val2||IS NULL'},
+            {type: 'string', dataIndex: 'courriel_2', emptyText: 'Val1||Val2||IS NULL'},
+            {type: 'string', dataIndex: 'site_web', emptyText: 'Val1||Val2||IS NULL'},
+            {type: 'string', dataIndex: 'remarque', emptyText: 'Val1||Val2||IS NULL'},
             {type: 'date', dataIndex: 'date_maj', beforeText: 'Avant le', afterText: 'Après le', onText: 'Le'},
             {type: 'boolean', dataIndex: 'diffusable', defaultValue: null, yesText: 'Oui', noText: 'Non'},
             {type: 'numeric', dataIndex: 'createur', menuItemCfgs : {emptyText: ''}},
-            {type: 'string', dataIndex: 'creat', emptyText: 'Ex. : Val1||Val2||Val3'}
+            {type: 'string', dataIndex: 'creat', emptyText: 'Val1||Val2||IS NULL'}
         ]
     });
     //Configuration type de chaque colonne
@@ -76,7 +76,7 @@ Ext.onReady(function() {
             {dataIndex: 'courriel_2', header: 'Courriel bis', hidden: true},
             {dataIndex: 'site_web', header: 'Site internet'},
             {dataIndex: 'remarque', header: 'Remarque', hidden: true},
-            {dataIndex: 'date_maj', header: 'Modifiée', renderer: Ext.util.Format.dateRenderer('d/m/Y'), hidden: true},
+            {dataIndex: 'date_maj', header: 'Modifiée', renderer: dateRenderer, hidden: true},
             {dataIndex: 'creat', header: 'Créateur'},
             {dataIndex: 'diffusable', header: 'Publiée', renderer: traiteAffichageBoolean}
         ]

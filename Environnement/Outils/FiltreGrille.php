@@ -25,14 +25,29 @@
                 case 'string' :
                     if (strstr($data_value,'||')) {
                         $fi = explode('||' ,$data_value);
-                        $qs .= ' AND ' . $filter[$i]['field'] . " ILIKE '%" . $fi[0] . "%'";
+                        if (strtolower($fi[0]) == 'is null') {
+                            $qs .= ' AND ( ' . $filter[$i]['field'] . ' IS NULL';
+                        }
+                        else {
+                            $qs .= ' AND ( ' . $filter[$i]['field'] . " ILIKE '%" . $fi[0] . "%'";
+                        }
                         for ($q = 1; $q < count($fi); $q++) {
-                            $qs .= ' OR ' . $filter[$i]['field'] . " ILIKE '%" . $fi[$q] . "%'";
+                            if (strtolower($fi[$q]) == 'is null') {
+                                $qs .= ' OR ' . $filter[$i]['field'] . ' IS NULL';
+                            }
+                            else {
+                                $qs .= ' OR ' . $filter[$i]['field'] . " ILIKE '%" . $fi[$q] . "%'";
+                            }
                         }
                         $qs .= ' )';
                     }
                     else {
-                        $qs .= ' AND ' . $filter[$i]['field'] . " ILIKE '%" . $data_value . "%'";
+                        if (strtolower($data_value) == 'is null') {
+                            $qs .= ' AND ' . $filter[$i]['field'] . ' IS NULL';
+                        }
+                        else {
+                            $qs .= ' AND ' . $filter[$i]['field'] . " ILIKE '%" . $data_value . "%'";
+                        }
                     }
                     break;
                 case 'list' :
@@ -48,51 +63,6 @@
                         $qs .= ' AND ' . $filter[$i]['field'] . " = '" . $data_value . "'";
                     }
                     break;
-				/* à comparer et intégrer
-				case 'list' :
-                    if ($filter[$i]['data']['value'] == 'IS NULL') {
-                        $qs .= ' AND ' . $filter[$i]['field'] . ' IS NULL';
-                    }
-                    else {
-                        $orIsNull = false;
-                        if (strstr($filter[$i]['data']['value'], ',')) {
-                            $fi = explode(',', $filter[$i]['data']['value']);
-                            $key = array_search('IS NULL', $fi);
-                            if ($key) {
-                                unset($fi[$key]);
-                                $filter[$i]['data']['value'] = implode(',', $fi);
-                                $orIsNull = true;
-                            }
-                        }
-                        if (strstr($filter[$i]['data']['value'], ',')) {
-                            $fi = explode(',', $filter[$i]['data']['value']);
-                            for ($q = 0; $q < count($fi); $q++) {
-                                    $fi[$q] = "'" . $fi[$q] . "'";
-                            }
-                            $filter[$i]['data']['value'] = implode(',', $fi);
-                            if ($orIsNull) {
-                                $qs .= ' AND (' . $filter[$i]['field'] . ' IN (' .
-                                $filter[$i]['data']['value'] . ') OR ' . $filter[$i]['field'] .
-                                ' IS NULL)';
-                            }
-                            else {
-                                $qs .= ' AND ' . $filter[$i]['field'] . ' IN (' .
-                                $filter[$i]['data']['value'] . ')';
-                            }
-                        }
-                        else {
-                            if ($orIsNull) {
-                                $qs .= ' AND (' . $filter[$i]['field'] . " = '" .
-                                $filter[$i]['data']['value'] . "' OR " . $filter[$i]['field'] .
-                                ' IS NULL)';
-                            }
-                            else {
-                                $qs .= ' AND ' . $filter[$i]['field'] . " = '" .
-                                $filter[$i]['data']['value'] . "'";
-                            }
-                        }
-                    }
-                    break;*/	
                 case 'boolean' :
                     $qs .= ' AND ' . $filter[$i]['field'] . ' = ' . ($data_value);
                     break;

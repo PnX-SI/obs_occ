@@ -532,13 +532,23 @@ Ext.data.Types.TIME = {
 function timeRenderer(value) {
     var result = '';
     if (value) {
-        var d = new Date('1977/03/14 ' + value); // date de naissance du développeur (au format américain) utilisée pour instancier l'objet Date
+        var d = new Date('1977/03/14 ' + value); // date exemple au format americain pour instancier l'objet Date
         result = d.format('H:i');
     }
     return result;
 }
 
-//Fonction de traitement de l'affichage du type booléen dans les grilles
+//Fonction de traitement de l'affichage du type date dans les grilles
+function dateRenderer(value) {
+    var result = '';
+    if (value) {
+        var d = new Date(value + 'T12:00:00Z'); // astuce : heure de midi pour que �a marche quelque soit le fuseau horaire (� +/- 12 heures donc)
+        result = d.format('d/m/Y');
+    }
+    return result;
+}
+
+//Fonction de traitement de l'affichage du type bool�en dans les grilles
 function traiteAffichageBoolean(val) {
     switch (val) {
         case 't':

@@ -23,8 +23,8 @@ Ext.onReady(function() {
     var filtres = new Ext.ux.grid.GridFilters({
         menuFilterText: 'Filtres',
         filters: [{type: 'numeric', dataIndex: 'id_protocole', menuItemCfgs : {emptyText: ''}},
-            {type: 'string', dataIndex: 'libelle', emptyText: 'Ex. : Val1||Val2||Val3'},
-            {type: 'string', dataIndex: 'resume', emptyText: 'Ex. : Val1||Val2||Val3'}
+            {type: 'string', dataIndex: 'libelle', emptyText: 'Val1||Val2||IS NULL'},
+            {type: 'string', dataIndex: 'resume', emptyText: 'Val1||Val2||IS NULL'}
         ]
     });
     //Configuration type de chaque colonne
