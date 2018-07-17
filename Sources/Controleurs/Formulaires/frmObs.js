@@ -1762,8 +1762,9 @@ Ext.apply(Ext.form.VTypes, {
 //Vtype contrôlant que l'effectif mini est bien inférieur à l'effectif maxi
 Ext.apply(Ext.form.VTypes, {
     verifieMiniInferieurMaxi: function(val, field) {
-        if (((Ext.getCmp('effectif_min').getValue() != '') && (Ext.getCmp('effectif_max').getValue() != '')) && (Ext.getCmp('effectif_min').value < Ext.getCmp('effectif_max').value))  {
-            return true;
+        if (((Ext.getCmp('effectif_min').getValue() != '') && (Ext.getCmp('effectif_max').getValue() != '')) && 
+        (Ext.getCmp('effectif_min').getValue() < Ext.getCmp('effectif_max').getValue()))  {
+	    return true;
         }
         else {
             return false;
