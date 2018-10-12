@@ -48,7 +48,9 @@ Ext.onReady(function() {
             keyup: function(field, event) {
                 if (this.getRawValue().length >= 3) { // si au moins 3 lettres tapées
                     if ([13, 38, 40].indexOf(event.getKey()) == -1) { // si pas les flèches "Haut", "Bas" ni la touche "Enter"
-                        //Ext.Ajax.abort(this.store.proxy.getConnection().transId); //Annule les requêtes précédentes
+                        if (typeof(iImport) == 'undefined') {
+                            Ext.Ajax.abort(this.store.proxy.getConnection().transId); //Annule les requêtes précédentes sauf si procédure d'import
+                        }
                         var tabMots = this.getRawValue().split(' ', 2);
                         if ((typeof(tabMots[1]) == 'undefined')) {  // si l'utilisateur lance la recherche sur un seul mot (le genre en général)keyup: function() {
                             modeRequete = 'genre';
@@ -105,7 +107,9 @@ Ext.onReady(function() {
             keyup: function(field, event) {
                 if (this.getRawValue().length >= 3) { // si au moins 1 lettre tapée
                     if ([13, 38, 40].indexOf(event.getKey()) == -1) { // si pas les flèches "Haut", "Bas" ni la touche "Enter"
-                        //Ext.Ajax.abort(this.store.proxy.getConnection().transId); //Annule les requêtes précédentes
+                        if (typeof(iImport) == 'undefined') {
+                            Ext.Ajax.abort(this.store.proxy.getConnection().transId); //Annule les requêtes précédentes sauf si procédure d'import
+                        }
                         var tabMots = this.getRawValue().split(' ', 2);
                         if ((typeof(tabMots[1]) == 'undefined')) {  // si l'utilisateur lance la recherche sur un seul mot (le genre en général)
                             modeRequete = 'genre';
