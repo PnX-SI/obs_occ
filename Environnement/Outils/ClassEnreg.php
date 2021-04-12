@@ -21,7 +21,7 @@
             else {
                 $this->seqSerial = $this->table . '_' . $this->chId . '_seq';
             }
-            $req = 'SELECT * FROM ' . $this->table;
+            $req = 'SELECT * FROM ' . $this->table .' LIMIT 1'; //une ligne suffit pour découvrir la structure de la table
             $rs = $this->cnxPg->executeSql($req);
             $nbCols = pg_num_fields($rs);
             for ($i = 0; $i < $nbCols; $i++) {
