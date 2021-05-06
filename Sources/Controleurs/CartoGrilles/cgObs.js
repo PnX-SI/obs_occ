@@ -477,6 +477,13 @@ function basculeEcran(sens) {
                 iconCls: 'photo',
                 tooltip: 'Visualiser la photo'
             }
+    //Ajouter la fonction de recherche et zoom sur une commune - lieu-dit ou coordonnées			
+			, '-', {
+                text: 'Zoom sur commune',
+                handler: zoomsurcommune,
+                iconCls: 'zoomcommune',
+                tooltip: 'Rechercher et zoomer sur la commune de votre choix'
+            }
         ]
     });
     //Grille des données
@@ -978,4 +985,8 @@ function zoomerEmpriseCadre() {
     // cadrage sur l'emprise paramétrée par défaut puis zoom d'un niveau
     carte.zoomToExtent(empriseCadre);
     carte.zoomIn();
+}
+//Zoom sur la commune - lieu-dit ou coordonnées sélectionné
+function zoomsurcommune() {
+fenetreFormulaireRecherche.show();
 }
